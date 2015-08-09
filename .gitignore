@@ -1,2 +1,4 @@
 *.log
 ui/node_modules
+ui/bower_components
+ui/lib

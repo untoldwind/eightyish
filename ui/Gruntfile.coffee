@@ -9,8 +9,12 @@ module.exports = (grunt) ->
       app:
         files: '**/*.coffee'
         tasks: ['coffee']
+    bower:
+      install: {
+      }
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-bower-task'
 
   grunt.registerTask 'default', ['coffee']
