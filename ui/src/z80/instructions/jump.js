@@ -1,6 +1,6 @@
-import Instruction from './base';
+import InstructionFactory from './base';
 
-class Jump extends Instruction {
+class Jump extends InstructionFactory {
     constructor() {
         super(0xc3);
     }

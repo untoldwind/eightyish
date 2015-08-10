@@ -1,7 +1,7 @@
 
-import Instruction from './base';
+import InstructionFactory from './base';
 
-class LoadRegisterToRegister extends Instruction {
+class LoadRegisterToRegister extends InstructionFactory {
     constructor(opcode, to, from) {
         super(opcode);
         this.to = to;
@@ -9,14 +9,14 @@ class LoadRegisterToRegister extends Instruction {
     }
 }
 
-class LoadMemoryToRegister extends Instruction {
+class LoadMemoryToRegister extends InstructionFactory {
     constructor(opcode, to) {
         super(opcode);
         this.to = to;
     }
 }
 
-class LoadRegisterToMemory extends Instruction {
+class LoadRegisterToMemory extends InstructionFactory {
     constructor(opcode, from) {
         super(opcode);
         this.from = from;

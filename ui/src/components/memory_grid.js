@@ -18,7 +18,7 @@ export default class MemoryGrid extends React.Component {
                 </thead>
                 <tbody>
                 {Array.from(new Array(this.props.memory.length / this.props.columns).keys()).map(i =>
-                        <MemoryRow key={i} columns={this.props.columns} memory={this.props.memory}
+                        <MemoryRow columns={this.props.columns} key={i} memory={this.props.memory}
                                    offset={i * this.props.columns}/>
                 )}
                 </tbody>

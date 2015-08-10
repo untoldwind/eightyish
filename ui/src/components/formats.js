@@ -1,12 +1,6 @@
 
 export function repeat(ch, count) {
-    var result = "";
-
-    for(var i = 0; i < count; i++) {
-        result += ch;
-    }
-
-    return result;
+    return new Array(count + 1).join(ch);
 }
 
 export function byte2bin(v) {

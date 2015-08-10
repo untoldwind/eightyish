@@ -1,13 +1,13 @@
 
-import Instruction from './base';
+import InstructionFactory from './base';
 
-class Halt extends Instruction {
+class Halt extends InstructionFactory {
     constructor() {
         super(0x76);
     }
 }
 
-class Nop extends Instruction {
+class Nop extends InstructionFactory {
     constructor() {
         super(0x00);
     }

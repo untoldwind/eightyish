@@ -1,19 +1,19 @@
 
-import Instruction from './base';
+import InstructionFactory from './base';
 
-class Call extends Instruction {
+class Call extends InstructionFactory {
     constructor() {
         super(0xcd);
     }
 }
 
-class Return extends Instruction {
+class Return extends InstructionFactory {
     constructor() {
         super(0xc9);
     }
 }
 
-class CallCondition extends Instruction {
+class CallCondition extends InstructionFactory {
     constructor(opcode, flag, condition) {
         super(opcode);
         this.flag = flag;
@@ -21,7 +21,7 @@ class CallCondition extends Instruction {
     }
 }
 
-class ReturnCondition extends Instruction {
+class ReturnCondition extends InstructionFactory {
     constructor(opcode, flag, condition) {
         super(opcode);
         this.flag = flag;

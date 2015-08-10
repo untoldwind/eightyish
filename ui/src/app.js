@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 import Machine from './components/machine';

@@ -35,8 +35,8 @@ export default class Registers extends React.Component {
             <tr>
                 <td>{register}</td>
                 <td>{this.props.registers[register]}</td>
-                <td>{formats.byte2hex(this.props.registers[register])}</td>
-                <td>{formats.byte2bin(this.props.registers[register])}</td>
+                <td>0x{formats.byte2hex(this.props.registers[register])}</td>
+                <td>0b{formats.byte2bin(this.props.registers[register])}</td>
             </tr>
         );
     }
@@ -46,7 +46,7 @@ export default class Registers extends React.Component {
             <tr>
                 <td>{register}</td>
                 <td>{this.props.registers[register]}</td>
-                <td>{formats.word2hex(this.props.registers[register])}</td>
+                <td colSpan='2'>0x{formats.word2hex(this.props.registers[register])}</td>
             </tr>
         );
     }
