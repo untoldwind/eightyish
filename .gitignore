@@ -1,4 +1,5 @@
 *.log
+ui/dist
 ui/node_modules
 ui/bower_components
 ui/lib
