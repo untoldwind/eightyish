@@ -2,7 +2,8 @@
   "name": "eightyish",
   "version": "0.0.1",
   "config": {
-    "buildDir": "./dist"},
+    "buildDir": "./dist"
+  },
   "scripts": {
     "build": "NODE_ENV=production npm run webpack",
     "clean": "rimraf $npm_package_config_buildDir && mkdir $npm_package_config_buildDir",
@@ -14,6 +15,7 @@
   "dependencies": {
     "babel": "^5.8.21",
     "bootstrap": "^3.3.5",
+    "flux": "^2.0.3",
     "react": "^0.13.3"
   },
   "devDependencies": {
