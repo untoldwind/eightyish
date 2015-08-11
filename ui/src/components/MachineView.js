@@ -6,12 +6,32 @@ import Editor from './Editor';
 
 import MachineState from '../z80/MachineState';
 
+var machineState = new MachineState(1024, 1024);
+
+function getCurrentState() {
+    return {
+        registers: machineState.registers,
+        memory: machineState.memory,
+        sourceCode: machineState.sourceCode
+    }
+}
+
 export default class MachineView extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            machineState: new MachineState(1024, 1024)
-        };
+        this.state = getCurrentState();
+    }
+
+    componentDidMount() {
+        machineState.addChangeListener(this.onChange.bind(this));
+    }
+
+    componentWillUnmount() {
+        machineState.removeChangeListener(this.onChange.bind(this));
+    }
+
+    onChange() {
+        this.setState(getCurrentState());
     }
 
     render() {
@@ -19,15 +39,15 @@ export default class MachineView extends React.Component {
             <div className="container">
                 <div className="row">
                     <div className="col-md-4">
-                        <RegistersView registers={this.state.machineState.registers}/>
+                        <RegistersView registers={this.state.registers}/>
                     </div>
                     <div className="col-md-8">
-                        <Editor memory={this.state.machineState.memory} sourceCode={this.state.machineState.sourceCode} pc={this.state.machineState.registers.PC} />
+                        <Editor memory={this.state.memory} sourceCode={this.state.sourceCode} pc={this.state.registers.PC} />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <MemoryGrid columns={32} memory={this.state.machineState.memory} registers={this.state.machineState.registers}/>
+                        <MemoryGrid columns={32} memory={this.state.memory} registers={this.state.registers}/>
                     </div>
                 </div>
             </div>

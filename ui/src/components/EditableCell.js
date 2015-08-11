@@ -16,7 +16,7 @@ export default class EditableCell extends React.Component {
     }
 
     finishEditing() {
-        if(this.props.text != this.state.text){
+        if (this.props.text != this.state.text) {
             this.commitEditing();
         } else if (this.props.text === this.state.text) {
             this.cancelEditing();
@@ -39,23 +39,39 @@ export default class EditableCell extends React.Component {
     }
 
     keyDown(event) {
-        if(event.keyCode === 13) {
+        if (event.keyCode === 13) {
             this.finishEditing();
         } else if (event.keyCode === 27) {
             this.cancelEditing();
         }
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        var inputElem = React.findDOMNode(this.refs.input);
+        if (this.state.editing && !prevState.editing) {
+            inputElem.focus();
+            inputElem.setSelectionRange(0, inputElem.value.length);
+        } else if (this.state.editing && prevProps.text != this.props.text) {
+            this.finishEditing();
+        }
+    }
+
     render() {
-        if(!this.state.editing) {
-            return <span className={this.props.className} onClick={this.startEditing.bind(this)}>
+        if (!this.state.editing) {
+            return <td className={this.props.className} rowSpan={this.props.rowSpan} style={this.props.style}
+                       onClick={this.startEditing.bind(this)}>
                 {this.props.valueLink.value}
-            </span>
+            </td>
         } else {
-            return <input className={this.props.activeClassName} onKeyDown={this.keyDown.bind(this)}
-                          onBlur={this.finishEditing.bind(this)}
-                          defaultValue={this.state.text}
-                          onChange={this.textChanged.bind(this)} onReturn={this.finishEditing.bind(this)} />
+            return <td className={this.props.className} rowSpan={this.props.rowSpan} style={this.props.style}
+                       onClick={this.startEditing.bind(this)}>
+                <input className={this.props.activeClassName} onKeyDown={this.keyDown.bind(this)}
+                       onBlur={this.finishEditing.bind(this)}
+                       defaultValue={this.state.text}
+                       onChange={this.textChanged.bind(this)} onReturn={this.finishEditing.bind(this)}
+                       size={this.props.valueLink.value.length}
+                       ref="input"/>
+            </td>
         }
     }
 }
@@ -66,5 +82,7 @@ EditableCell.propTypes = {
     valueLink: React.PropTypes.shape({
         value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
         requestChange: React.PropTypes.func.isRequired
-    }).isRequired
+    }).isRequired,
+    rowSpan: React.PropTypes.number,
+    style: React.PropTypes.object
 };

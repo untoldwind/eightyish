@@ -40,14 +40,21 @@ export default class RegistersView extends React.Component {
     renderByteRegisters(highRegister, lowRegister) {
         var highValueLink = {
             value: this.props.registers[highRegister],
-            requestChange: v => console.log(v)
+            requestChange: value => {
+                console.log(value);
+                this.props.registers[highRegister] = value
+            }
+        };
+        var lowValueLink = {
+            value: this.props.registers[lowRegister],
+            requestChange: value => this.props.registers[lowRegister] = value
         };
         return [
             <tr key='high'>
                 <td>{highRegister}</td>
-                <td><EditableCell valueLink={highValueLink}/></td>
-                <td>0x{formats.byte2hex(this.props.registers[highRegister])}</td>
-                <td>0b{formats.byte2bin(this.props.registers[highRegister])}</td>
+                <EditableCell valueLink={formats.byteValueLink(10, highValueLink)}/>
+                <EditableCell valueLink={formats.byteValueLink(16, highValueLink)}/>
+                <EditableCell valueLink={formats.byteValueLink(2, highValueLink)}/>
                 <td rowSpan='2' style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
                 <td rowSpan='2'
                     style={{verticalAlign: 'middle'}}>{this.props.registers[highRegister + lowRegister]}</td>
@@ -56,9 +63,9 @@ export default class RegistersView extends React.Component {
             </tr>,
             <tr key='low'>
                 <td>{lowRegister}</td>
-                <td>{this.props.registers[lowRegister]}</td>
-                <td>0x{formats.byte2hex(this.props.registers[lowRegister])}</td>
-                <td>0b{formats.byte2bin(this.props.registers[lowRegister])}</td>
+                <EditableCell valueLink={formats.byteValueLink(10, lowValueLink)}/>
+                <EditableCell valueLink={formats.byteValueLink(16, lowValueLink)}/>
+                <EditableCell valueLink={formats.byteValueLink(2, lowValueLink)}/>
             </tr>
         ]
     }
