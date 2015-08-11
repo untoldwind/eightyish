@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class EditableValue extends React.Component {
+export default class EditableCell extends React.Component {
     constructor(props) {
         super(props);
 
@@ -10,9 +10,10 @@ export default class EditableValue extends React.Component {
     }
 
     startEditing() {
+        console.log('bla');
+        console.log(this);
         this.setState({editing: true, text: this.props.valueLink.value});
     }
-
 
     finishEditing() {
         if(this.props.text != this.state.text){
@@ -47,19 +48,23 @@ export default class EditableValue extends React.Component {
 
     render() {
         if(!this.state.editing) {
-            return <span className={this.props.className} onClick={this.startEditing}>{this.props.valueLink.value}</span>
+            return <span className={this.props.className} onClick={this.startEditing.bind(this)}>
+                {this.props.valueLink.value}
+            </span>
         } else {
-            return <input className={this.props.activeClassName} onKeyDown={this.keyDown} onBlur={this.finishEditing}
-                          defaultValue={this.state.text} onChange={this.textChanged} onReturn={this.finishEditing} />
+            return <input className={this.props.activeClassName} onKeyDown={this.keyDown.bind(this)}
+                          onBlur={this.finishEditing.bind(this)}
+                          defaultValue={this.state.text}
+                          onChange={this.textChanged.bind(this)} onReturn={this.finishEditing.bind(this)} />
         }
     }
 }
 
-EditableValue.propTypes = {
+EditableCell.propTypes = {
     className: React.PropTypes.string,
     activeClassName: React.PropTypes.string,
     valueLink: React.PropTypes.shape({
-        value: React.PropTypes.oneOfType([React.PropTypes.string, ReactPropTypes.number]).isRequired,
-        requestChange: React.PropTypes.function.isRequired
+        value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
+        requestChange: React.PropTypes.func.isRequired
     }).isRequired
 };

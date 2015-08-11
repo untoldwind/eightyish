@@ -1,5 +1,7 @@
 import React from 'react';
 
+import EditableCell from './EditableCell';
+
 import * as formats from './formats';
 
 export default class RegistersView extends React.Component {
@@ -8,18 +10,23 @@ export default class RegistersView extends React.Component {
             <table className="table table-condensed table-bordered">
                 <thead>
                 <tr>
+                    <th colSpan='4'>8-bit</th>
+                    <th colSpan='3'>16-bit</th>
+                </tr>
+                <tr>
                     <th></th>
-                    <th>Decimal</th>
+                    <th>Dec</th>
                     <th>Hex</th>
-                    <th>Binary</th>
+                    <th>Bin</th>
+                    <th></th>
+                    <th>Dec</th>
+                    <th>Hex</th>
                 </tr>
                 </thead>
                 <tbody>
-                {this.renderByteRegister('A')}
-                {this.renderByteRegister('B')}
-                {this.renderByteRegister('C')}
-                {this.renderByteRegister('D')}
-                {this.renderByteRegister('E')}
+                {this.renderByteRegisters('A', 'F')}
+                {this.renderByteRegisters('B', 'C')}
+                {this.renderByteRegisters('D', 'E')}
                 {this.renderWordRegister('HL', 'bg-success')}
                 {this.renderWordRegister('IX', 'bg-info')}
                 {this.renderWordRegister('IY', 'bg-warning')}
@@ -30,28 +37,44 @@ export default class RegistersView extends React.Component {
         );
     }
 
-    renderByteRegister(register) {
-        return (
-            <tr>
-                <td>{register}</td>
-                <td>{this.props.registers[register]}</td>
-                <td>0x{formats.byte2hex(this.props.registers[register])}</td>
-                <td>0b{formats.byte2bin(this.props.registers[register])}</td>
+    renderByteRegisters(highRegister, lowRegister) {
+        var highValueLink = {
+            value: this.props.registers[highRegister],
+            requestChange: v => console.log(v)
+        };
+        return [
+            <tr key='high'>
+                <td>{highRegister}</td>
+                <td><EditableCell valueLink={highValueLink}/></td>
+                <td>0x{formats.byte2hex(this.props.registers[highRegister])}</td>
+                <td>0b{formats.byte2bin(this.props.registers[highRegister])}</td>
+                <td rowSpan='2' style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
+                <td rowSpan='2'
+                    style={{verticalAlign: 'middle'}}>{this.props.registers[highRegister + lowRegister]}</td>
+                <td rowSpan='2' style={{verticalAlign: 'middle'}}>
+                    0x{formats.word2hex(this.props.registers[highRegister + lowRegister])}</td>
+            </tr>,
+            <tr key='low'>
+                <td>{lowRegister}</td>
+                <td>{this.props.registers[lowRegister]}</td>
+                <td>0x{formats.byte2hex(this.props.registers[lowRegister])}</td>
+                <td>0b{formats.byte2bin(this.props.registers[lowRegister])}</td>
             </tr>
-        );
+        ]
     }
 
     renderWordRegister(register, className) {
         return (
-            <tr className={className}>
-                <td>{register}</td>
-                <td>{this.props.registers[register]}</td>
-                <td colSpan='2'>0x{formats.word2hex(this.props.registers[register])}</td>
+            <tr>
+                <td colSpan='4'></td>
+                <td className={className}>{register}</td>
+                <td className={className}>{this.props.registers[register]}</td>
+                <td className={className} colSpan='2'>0x{formats.word2hex(this.props.registers[register])}</td>
             </tr>
         );
     }
 }
 
-Registers.propTypes = {
+RegistersView.propTypes = {
     registers: React.PropTypes.object.isRequired
 };

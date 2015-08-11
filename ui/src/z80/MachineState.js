@@ -5,7 +5,7 @@ import SourceCode from './SourceCode';
 
 const CHANGE_EVENT = 'change';
 
-export default class State extends EventEmitter {
+export default class MachineState extends EventEmitter {
     constructor(mem_size, video_size) {
         super();
 

@@ -4,13 +4,13 @@ import MemoryGrid from './MemoryGrid';
 import RegistersView from './RegistersView';
 import Editor from './Editor';
 
-import State from '../z80/state';
+import MachineState from '../z80/MachineState';
 
 export default class MachineView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            machineState: new State(1024, 1024)
+            machineState: new MachineState(1024, 1024)
         };
     }
 
@@ -18,10 +18,10 @@ export default class MachineView extends React.Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-md-3">
+                    <div className="col-md-4">
                         <RegistersView registers={this.state.machineState.registers}/>
                     </div>
-                    <div className="col-md-9">
+                    <div className="col-md-8">
                         <Editor memory={this.state.machineState.memory} sourceCode={this.state.machineState.sourceCode} pc={this.state.machineState.registers.PC} />
                     </div>
                 </div>
