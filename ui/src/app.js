@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Machine from './components/machine';
+import MachineView from './components/MachineView';
 
 export default class App extends React.Component {
     render() {
         return (
             <div className="container">
-                <Machine />
+                <MachineView />
             </div>
         );
     }

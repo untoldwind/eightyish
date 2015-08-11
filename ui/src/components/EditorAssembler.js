@@ -9,3 +9,7 @@ export default class EditorAssembler extends React.Component {
         );
     }
 }
+
+EditorAssembler.propTypes = {
+    sourceCode: React.PropTypes.object.isRequired
+};

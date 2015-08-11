@@ -1,7 +1,7 @@
 import React from 'react';
 
-import EditorMemory from './editor_memory';
-import EditorAssembler from './editor_assembler';
+import EditorMemory from './EditorMemory';
+import EditorAssembler from './EditorAssembler';
 
 export default class Editor extends React.Component {
     render() {
@@ -11,7 +11,7 @@ export default class Editor extends React.Component {
                     <EditorMemory/>
                 </div>
                 <div className="col-md-8">
-                    <EditorAssembler/>
+                    <EditorAssembler sourceCode={this.props.sourceCode}/>
                 </div>
             </div>
         );
@@ -20,5 +20,6 @@ export default class Editor extends React.Component {
 
 Editor.propTypes = {
     pc: React.PropTypes.number.isRequired,
-    memory: React.PropTypes.array.isRequired
+    memory: React.PropTypes.array.isRequired,
+    sourceCode: React.PropTypes.object.isRequired
 };

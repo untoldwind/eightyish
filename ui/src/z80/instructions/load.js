@@ -3,7 +3,7 @@ import InstructionFactory from './base';
 
 class LoadRegisterToRegister extends InstructionFactory {
     constructor(opcode, to, from) {
-        super(opcode);
+        super(opcode, ['LOAD', to, from]);
         this.to = to;
         this.from = from;
     }
@@ -11,14 +11,14 @@ class LoadRegisterToRegister extends InstructionFactory {
 
 class LoadMemoryToRegister extends InstructionFactory {
     constructor(opcode, to) {
-        super(opcode);
+        super(opcode, ['LOAD', to]);
         this.to = to;
     }
 }
 
 class LoadRegisterToMemory extends InstructionFactory {
     constructor(opcode, from) {
-        super(opcode);
+        super(opcode, ['LOAD', from]);
         this.from = from;
     }
 }

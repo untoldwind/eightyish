@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MemoryRow from './memory_row';
+import MemoryRow from './MemoryRow';
 
 import * as formats from './formats';
 
@@ -19,7 +19,7 @@ export default class MemoryGrid extends React.Component {
                 <tbody>
                 {Array.from(new Array(this.props.memory.length / this.props.columns).keys()).map(i =>
                         <MemoryRow columns={this.props.columns} key={i} memory={this.props.memory}
-                                   offset={i * this.props.columns}/>
+                                   offset={i * this.props.columns} registers={this.props.registers}/>
                 )}
                 </tbody>
             </table>
@@ -29,5 +29,6 @@ export default class MemoryGrid extends React.Component {
 
 MemoryGrid.propTypes = {
     columns: React.PropTypes.number.isRequired,
-    memory: React.PropTypes.array.isRequired
+    memory: React.PropTypes.array.isRequired,
+    registers: React.PropTypes.object.isRequired
 };

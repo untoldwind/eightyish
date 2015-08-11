@@ -2,14 +2,14 @@ import InstructionFactory from './base';
 
 class Push extends InstructionFactory {
     constructor(opcode, register) {
-        super(opcode);
+        super(opcode, ['PUSH', register]);
         this.register = register;
     }
 }
 
 class Pop extends InstructionFactory {
     constructor(opcode, register) {
-        super(opcode);
+        super(opcode, ['POP', register]);
         this.register = register;
     }
 }

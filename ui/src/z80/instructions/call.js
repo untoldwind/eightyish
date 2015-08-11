@@ -3,19 +3,19 @@ import InstructionFactory from './base';
 
 class Call extends InstructionFactory {
     constructor() {
-        super(0xcd);
+        super(0xcd, ['CALL']);
     }
 }
 
 class Return extends InstructionFactory {
     constructor() {
-        super(0xc9);
+        super(0xc9, ['RET']);
     }
 }
 
 class CallCondition extends InstructionFactory {
     constructor(opcode, flag, condition) {
-        super(opcode);
+        super(opcode, ['CALL']);
         this.flag = flag;
         this.condition = condition;
     }
@@ -23,7 +23,7 @@ class CallCondition extends InstructionFactory {
 
 class ReturnCondition extends InstructionFactory {
     constructor(opcode, flag, condition) {
-        super(opcode);
+        super(opcode, ['RET']);
         this.flag = flag;
         this.condition = condition;
     }
