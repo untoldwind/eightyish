@@ -24,6 +24,17 @@ function byteRadixLength(radix) {
     }
 }
 
+function wordRadixLength(radix) {
+    switch (radix) {
+        case 2:
+            return 16;
+        case 16:
+            return 4;
+        default:
+            return 5;
+    }
+}
+
 export function byteValueLink(radix, valueLink) {
     var prefix = radixPrefix(radix);
     var value = valueLink.value.toString(radix);
@@ -40,7 +51,30 @@ export function byteValueLink(radix, valueLink) {
             } else {
                 newValue = parseInt(str, radix);
             }
-            if(newValue != NaN && newValue >= 0 && newValue <= 255) {
+            if(typeof newValue == 'number' && newValue >= 0 && newValue <= 255) {
+                valueLink.requestChange(newValue);
+            }
+        }
+    }
+}
+
+export function wordValueLink(radix, valueLink) {
+    var prefix = radixPrefix(radix);
+    var value = valueLink.value.toString(radix);
+    var length = wordRadixLength(radix);
+    var fill = prefix.length > 0 ? '0' : ' ';
+
+    return {
+        value: prefix + repeat(fill, length - value.length) + value,
+        requestChange: str => {
+            var newValue;
+
+            if(str.startsWith(prefix)) {
+                newValue = parseInt(str.substring(prefix.length), radix);
+            } else {
+                newValue = parseInt(str, radix);
+            }
+            if(typeof newValue == 'number' && newValue >= 0 && newValue <= 65355) {
                 valueLink.requestChange(newValue);
             }
         }

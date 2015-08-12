@@ -1,6 +1,6 @@
 
 export default class Transition {
-    constructor(newPC) {
-        this.PC = newPC;
+    constructor(newRegisters) {
+        this.newRegisters = newRegisters;
     }
 }

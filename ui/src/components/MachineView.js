@@ -4,9 +4,7 @@ import MemoryGrid from './MemoryGrid';
 import RegistersView from './RegistersView';
 import Editor from './Editor';
 
-import MachineState from '../z80/MachineState';
-
-var machineState = new MachineState(1024, 1024);
+import machineState from '../z80/MachineState';
 
 function getCurrentState() {
     return {

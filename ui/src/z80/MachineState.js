@@ -3,9 +3,12 @@ import EventEmitter from 'events';
 import Registers from './Registers';
 import SourceCode from './SourceCode';
 
+import appDispatcher from '../dispatcher/AppDispatcher';
+import * as AppConstants from '../dispatcher/AppConstants';
+
 const CHANGE_EVENT = 'change';
 
-export default class MachineState extends EventEmitter {
+class MachineState extends EventEmitter {
     constructor(mem_size, video_size) {
         super();
 
@@ -13,6 +16,18 @@ export default class MachineState extends EventEmitter {
         this.memory = Array.from(new Array(mem_size), () => 0);
         this.video = Array.from(new Array(video_size), () => 0);
         this.sourceCode = new SourceCode();
+
+        this.dispatchToken = appDispatcher.register(action => {
+            switch(action.type) {
+                case AppConstants.MACHINE_RESET:
+                    break;
+
+                case AppConstants.MACHINE_TRANSITION:
+                    Object.assign(this.registers, action.newRegisters);
+                    this.emitChange();
+                    break;
+            }
+        });
     }
 
     emitChange() {
@@ -27,3 +42,5 @@ export default class MachineState extends EventEmitter {
         this.removeListener(CHANGE_EVENT, callback);
     }
 }
+
+export default new MachineState(1024, 1024)

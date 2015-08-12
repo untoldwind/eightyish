@@ -10,8 +10,6 @@ export default class EditableCell extends React.Component {
     }
 
     startEditing() {
-        console.log('bla');
-        console.log(this);
         this.setState({editing: true, text: this.props.valueLink.value});
     }
 

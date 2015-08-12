@@ -2,6 +2,7 @@ import React from 'react';
 
 import EditableCell from './EditableCell';
 
+import * as MachineActions from '../actions/MachineActions';
 import * as formats from './formats';
 
 export default class RegistersView extends React.Component {
@@ -40,14 +41,15 @@ export default class RegistersView extends React.Component {
     renderByteRegisters(highRegister, lowRegister) {
         var highValueLink = {
             value: this.props.registers[highRegister],
-            requestChange: value => {
-                console.log(value);
-                this.props.registers[highRegister] = value
-            }
+            requestChange: value => MachineActions.transition({[highRegister]: value})
         };
         var lowValueLink = {
             value: this.props.registers[lowRegister],
-            requestChange: value => this.props.registers[lowRegister] = value
+            requestChange: value => MachineActions.transition({[lowRegister]: value})
+        };
+        var valueLink = {
+            value: this.props.registers[highRegister + lowRegister],
+            requestChange: value => MachineActions.transition({[highRegister + lowRegister]: value})
         };
         return [
             <tr key='high'>
@@ -56,10 +58,8 @@ export default class RegistersView extends React.Component {
                 <EditableCell valueLink={formats.byteValueLink(16, highValueLink)}/>
                 <EditableCell valueLink={formats.byteValueLink(2, highValueLink)}/>
                 <td rowSpan='2' style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
-                <td rowSpan='2'
-                    style={{verticalAlign: 'middle'}}>{this.props.registers[highRegister + lowRegister]}</td>
-                <td rowSpan='2' style={{verticalAlign: 'middle'}}>
-                    0x{formats.word2hex(this.props.registers[highRegister + lowRegister])}</td>
+                <EditableCell rowSpan={2} style={{verticalAlign: 'middle'}} valueLink={formats.wordValueLink(10, valueLink)}/>
+                <EditableCell rowSpan={2} style={{verticalAlign: 'middle'}} valueLink={formats.wordValueLink(16, valueLink)}/>
             </tr>,
             <tr key='low'>
                 <td>{lowRegister}</td>
@@ -71,12 +71,16 @@ export default class RegistersView extends React.Component {
     }
 
     renderWordRegister(register, className) {
+        var valueLink = {
+            value: this.props.registers[register],
+            requestChange: value => MachineActions.transition({[register]: value})
+        };
         return (
             <tr>
                 <td colSpan='4'></td>
                 <td className={className}>{register}</td>
-                <td className={className}>{this.props.registers[register]}</td>
-                <td className={className} colSpan='2'>0x{formats.word2hex(this.props.registers[register])}</td>
+                <EditableCell className={className} valueLink={formats.wordValueLink(10, valueLink)}/>
+                <EditableCell className={className} valueLink={formats.wordValueLink(16, valueLink)}/>
             </tr>
         );
     }

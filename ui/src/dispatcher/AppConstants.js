@@ -1,0 +1,4 @@
+
+export const MACHINE_RESET = "MACHINE_RESET";
+
+export const MACHINE_TRANSITION = 'MACHINE_TRANSITION';
