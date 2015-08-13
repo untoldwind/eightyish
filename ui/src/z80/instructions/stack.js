@@ -1,15 +1,17 @@
 import InstructionFactory from './base';
 
+import * as args from './ArgumentPatterns';
+
 class Push extends InstructionFactory {
     constructor(opcode, register) {
-        super(opcode, ['PUSH', register]);
+        super(opcode, 'PUSH', [register]);
         this.register = register;
     }
 }
 
 class Pop extends InstructionFactory {
     constructor(opcode, register) {
-        super(opcode, ['POP', register]);
+        super(opcode, 'POP', [register]);
         this.register = register;
     }
 }

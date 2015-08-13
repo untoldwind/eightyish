@@ -1,7 +1,8 @@
 
 export default class InstructionFactory {
-    constructor(opcode, assemblerPattern) {
+    constructor(opcode, name, argumentPattern) {
         this.opcode = opcode;
-        this.assemblerPattern = assemblerPattern;
+        this.name = name;
+        this.argumentPattern = argumentPattern;
     }
 }

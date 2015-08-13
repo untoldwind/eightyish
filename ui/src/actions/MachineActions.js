@@ -4,6 +4,12 @@ import * as AppConstants from '../dispatcher/AppConstants';
 
 import Transition from '../z80/Transition';
 
+export function toggleVideo(videoEnabled) {
+    appDispatcher.dispatch({
+        type: AppConstants.MACHINE_TOGGLE_VIDEO,
+        videoEnabled: videoEnabled
+    });
+}
 export function transition(newRegisters, memoryOffset, newMemoryData) {
     appDispatcher.dispatch({
         type: AppConstants.MACHINE_TRANSITION,

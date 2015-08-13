@@ -1,9 +1,11 @@
 
 import InstructionFactory from './base';
 
+import * as args from './ArgumentPatterns';
+
 class LoadRegisterToRegister extends InstructionFactory {
     constructor(opcode, to, from) {
-        super(opcode, ['LOAD', to, from]);
+        super(opcode, 'LOAD', [to, from]);
         this.to = to;
         this.from = from;
     }
@@ -11,14 +13,14 @@ class LoadRegisterToRegister extends InstructionFactory {
 
 class LoadMemoryToRegister extends InstructionFactory {
     constructor(opcode, to) {
-        super(opcode, ['LOAD', to]);
+        super(opcode, 'LOAD', [to, args.AddressOrLabelPattern]);
         this.to = to;
     }
 }
 
 class LoadRegisterToMemory extends InstructionFactory {
     constructor(opcode, from) {
-        super(opcode, ['LOAD', from]);
+        super(opcode, 'LOAD', [args.AddressOrLabelPattern, from]);
         this.from = from;
     }
 }

@@ -1,21 +1,35 @@
 
+import * as args from './ArgumentPatterns';
+
 import InstructionFactory from './base';
 
 class Call extends InstructionFactory {
     constructor() {
-        super(0xcd, ['CALL']);
+        super(0xcd, 'CALL', [args.AddressOrLabelPattern]);
+    }
+
+    create(labelOrAddress) {
+        return {
+            assembler: [this.name, labelOrAddress]
+        };
     }
 }
 
 class Return extends InstructionFactory {
     constructor() {
-        super(0xc9, ['RET']);
+        super(0xc9, 'RET', []);
+    }
+
+    create() {
+        return {
+            assembler: [this.name]
+        };
     }
 }
 
 class CallCondition extends InstructionFactory {
     constructor(opcode, flag, condition) {
-        super(opcode, ['CALL']);
+        super(opcode, 'CALL', [(condition ? '' : 'N') + flag, args.AddressOrLabelPattern]);
         this.flag = flag;
         this.condition = condition;
     }
@@ -23,7 +37,7 @@ class CallCondition extends InstructionFactory {
 
 class ReturnCondition extends InstructionFactory {
     constructor(opcode, flag, condition) {
-        super(opcode, ['RET']);
+        super(opcode, 'RET', [(condition ? '' : 'N') + flag]);
         this.flag = flag;
         this.condition = condition;
     }
