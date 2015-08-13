@@ -1,19 +1,36 @@
 import React from 'react';
 
+import EditableCell from './EditableCell';
+
+import * as MachineActions from '../actions/MachineActions';
+
 import * as formats from './formats';
 
 export default class MemoryRow extends React.Component {
     render() {
         return (
             <tr>
-                <td>{formats.word2hex(this.props.offset)}</td>
+                <td>{formats.word2hex(this.props.segmentOffset + this.props.offset)}</td>
                 {Array.from(new Array(this.props.columns).keys()).map(i =>
-                        <td className={this.mark(this.props.offset + i)} key={i}>
-                            {formats.byte2hex(this.props.memory[i + this.props.offset])}
-                        </td>
+                        <EditableCell className={this.mark(this.props.segmentOffset + this.props.offset + i)}
+                                      activeClassName="form-control input-sm"
+                                      key={i}
+                                      valueLink={this.memoryValueLink(i)}/>
                 )}
             </tr>
         );
+    }
+
+    memoryValueLink(i) {
+        return {
+            value: formats.byte2hex(this.props.memory[i + this.props.offset]),
+            requestChange: str => {
+                var newValue = parseInt(str, 16);
+                if(typeof newValue == 'number' && newValue >= 0 && newValue <= 255) {
+                    MachineActions.transition({}, this.props.segmentOffset + this.props.offset + i, [newValue]);
+                }
+            }
+        }
     }
 
     mark(address) {
@@ -33,6 +50,7 @@ export default class MemoryRow extends React.Component {
 }
 
 MemoryRow.propTypes = {
+    segmentOffset: React.PropTypes.number.isRequired,
     offset: React.PropTypes.number.isRequired,
     columns: React.PropTypes.number.isRequired,
     memory: React.PropTypes.array.isRequired,

@@ -44,4 +44,9 @@ export default class Registers {
     copy() {
         return Object.assign({ __proto__: this.__proto__ }, this);
     }
+
+    assign(values) {
+        Object.assign(this, values);
+    }
+
 }

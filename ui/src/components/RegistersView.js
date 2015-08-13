@@ -54,18 +54,26 @@ export default class RegistersView extends React.Component {
         return [
             <tr key='high'>
                 <td>{highRegister}</td>
-                <EditableCell valueLink={formats.byteValueLink(10, highValueLink)}/>
-                <EditableCell valueLink={formats.byteValueLink(16, highValueLink)}/>
-                <EditableCell valueLink={formats.byteValueLink(2, highValueLink)}/>
+                <EditableCell activeClassName="form-control input-sm"
+                              valueLink={formats.byteValueLink(10, highValueLink)}/>
+                <EditableCell activeClassName="form-control input-sm"
+                              valueLink={formats.byteValueLink(16, highValueLink)}/>
+                <EditableCell activeClassName="form-control input-sm"
+                              valueLink={formats.byteValueLink(2, highValueLink)}/>
                 <td rowSpan='2' style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
-                <EditableCell rowSpan={2} style={{verticalAlign: 'middle'}} valueLink={formats.wordValueLink(10, valueLink)}/>
-                <EditableCell rowSpan={2} style={{verticalAlign: 'middle'}} valueLink={formats.wordValueLink(16, valueLink)}/>
+                <EditableCell activeClassName="form-control input-sm" rowSpan={2} style={{verticalAlign: 'middle'}}
+                              valueLink={formats.wordValueLink(10, valueLink)}/>
+                <EditableCell activeClassName="form-control input-sm" rowSpan={2} style={{verticalAlign: 'middle'}}
+                              valueLink={formats.wordValueLink(16, valueLink)}/>
             </tr>,
             <tr key='low'>
                 <td>{lowRegister}</td>
-                <EditableCell valueLink={formats.byteValueLink(10, lowValueLink)}/>
-                <EditableCell valueLink={formats.byteValueLink(16, lowValueLink)}/>
-                <EditableCell valueLink={formats.byteValueLink(2, lowValueLink)}/>
+                <EditableCell activeClassName="form-control input-sm"
+                              valueLink={formats.byteValueLink(10, lowValueLink)}/>
+                <EditableCell activeClassName="form-control input-sm"
+                              valueLink={formats.byteValueLink(16, lowValueLink)}/>
+                <EditableCell activeClassName="form-control input-sm"
+                              valueLink={formats.byteValueLink(2, lowValueLink)}/>
             </tr>
         ]
     }
@@ -79,8 +87,10 @@ export default class RegistersView extends React.Component {
             <tr>
                 <td colSpan='4'></td>
                 <td className={className}>{register}</td>
-                <EditableCell className={className} valueLink={formats.wordValueLink(10, valueLink)}/>
-                <EditableCell className={className} valueLink={formats.wordValueLink(16, valueLink)}/>
+                <EditableCell activeClassName="form-control input-sm" className={className}
+                              valueLink={formats.wordValueLink(10, valueLink)}/>
+                <EditableCell activeClassName="form-control input-sm" className={className}
+                              valueLink={formats.wordValueLink(16, valueLink)}/>
             </tr>
         );
     }

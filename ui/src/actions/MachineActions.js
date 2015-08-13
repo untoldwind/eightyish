@@ -2,10 +2,12 @@ import appDispatcher from '../dispatcher/AppDispatcher';
 
 import * as AppConstants from '../dispatcher/AppConstants';
 
-export function transition(newRegisters) {
+import Transition from '../z80/Transition';
+
+export function transition(newRegisters, memoryOffset, newMemoryData) {
     appDispatcher.dispatch({
         type: AppConstants.MACHINE_TRANSITION,
-        newRegisters: newRegisters
+        transition: new Transition(newRegisters, memoryOffset, newMemoryData)
     });
 }
 
