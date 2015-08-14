@@ -9,6 +9,12 @@ class LoadRegisterToRegister extends InstructionFactory {
         this.to = to;
         this.from = from;
     }
+
+    create(to, from) {
+        return {
+            assembler: `LOAD\t$(to} <- ${from}`
+        }
+    }
 }
 
 class LoadMemoryToRegister extends InstructionFactory {
@@ -16,12 +22,24 @@ class LoadMemoryToRegister extends InstructionFactory {
         super(opcode, 'LOAD', [to, args.AddressOrLabelPattern]);
         this.to = to;
     }
+
+    create(to, from) {
+        return {
+            assembler: `LOAD\t$(to} <- ${from}`
+        }
+    }
 }
 
 class LoadRegisterToMemory extends InstructionFactory {
     constructor(opcode, from) {
         super(opcode, 'LOAD', [args.AddressOrLabelPattern, from]);
         this.from = from;
+    }
+
+    create(to, from) {
+        return {
+            assembler: `LOAD\t$(to} <- ${from}`
+        }
     }
 }
 

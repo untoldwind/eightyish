@@ -14,6 +14,7 @@ class MachineState extends EventEmitter {
 
         this.registers = new Registers(mem_size);
         this.memory = Array.from(new Array(mem_size), () => 0);
+        this.videoOffset = 0x1000;
         this.video = Array.from(new Array(video_size), () => 0);
         this.sourceCode = new SourceCode();
         this.transitions = [];

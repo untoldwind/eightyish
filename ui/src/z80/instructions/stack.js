@@ -5,14 +5,24 @@ import * as args from './ArgumentPatterns';
 class Push extends InstructionFactory {
     constructor(opcode, register) {
         super(opcode, 'PUSH', [register]);
-        this.register = register;
+    }
+
+    create(register) {
+        return {
+            assembler: `PUSH\t${register}`
+        }
     }
 }
 
 class Pop extends InstructionFactory {
     constructor(opcode, register) {
         super(opcode, 'POP', [register]);
-        this.register = register;
+    }
+
+    create(register) {
+        return {
+            assembler: `POP\t${register}`
+        }
     }
 }
 

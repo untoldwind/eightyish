@@ -11,6 +11,7 @@ function getCurrentState() {
     return {
         registers: machineState.registers,
         memory: machineState.memory,
+        videoOffset: machineState.videoOffset,
         video: machineState.video,
         sourceCode: machineState.sourceCode
     }
@@ -57,7 +58,7 @@ export default class MachineView extends React.Component {
                 <div className="row">
                     <div className="col-md-12">
                         <h4>Video memory</h4>
-                        <MemoryGrid segmentOffset={0x1000} columns={32} memory={this.state.video} registers={this.state.registers}/>
+                        <MemoryGrid segmentOffset={this.state.videoOffset} columns={32} memory={this.state.video} registers={this.state.registers}/>
                     </div>
                 </div>
             </div>

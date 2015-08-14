@@ -10,7 +10,7 @@ class Call extends InstructionFactory {
 
     create(labelOrAddress) {
         return {
-            assembler: [this.name, labelOrAddress]
+            assembler: `CALL\t${labelOrAddress}`
         };
     }
 }
@@ -22,7 +22,7 @@ class Return extends InstructionFactory {
 
     create() {
         return {
-            assembler: [this.name]
+            assembler: 'RET'
         };
     }
 }
@@ -33,6 +33,12 @@ class CallCondition extends InstructionFactory {
         this.flag = flag;
         this.condition = condition;
     }
+
+    create(condition, labelOrAddress) {
+        return {
+            assembler: `CALL\t${condition}, ${labelOrAddress}`
+        };
+    }
 }
 
 class ReturnCondition extends InstructionFactory {
@@ -40,6 +46,12 @@ class ReturnCondition extends InstructionFactory {
         super(opcode, 'RET', [(condition ? '' : 'N') + flag]);
         this.flag = flag;
         this.condition = condition;
+    }
+
+    create(condition) {
+        return {
+            assembler: `RET\t${condition}`
+        };
     }
 }
 
