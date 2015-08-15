@@ -11,6 +11,7 @@ function getCurrentState() {
     return {
         registers: machineState.registers,
         memory: machineState.memory,
+        hasVideo: machineState.hasVideo,
         videoOffset: machineState.videoOffset,
         video: machineState.video,
         sourceCode: machineState.sourceCode
@@ -24,21 +25,22 @@ export default class MachineView extends React.Component {
     }
 
     componentDidMount() {
-        machineState.addChangeListener(this.onChange.bind(this));
+        machineState.addChangeListener(this.onChange.bind(this))
     }
 
     componentWillUnmount() {
-        machineState.removeChangeListener(this.onChange.bind(this));
+        machineState.removeChangeListener(this.onChange.bind(this))
     }
 
     onChange() {
-        this.setState(getCurrentState());
+        this.setState(getCurrentState())
     }
 
     render() {
         return (
             <div className="container">
-                <MachineControl/>
+                <MachineControl hasVideo={this.state.hasVideo}/>
+
                 <div className="row">
                     <div className="col-md-4">
                         <h4>Registers</h4>
@@ -50,19 +52,35 @@ export default class MachineView extends React.Component {
                                 pc={this.state.registers.PC}/>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <h4>Main memory</h4>
-                        <MemoryGrid segmentOffset={0} columns={32} memory={this.state.memory} registers={this.state.registers}/>
-                    </div>
+                {this.renderMemory()}
+                {this.renderVideoMemory()}
+            </div>
+        )
+    }
+
+    renderMemory() {
+        return (
+            <div className="row">
+                <div className="col-md-12">
+                    <h4>Main memory</h4>
+                    <MemoryGrid segmentOffset={0} columns={32} memory={this.state.memory}
+                                registers={this.state.registers}/>
                 </div>
+            </div>
+        )
+    }
+
+    renderVideoMemory() {
+        if (this.state.hasVideo) {
+            return (
                 <div className="row">
                     <div className="col-md-12">
                         <h4>Video memory</h4>
-                        <MemoryGrid segmentOffset={this.state.videoOffset} columns={32} memory={this.state.video} registers={this.state.registers}/>
+                        <MemoryGrid segmentOffset={this.state.videoOffset} columns={32} memory={this.state.video}
+                                    registers={this.state.registers}/>
                     </div>
                 </div>
-            </div>
-        );
+            )
+        }
     }
 }

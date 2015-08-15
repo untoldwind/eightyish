@@ -15,7 +15,7 @@ class MachineState extends EventEmitter {
         this.registers = new Registers(mem_size);
         this.memory = Array.from(new Array(mem_size), () => 0);
         this.videoOffset = 0x1000;
-        this.video = Array.from(new Array(video_size), () => 0);
+        this.video = undefined;
         this.sourceCode = new SourceCode();
         this.transitions = [];
         this.lastTransition = undefined;
@@ -26,7 +26,7 @@ class MachineState extends EventEmitter {
         }
 
         this.dispatchToken = appDispatcher.register(action => {
-            switch(action.type) {
+            switch (action.type) {
             case AppConstants.MACHINE_RESET:
                 this.lastTransition = undefined;
                 this.transitions = [];
@@ -42,17 +42,30 @@ class MachineState extends EventEmitter {
                 this.lastTransition.perform(this);
                 this.emitChange();
                 break;
+            case AppConstants.MACHINE_TOGGLE_VIDEO:
+                if (action.videoEnabled && this.video == undefined) {
+                    this.video = Array.from(new Array(video_size), () => 0)
+                    this.emitChange();
+                } else if(!action.videoEnabled){
+                    this.video = undefined
+                    this.emitChange();
+                }
+                break;
             }
         });
 
         this.restore();
     }
 
+    get hasVideo() {
+        return this.video != undefined
+    }
+
     emitChange() {
         this.store();
         this.emit(CHANGE_EVENT);
     }
-    
+
     addChangeListener(callback) {
         this.on(CHANGE_EVENT, callback);
     }
@@ -62,7 +75,7 @@ class MachineState extends EventEmitter {
     }
 
     restore() {
-        if(localStorage != undefined && localStorage.machineState != undefined)  {
+        if (localStorage != undefined && localStorage.machineState != undefined) {
             var storedState = JSON.parse(localStorage.machineState);
 
             Object.assign(this.registers, storedState.registers);
@@ -72,7 +85,7 @@ class MachineState extends EventEmitter {
     }
 
     store() {
-        if(localStorage != undefined) {
+        if (localStorage != undefined) {
             localStorage.machineState = JSON.stringify({
                 registers: this.registers,
                 memory: this.memory,

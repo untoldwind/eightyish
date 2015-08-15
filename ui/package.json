@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "babel": "^5.8.21",
-    "bootstrap": "^3.3.5",
+    "bootstrap-less": "^3.3.8",
     "flux": "^2.0.3",
     "react": "^0.13.3"
   },
@@ -25,6 +25,7 @@
     "css-loader": "^0.15.6",
     "eslint": "^1.1.0",
     "eslint-plugin-react": "^3.2.1",
+    "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
     "html-loader": "^0.3.0",
     "less": "^2.5.1",

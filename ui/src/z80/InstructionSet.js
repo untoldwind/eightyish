@@ -24,6 +24,8 @@ var instructions = [].concat(
 
 var parseTree = {};
 
+var opcodes = [];
+
 instructions.forEach(instruction => {
     var name = instruction.name;
     var variants = parseTree[name];
@@ -33,6 +35,8 @@ instructions.forEach(instruction => {
         parseTree[name] = variants;
     }
     variants.push(instruction);
+
+    opcodes[instruction.opcode] = instruction;
 });
 
 export function createLabel(label) {
