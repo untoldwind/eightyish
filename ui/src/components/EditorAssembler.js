@@ -3,7 +3,7 @@ import React from 'react';
 export default class EditorAssembler extends React.Component {
     render() {
         return (
-            <pre style={{minHeight: '25em'}}
+            <pre style={{minHeight: '30em', border: 'none'}}
                  onInput={this.emitChange.bind(this)}
                  onBlur={this.emitChange.bind(this)}
                  contentEditable="true"

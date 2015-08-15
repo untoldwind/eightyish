@@ -10,7 +10,8 @@ class Call extends InstructionFactory {
 
     create(labelOrAddress) {
         return {
-            assembler: `CALL\t${labelOrAddress}`
+            assembler: `CALL\t${labelOrAddress}`,
+            opcodes: (labels) => [this.opcode, labels.getAddress(labelOrAddress)]
         };
     }
 }
@@ -22,7 +23,8 @@ class Return extends InstructionFactory {
 
     create() {
         return {
-            assembler: 'RET'
+            assembler: 'RET',
+            opcodes: (labels) => [this.opcode]
         };
     }
 }
@@ -36,7 +38,8 @@ class CallCondition extends InstructionFactory {
 
     create(condition, labelOrAddress) {
         return {
-            assembler: `CALL\t${condition}, ${labelOrAddress}`
+            assembler: `CALL\t${condition}, ${labelOrAddress}`,
+            opcodes: (labels) => [this.opcode, labels.getAddress(labelOrAddress)]
         };
     }
 }
@@ -50,7 +53,8 @@ class ReturnCondition extends InstructionFactory {
 
     create(condition) {
         return {
-            assembler: `RET\t${condition}`
+            assembler: `RET\t${condition}`,
+            opcodes: (labels) => [this.opcode, labels.getAddress(labelOrAddress)]
         };
     }
 }
@@ -74,4 +78,4 @@ export default [
     new ReturnCondition(0xe8, 'P', true),
     new ReturnCondition(0xf0, 'S', false),
     new ReturnCondition(0xf8, 'S', true)
-];
+]

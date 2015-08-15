@@ -9,7 +9,8 @@ class Push extends InstructionFactory {
 
     create(register) {
         return {
-            assembler: `PUSH\t${register}`
+            assembler: `PUSH\t${register}`,
+            opcodes: (labels) => [this.opcode]
         }
     }
 }
@@ -21,7 +22,8 @@ class Pop extends InstructionFactory {
 
     create(register) {
         return {
-            assembler: `POP\t${register}`
+            assembler: `POP\t${register}`,
+            opcodes: (labels) => [this.opcode]
         }
     }
 }

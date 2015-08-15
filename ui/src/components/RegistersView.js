@@ -29,10 +29,10 @@ export default class RegistersView extends React.Component {
                 {this.renderByteRegisters('B', 'C')}
                 {this.renderByteRegisters('D', 'E')}
                 {this.renderWordRegister('HL', 'bg-success')}
-                {this.renderWordRegister('IX', 'bg-info')}
-                {this.renderWordRegister('IY', 'bg-warning')}
-                {this.renderWordRegister('SP', 'bg-danger')}
-                {this.renderWordRegister('PC', 'bg-primary')}
+                {this.renderWordRegister('IX', 'bg-info', 'flagZ', 'Zero')}
+                {this.renderWordRegister('IY', 'bg-warning', 'flagS', 'Sign')}
+                {this.renderWordRegister('SP', 'bg-danger', 'flagP', 'Parity')}
+                {this.renderWordRegister('PC', 'bg-primary', 'flagC', 'Carry')}
                 </tbody>
             </table>
         );
@@ -78,14 +78,27 @@ export default class RegistersView extends React.Component {
         ]
     }
 
-    renderWordRegister(register, className) {
+    renderWordRegister(register, className, flagName, flagDescription) {
         var valueLink = {
             value: this.props.registers[register],
             requestChange: value => MachineActions.transition({[register]: value})
         };
+        var flag;
+        if (flagName) {
+            flag = (
+                <td colSpan='4'>
+                <span className={this.props.registers[flagName] ? 'label label-success' : 'label label-default'}>
+                    {flagDescription.substring(0, 1)}
+                </span>
+                    {flagDescription.substring(1)}
+                </td>
+            );
+        } else {
+            flag = <td colSpan='4'>Flags</td>;
+        }
         return (
             <tr>
-                <td colSpan='4'></td>
+                {flag}
                 <td className={className}>{register}</td>
                 <EditableCell activeClassName="form-control input-sm" className={className}
                               valueLink={formats.wordValueLink(10, valueLink)}/>

@@ -22,21 +22,21 @@ class MachineState extends EventEmitter {
 
         this.dispatchToken = appDispatcher.register(action => {
             switch(action.type) {
-                case AppConstants.MACHINE_RESET:
-                    this.lastTransition = undefined;
-                    this.transitions = [];
-                    this.registers = new Registers(mem_size);
-                    this.memory = Array.from(new Array(mem_size), () => 0);
-                    this.video = Array.from(new Array(video_size), () => 0);
-                    this.emitChange();
-                    break;
+            case AppConstants.MACHINE_RESET:
+                this.lastTransition = undefined;
+                this.transitions = [];
+                this.registers = new Registers(mem_size);
+                this.memory = Array.from(new Array(mem_size), () => 0);
+                this.video = Array.from(new Array(video_size), () => 0);
+                this.emitChange();
+                break;
 
-                case AppConstants.MACHINE_TRANSITION:
-                    this.lastTransition = action.transition;
-                    this.transitions.push(this.lastTransition);
-                    this.lastTransition.perform(this);
-                    this.emitChange();
-                    break;
+            case AppConstants.MACHINE_TRANSITION:
+                this.lastTransition = action.transition;
+                this.transitions.push(this.lastTransition);
+                this.lastTransition.perform(this);
+                this.emitChange();
+                break;
             }
         });
 

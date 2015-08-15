@@ -1,4 +1,3 @@
-
 export default class Registers {
     constructor(mem_size) {
         this.A = 0;
@@ -12,10 +11,16 @@ export default class Registers {
         this.SP = mem_size - 1;
         this.IX = 0;
         this.IY = 0;
+        this.flagS = false;
+        this.flagZ = false;
+        this.flagH = false;
+        this.flagP = false;
+        this.flagN = false;
+        this.flagC = false;
     }
 
     get AF() {
-        return (this.A  << 8) | this.F;
+        return (this.A << 8) | this.F;
     }
 
     set AF(af) {
@@ -24,7 +29,7 @@ export default class Registers {
     }
 
     get BC() {
-        return (this.B  << 8) | this.C;
+        return (this.B << 8) | this.C;
     }
 
     set BC(bc) {
@@ -33,7 +38,7 @@ export default class Registers {
     }
 
     get DE() {
-        return (this.D  << 8) | this.E;
+        return (this.D << 8) | this.E;
     }
 
     set DE(de) {
@@ -41,8 +46,28 @@ export default class Registers {
         this.E = de & 0xff;
     }
 
+    get F() {
+        var result = 0;
+        if (this.flagC) result |= 0x1;
+        if (this.flagN) result |= 0x2;
+        if (this.flagP) result |= 0x4;
+        if (this.flagH) result |= 0x10;
+        if (this.flagZ) result |= 0x40;
+        if (this.flagS) result |= 0x80;
+        return result;
+    }
+
+    set F(f) {
+        this.flagC = (f & 0x1) != 0;
+        this.flagN = (f & 0x2) != 0;
+        this.flagP = (f & 0x4) != 0;
+        this.flagH = (f & 0x10) != 0;
+        this.flagZ = (f & 0x40) != 0;
+        this.flagS = (f & 0x80) != 0;
+    }
+
     copy() {
-        return Object.assign({ __proto__: this.__proto__ }, this);
+        return Object.assign({__proto__: this.__proto__}, this);
     }
 
     assign(values) {

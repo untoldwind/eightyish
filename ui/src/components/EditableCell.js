@@ -56,20 +56,24 @@ export default class EditableCell extends React.Component {
 
     render() {
         if (!this.state.editing) {
-            return <td className={this.props.className} rowSpan={this.props.rowSpan} style={this.props.style}
-                       onClick={this.startEditing.bind(this)}>
-                {this.props.valueLink.value}
-            </td>
+            return (
+                <td className={this.props.className} rowSpan={this.props.rowSpan} style={this.props.style}
+                    onClick={this.startEditing.bind(this)}>
+                    {this.props.valueLink.value}
+                </td>
+            )
         } else {
-            return <td className={this.props.className} rowSpan={this.props.rowSpan} style={this.props.style}
-                       onClick={this.startEditing.bind(this)}>
-                <input className={this.props.activeClassName} onKeyDown={this.keyDown.bind(this)}
-                       onBlur={this.finishEditing.bind(this)}
-                       defaultValue={this.state.text}
-                       onChange={this.textChanged.bind(this)} onReturn={this.finishEditing.bind(this)}
-                       size={this.props.valueLink.value.length}
-                       ref="input"/>
-            </td>
+            return (
+                <td className={this.props.className} rowSpan={this.props.rowSpan} style={this.props.style}
+                    onClick={this.startEditing.bind(this)}>
+                    <input className={this.props.activeClassName} onKeyDown={this.keyDown.bind(this)}
+                           defaultValue={this.state.text}
+                           onBlur={this.finishEditing.bind(this)}
+                           onChange={this.textChanged.bind(this)} onReturn={this.finishEditing.bind(this)}
+                           size={this.props.valueLink.value.length}
+                           ref="input"/>
+                </td>
+            )
         }
     }
 }

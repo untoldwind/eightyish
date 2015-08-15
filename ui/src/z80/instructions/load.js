@@ -12,7 +12,8 @@ class LoadRegisterToRegister extends InstructionFactory {
 
     create(to, from) {
         return {
-            assembler: `LOAD\t$(to} <- ${from}`
+            assembler: `LOAD\t$(to} <- ${from}`,
+            opcodes: (labels) => [this.opcode]
         }
     }
 }
@@ -25,7 +26,8 @@ class LoadMemoryToRegister extends InstructionFactory {
 
     create(to, from) {
         return {
-            assembler: `LOAD\t$(to} <- ${from}`
+            assembler: `LOAD\t$(to} <- ${from}`,
+            opcodes: (labels) => [this.opcode]
         }
     }
 }
@@ -38,7 +40,8 @@ class LoadRegisterToMemory extends InstructionFactory {
 
     create(to, from) {
         return {
-            assembler: `LOAD\t$(to} <- ${from}`
+            assembler: `LOAD\t$(to} <- ${from}`,
+            opcodes: (labels) => [this.opcode]
         }
     }
 }

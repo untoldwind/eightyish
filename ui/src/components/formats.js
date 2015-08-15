@@ -3,35 +3,35 @@ export function repeat(ch, count) {
 }
 
 function radixPrefix(radix) {
-    switch(radix) {
-        case 2:
-            return '0b';
-        case 16:
-            return '0x';
-        default:
-            return '';
+    switch (radix) {
+    case 2:
+        return '0b';
+    case 16:
+        return '0x';
+    default:
+        return '';
     }
 }
 
 function byteRadixLength(radix) {
     switch (radix) {
-        case 2:
-            return 8;
-        case 16:
-            return 2;
-        default:
-            return 3;
+    case 2:
+        return 8;
+    case 16:
+        return 2;
+    default:
+        return 3;
     }
 }
 
 function wordRadixLength(radix) {
     switch (radix) {
-        case 2:
-            return 16;
-        case 16:
-            return 4;
-        default:
-            return 5;
+    case 2:
+        return 16;
+    case 16:
+        return 4;
+    default:
+        return 5;
     }
 }
 
@@ -46,12 +46,12 @@ export function byteValueLink(radix, valueLink) {
         requestChange: str => {
             var newValue;
 
-            if(str.startsWith(prefix)) {
+            if (str.startsWith(prefix)) {
                 newValue = parseInt(str.substring(prefix.length), radix);
             } else {
                 newValue = parseInt(str, radix);
             }
-            if(typeof newValue == 'number' && newValue >= 0 && newValue <= 255) {
+            if (typeof newValue == 'number' && newValue >= 0 && newValue <= 255) {
                 valueLink.requestChange(newValue);
             }
         }
@@ -69,12 +69,12 @@ export function wordValueLink(radix, valueLink) {
         requestChange: str => {
             var newValue;
 
-            if(str.startsWith(prefix)) {
+            if (str.startsWith(prefix)) {
                 newValue = parseInt(str.substring(prefix.length), radix);
             } else {
                 newValue = parseInt(str, radix);
             }
-            if(typeof newValue == 'number' && newValue >= 0 && newValue <= 65355) {
+            if (typeof newValue == 'number' && newValue >= 0 && newValue <= 65355) {
                 valueLink.requestChange(newValue);
             }
         }
