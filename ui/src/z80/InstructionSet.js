@@ -2,6 +2,8 @@
 import add_instructions from './instructions/add';
 import core_instructions from './instructions/core';
 import call_instructions from './instructions/call';
+import dec_instructions from './instructions/dec';
+import inc_instructions from './instructions/inc';
 import jump_instructions from './instructions/jump';
 import load_instructions from './instructions/load';
 import sub_instructions from './instructions/sub';
@@ -13,6 +15,8 @@ var instructions = [].concat(
     add_instructions,
     core_instructions,
     call_instructions,
+    dec_instructions,
+    inc_instructions,
     jump_instructions,
     load_instructions,
     sub_instructions,
