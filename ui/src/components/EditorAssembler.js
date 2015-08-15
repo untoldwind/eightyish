@@ -2,12 +2,12 @@ import React from 'react';
 
 export default class EditorAssembler extends React.Component {
     render() {
-        var data = '1\n<b>2</b>\tJo\tJupp\n3\n4\n';
         return (
-            <pre onInput={this.emitChange.bind(this)}
+            <pre style={{minHeight: '25em'}}
+                 onInput={this.emitChange.bind(this)}
                  onBlur={this.emitChange.bind(this)}
                  contentEditable="true"
-                 dangerouslySetInnerHTML={{__html: data}}>
+                 dangerouslySetInnerHTML={{__html: this.props.sourceCode.assembler}}>
             </pre>
         );
     }
@@ -17,8 +17,9 @@ export default class EditorAssembler extends React.Component {
     }
 
     componentDidUpdate() {
-        if ( this.props.html !== React.findDOMNode(this).innerHTML ) {
-            React.findDOMNode(this).innerHTML = this.props.data;
+        var assembler = this.props.sourceCode.assembler;
+        if ( assembler !== React.findDOMNode(this).innerHTML ) {
+            React.findDOMNode(this).innerHTML = assembler;
         }
     }
 

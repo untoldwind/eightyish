@@ -6,9 +6,9 @@ import EditorAssembler from './EditorAssembler';
 export default class Editor extends React.Component {
     render() {
         return (
-            <div>
+            <div style={{maxHeight: '26em', overflowY: 'scroll'}}>
                 <div className="col-md-4">
-                    <EditorMemory/>
+                    <EditorMemory memory={this.props.memory} pc={this.props.pc}/>
                 </div>
                 <div className="col-md-8">
                     <EditorAssembler sourceCode={this.props.sourceCode}/>
