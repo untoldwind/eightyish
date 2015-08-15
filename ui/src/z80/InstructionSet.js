@@ -31,8 +31,14 @@ instructions.forEach(instruction => {
     variants.push(instruction);
 });
 
+export function createLabel(label) {
+    return {
+        assembler: `${label}:`,
+        opcodes: (labels) => []
+    }
+}
+
 export function createInstruction(elements) {
-    console.log();
     if(!elements instanceof Array || elements.length == 0) {
         return undefined;
     }

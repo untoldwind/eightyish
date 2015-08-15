@@ -20,6 +20,11 @@ class MachineState extends EventEmitter {
         this.transitions = [];
         this.lastTransition = undefined;
 
+        var sourceMemory = this.sourceCode.memory;
+        for (var i = 0; i < sourceMemory.length; i++) {
+            this.memory[i] = sourceMemory[i];
+        }
+        
         this.dispatchToken = appDispatcher.register(action => {
             switch(action.type) {
             case AppConstants.MACHINE_RESET:

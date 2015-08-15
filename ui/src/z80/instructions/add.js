@@ -11,7 +11,7 @@ class AddRegisterToRegister extends InstructionFactory {
 
     create(to, from) {
         return {
-            assembler: `ADD\t$(to} <- ${from}`,
+            assembler: `  ADD\t$(to} <- ${from}`,
             opcodes: (labels) => [this.opcode]
         }
     }
@@ -26,7 +26,7 @@ class AddPointerToRegister extends InstructionFactory {
 
     create(to, from) {
         return {
-            assembler: `ADD\t$(to} <- ${from}`,
+            assembler: `  ADD\t$(to} <- ${from}`,
             opcodes: (labels) => [this.opcode]
         }
     }

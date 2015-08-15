@@ -9,8 +9,8 @@ class Jump extends InstructionFactory {
 
     create(labelOrAddress) {
         return {
-            assembler: `JUMP\t${labelOrAddress}`,
-            opcodes: (labels) => [this.opcode, labels.getAddress(labelOrAddress)]
+            assembler: `  JUMP\t${labelOrAddress}`,
+            opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress))
         };
     }
 }

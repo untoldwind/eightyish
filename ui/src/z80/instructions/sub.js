@@ -11,7 +11,7 @@ class SubRegisterToRegister extends InstructionFactory {
 
     create(to, from) {
         return {
-            assembler: `SUB\t$(to} <- ${from}`,
+            assembler: `  SUB\t$(to} <- ${from}`,
             opcodes: (labels) => [this.opcode]
         }
     }

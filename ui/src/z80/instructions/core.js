@@ -8,7 +8,7 @@ class Halt extends InstructionFactory {
 
     create() {
         return {
-            assembler: 'HALT',
+            assembler: '  HALT',
             opcodes: (labels) => [this.opcode]
         };
     }
@@ -21,7 +21,7 @@ class Nop extends InstructionFactory {
 
     create() {
         return {
-            assembler: 'NOP',
+            assembler: '  NOP',
             opcodes: (labels) => [this.opcode]
         };
     }

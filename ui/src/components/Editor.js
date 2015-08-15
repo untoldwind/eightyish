@@ -8,7 +8,7 @@ export default class Editor extends React.Component {
         return (
             <div style={{maxHeight: '30em', overflowY: 'scroll', border: '1px solid black'}}>
                 <div className="col-md-4">
-                    <EditorMemory memory={this.props.memory} pc={this.props.pc}/>
+                    <EditorMemory sourceCode={this.props.sourceCode}/>
                 </div>
                 <div className="col-md-8">
                     <EditorAssembler sourceCode={this.props.sourceCode}/>
