@@ -51,8 +51,9 @@ export default class MachineView extends React.Component {
                     </div>
                     <div className="col-md-8">
                         <h4>Assember</h4>
-                        <Editor memory={this.state.memory} sourceCode={this.state.sourceCode}
-                                pc={this.state.registers.PC}/>
+                        <Editor memory={this.state.memory}
+                                pc={this.state.registers.PC}
+                                sourceCode={this.state.sourceCode}/>
                     </div>
                 </div>
                 {this.renderVideo()}
@@ -65,10 +66,10 @@ export default class MachineView extends React.Component {
     renderVideo() {
         if (this.state.hasVideo) {
             return (
-                <VideoDisplay memory={this.state.videoMemory}
-                              width={this.state.videoWidth}
-                              height={this.state.videoHeight}
-                              scale={4}/>
+                <VideoDisplay height={this.state.videoHeight}
+                              memory={this.state.videoMemory}
+                              scale={4}
+                              width={this.state.videoWidth}/>
             );
         }
     }
@@ -78,8 +79,10 @@ export default class MachineView extends React.Component {
             <div className="row">
                 <div className="col-md-12">
                     <h4>Main memory</h4>
-                    <MemoryGrid segmentOffset={0} columns={32} memory={this.state.memory}
-                                registers={this.state.registers}/>
+                    <MemoryGrid columns={32}
+                                memory={this.state.memory}
+                                registers={this.state.registers}
+                                segmentOffset={0} />
                 </div>
             </div>
         )
@@ -91,8 +94,10 @@ export default class MachineView extends React.Component {
                 <div className="row">
                     <div className="col-md-12">
                         <h4>Video memory</h4>
-                        <MemoryGrid segmentOffset={this.state.videoOffset} columns={32} memory={this.state.videoMemory}
-                                    registers={this.state.registers}/>
+                        <MemoryGrid columns={32}
+                                    memory={this.state.videoMemory}
+                                    registers={this.state.registers}
+                                    segmentOffset={this.state.videoOffset}                              />
                     </div>
                 </div>
             )

@@ -11,7 +11,7 @@ export default class VideoDisplay extends React.Component {
 
     updateCanvas() {
         var canvas = React.findDOMNode(this.refs.canvas);
-        var ctx = canvas.getContext("2d");
+        var ctx = canvas.getContext('2d');
 
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, this.props.scale * this.props.width, this.props.scale * this.props.height);
@@ -31,9 +31,9 @@ export default class VideoDisplay extends React.Component {
 
     render() {
         return (
-            <canvas ref="canvas"
-                    width={this.props.scale * this.props.width}
-                    height={this.props.scale * this.props.height}/>
+            <canvas height={this.props.scale * this.props.height}
+                    ref="canvas"
+                    width={this.props.scale * this.props.width}/>
         )
     }
 }

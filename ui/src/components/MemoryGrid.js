@@ -21,9 +21,9 @@ export default class MemoryGrid extends React.Component {
                         <MemoryRow columns={this.props.columns}
                                    key={i}
                                    memory={this.props.memory}
-                                   segmentOffset={this.props.segmentOffset}
                                    offset={i * this.props.columns}
-                                   registers={this.props.registers}/>
+                                   registers={this.props.registers}
+                                   segmentOffset={this.props.segmentOffset}/>
                 )}
                 </tbody>
             </table>

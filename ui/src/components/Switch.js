@@ -33,7 +33,7 @@ export default class Switch extends React.Component {
             className += 'bootstrap-switch-off';
         }
         return (
-            <div className={className} ref="wrapper" onClick={this.toggle.bind(this)}>
+            <div className={className} onClick={this.toggle.bind(this)} ref="wrapper">
                 <div className="bootstrap-switch-container" ref="container">
                     <span className="bootstrap-switch-handle-on bootstrap-switch-primary" ref ="on">{this.props.onText}</span>
                     <span className="bootstrap-switch-label" ref="label">{this.props.label}</span>

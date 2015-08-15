@@ -22,6 +22,14 @@ export default class SourceCode {
             InstructionSet.createInstruction(['HALT'])
         ];
         this.labels = new Labels();
+
+        this.compile('  CALL	1234\n  JUMP	1234\n  RET\n.bla:\n  HALT\n');
+    }
+
+    compile(source) {
+        for(var line of source.split('\n')) {
+            console.log(line.trim().split(/[\s,<\-]+/));
+        }
     }
 
     get memory() {

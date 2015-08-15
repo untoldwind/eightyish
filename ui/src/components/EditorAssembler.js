@@ -3,12 +3,11 @@ import React from 'react';
 export default class EditorAssembler extends React.Component {
     render() {
         return (
-            <pre style={{minHeight: '30em', border: 'none'}}
-                 onInput={this.emitChange.bind(this)}
+            <pre contentEditable="true"
+                 dangerouslySetInnerHTML={{__html: this.props.sourceCode.assembler}}
                  onBlur={this.emitChange.bind(this)}
-                 contentEditable="true"
-                 dangerouslySetInnerHTML={{__html: this.props.sourceCode.assembler}}>
-            </pre>
+                 onInput={this.emitChange.bind(this)}
+                 style={{minHeight: '30em', border: 'none'}}/>
         );
     }
 

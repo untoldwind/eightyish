@@ -57,21 +57,27 @@ export default class EditableCell extends React.Component {
     render() {
         if (!this.state.editing) {
             return (
-                <td className={this.props.className} rowSpan={this.props.rowSpan} style={this.props.style}
-                    onClick={this.startEditing.bind(this)}>
+                <td className={this.props.className}
+                    onClick={this.startEditing.bind(this)}
+                    rowSpan={this.props.rowSpan}
+                    style={this.props.style}>
                     {this.props.valueLink.value}
                 </td>
             )
         } else {
             return (
-                <td className={this.props.className} rowSpan={this.props.rowSpan} style={this.props.style}
-                    onClick={this.startEditing.bind(this)}>
-                    <input className={this.props.activeClassName} onKeyDown={this.keyDown.bind(this)}
+                <td className={this.props.className}
+                    onClick={this.startEditing.bind(this)}
+                    rowSpan={this.props.rowSpan}
+                    style={this.props.style}>
+                    <input className={this.props.activeClassName}
                            defaultValue={this.state.text}
                            onBlur={this.finishEditing.bind(this)}
-                           onChange={this.textChanged.bind(this)} onReturn={this.finishEditing.bind(this)}
-                           size={this.props.valueLink.value.length}
-                           ref="input"/>
+                           onChange={this.textChanged.bind(this)}
+                           onKeyDown={this.keyDown.bind(this)}
+                           onReturn={this.finishEditing.bind(this)}
+                           ref="input"
+                           size={this.props.valueLink.value.length}/>
                 </td>
             )
         }
