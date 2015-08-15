@@ -9,13 +9,15 @@ import * as AppConstants from '../dispatcher/AppConstants';
 const CHANGE_EVENT = 'change';
 
 class MachineState extends EventEmitter {
-    constructor(mem_size, video_size) {
+    constructor(memSize, videoWidth, videoHeight) {
         super();
 
-        this.registers = new Registers(mem_size);
-        this.memory = Array.from(new Array(mem_size), () => 0);
+        this.registers = new Registers(memSize);
+        this.memory = Array.from(new Array(memSize), () => 0);
         this.videoOffset = 0x1000;
-        this.video = undefined;
+        this.videoWidth = videoWidth;
+        this.videoHeight = videoHeight;
+        this.videoMemory = undefined;
         this.sourceCode = new SourceCode();
         this.transitions = [];
         this.lastTransition = undefined;
@@ -30,9 +32,11 @@ class MachineState extends EventEmitter {
             case AppConstants.MACHINE_RESET:
                 this.lastTransition = undefined;
                 this.transitions = [];
-                this.registers = new Registers(mem_size);
-                this.memory = Array.from(new Array(mem_size), () => 0);
-                this.video = Array.from(new Array(video_size), () => 0);
+                this.registers = new Registers(memSize);
+                this.memory = Array.from(new Array(memSize), () => 0);
+                if (this.videoMemory != undefined) {
+                    this.videoMemory = Array.from(new Array(videoWidth * videoHeight / 8), () => 0);
+                }
                 this.emitChange();
                 break;
 
@@ -43,11 +47,11 @@ class MachineState extends EventEmitter {
                 this.emitChange();
                 break;
             case AppConstants.MACHINE_TOGGLE_VIDEO:
-                if (action.videoEnabled && this.video == undefined) {
-                    this.video = Array.from(new Array(video_size), () => 0)
+                if (action.videoEnabled && this.videoMemory == undefined) {
+                    this.videoMemory = Array.from(new Array(videoWidth * videoHeight / 8), () => 0)
                     this.emitChange();
                 } else if(!action.videoEnabled){
-                    this.video = undefined
+                    this.videoMemory = undefined
                     this.emitChange();
                 }
                 break;
@@ -58,7 +62,7 @@ class MachineState extends EventEmitter {
     }
 
     get hasVideo() {
-        return this.video != undefined
+        return this.videoMemory != undefined
     }
 
     emitChange() {
@@ -80,7 +84,7 @@ class MachineState extends EventEmitter {
 
             Object.assign(this.registers, storedState.registers);
             this.memory = storedState.memory;
-            this.video = storedState.video;
+            this.videoMemory = storedState.videoMemory;
         }
     }
 
@@ -89,10 +93,10 @@ class MachineState extends EventEmitter {
             localStorage.machineState = JSON.stringify({
                 registers: this.registers,
                 memory: this.memory,
-                video: this.video
+                videoMemory: this.videoMemory
             });
         }
     }
 }
 
-export default new MachineState(1024, 1024)
+export default new MachineState(1024, 128, 64)

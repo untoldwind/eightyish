@@ -16,11 +16,11 @@ export default class Transition {
                 for(var i = 0; i < this.newMemoryData.length; i++) {
                     state.memory[this.memoryOffset + i] = this.newMemoryData[i]
                 }
-            } else if(this.memoryOffset - state.videoOffset < state.video.length) {
-                this.oldMemoryData = state.video.slice(this.memoryOffset - state.videoOffset,
+            } else if(this.memoryOffset - state.videoOffset < state.videoMemory.length) {
+                this.oldMemoryData = state.videoMemory.slice(this.memoryOffset - state.videoOffset,
                     this.memoryOffset - state.videoOffset + this.newMemoryData.length)
                 for(var i = 0; i < this.newMemoryData.length; i++) {
-                    state.video[this.memoryOffset - state.videoOffset + i] = this.newMemoryData[i]
+                    state.videoMemory[this.memoryOffset - state.videoOffset + i] = this.newMemoryData[i]
                 }
             }
         }
@@ -33,9 +33,9 @@ export default class Transition {
                 for(var i = 0; i < this.oldMemoryData.length; i++) {
                     state.memory[this.memoryOffset + i] = this.oldMemoryData[i]
                 }
-            } else if(this.memoryOffset - state.videoOffset < state.video.length) {
+            } else if(this.memoryOffset - state.videoOffset < state.videoMemory.length) {
                 for(var i = 0; i < this.oldMemoryData.length; i++) {
-                    state.video[this.memoryOffset - state.videoOffset + i] = this.oldMemoryData[i]
+                    state.videoMemory[this.memoryOffset - state.videoOffset + i] = this.oldMemoryData[i]
                 }
             }
         }

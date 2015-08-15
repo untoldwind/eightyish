@@ -4,6 +4,7 @@ import MachineControl from './MachineControl';
 import MemoryGrid from './MemoryGrid';
 import RegistersView from './RegistersView';
 import Editor from './Editor';
+import VideoDisplay from './VideoDisplay';
 
 import machineState from '../z80/MachineState';
 
@@ -13,7 +14,9 @@ function getCurrentState() {
         memory: machineState.memory,
         hasVideo: machineState.hasVideo,
         videoOffset: machineState.videoOffset,
-        video: machineState.video,
+        videoWidth: machineState.videoWidth,
+        videoHeight: machineState.videoHeight,
+        videoMemory: machineState.videoMemory,
         sourceCode: machineState.sourceCode
     }
 }
@@ -52,10 +55,22 @@ export default class MachineView extends React.Component {
                                 pc={this.state.registers.PC}/>
                     </div>
                 </div>
+                {this.renderVideo()}
                 {this.renderMemory()}
                 {this.renderVideoMemory()}
             </div>
         )
+    }
+
+    renderVideo() {
+        if (this.state.hasVideo) {
+            return (
+                <VideoDisplay memory={this.state.videoMemory}
+                              width={this.state.videoWidth}
+                              height={this.state.videoHeight}
+                              scale={4}/>
+            );
+        }
     }
 
     renderMemory() {
@@ -76,7 +91,7 @@ export default class MachineView extends React.Component {
                 <div className="row">
                     <div className="col-md-12">
                         <h4>Video memory</h4>
-                        <MemoryGrid segmentOffset={this.state.videoOffset} columns={32} memory={this.state.video}
+                        <MemoryGrid segmentOffset={this.state.videoOffset} columns={32} memory={this.state.videoMemory}
                                     registers={this.state.registers}/>
                     </div>
                 </div>
