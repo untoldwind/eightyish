@@ -85,6 +85,7 @@ class MachineState extends EventEmitter {
             Object.assign(this.registers, storedState.registers);
             this.memory = storedState.memory;
             this.videoMemory = storedState.videoMemory;
+            this.sourceCode.compile(storedState.assembler);
         }
     }
 
@@ -93,7 +94,8 @@ class MachineState extends EventEmitter {
             localStorage.machineState = JSON.stringify({
                 registers: this.registers,
                 memory: this.memory,
-                videoMemory: this.videoMemory
+                videoMemory: this.videoMemory,
+                assembler: this.sourceCode.assembler
             });
         }
     }

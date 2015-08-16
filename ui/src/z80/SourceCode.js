@@ -38,11 +38,14 @@ export default class SourceCode {
 
     compile(source) {
         this.instructions = [];
+        this.label = new Labels();
 
-        for (var line of source.trim().split(/[\r\n]+/)) {
+        if (source == undefined) {
+            return;
+        }
+        for (var line of source.trim().split(/(<br>|\r|\n)/)) {
             this.instructions.push(InstructionSet.parseLine(line));
         }
-        this.label = new Labels();
         var offset = 0;
         for (var instruction of this.instructions) {
             if (instruction.updateLabel != undefined) {

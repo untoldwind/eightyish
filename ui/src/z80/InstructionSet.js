@@ -47,7 +47,13 @@ export function parseLine(line) {
     if (trimmed.startsWith('.') && trimmed.endsWith(':')) {
         return createLabel(trimmed.substr(0, trimmed.length - 1))
     }
-    return createInstruction(line.trim().split(/[\s,<>\-]+/));
+    var instruction = createInstruction(line.trim().split(/[\s,<>\-]+/));
+
+    if (instruction != undefined) {
+        return instruction;
+    }
+
+    return createError(line);
 }
 
 export function createBlank() {
@@ -58,6 +64,15 @@ export function createBlank() {
 
     }
 }
+
+export function createError(line) {
+    return {
+        assembler: `<span style="color: red">${line}</span>`,
+        opcodes: (labels) => [],
+        size: 0
+    }
+}
+
 export function createLabel(label) {
     return {
         assembler: `${label}:`,
