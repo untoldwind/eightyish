@@ -4,7 +4,7 @@ export default class EditorAssembler extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            assember: this.props.sourceCode.assembler
+            instructions: this.props.sourceCode.instructions
         };
     }
 
@@ -18,36 +18,44 @@ export default class EditorAssembler extends React.Component {
 
     updateContent() {
         var node = React.findDOMNode(this);
-        //var selection = getSelection();
-        //var offset = 0;
-        //if(selection.rangeCount > 0) {
-        //    var range = selection.getRangeAt(0);
-        //    offset = range.startOffset;
-        //}
-        node.innerHTML = this.state.assember;
-        //selection.removeAllRanges();
-        //range = document.createRange();
-        //range.setStart(node.firstChild, offset);
-        //range.setEnd(node.firstChild, offset);
-        //selection.addRange(range);
+        var selection = getSelection();
+        var offset = 0;
+        if(selection.rangeCount > 0) {
+            var range = selection.getRangeAt(0);
+            var selectedNode = range.startContainer;
+            if (selectedNode.parentNode == node) {
+                while( (selectedNode = selectedNode.previousSibling) != null ) {
+                    offset++;
+                }
+            }
+        }
+        node.innerHTML = this.state.instructions.map(instruction =>
+            `<li class="${instruction.type}">${instruction.assembler}</li>`).join('');
+        selection.removeAllRanges();
+        var child = React.findDOMNode(this).children[offset];
+        range = document.createRange();
+        range.setStart(child, 0);
+        range.setEnd(child, 0);
+        selection.addRange(range);
     }
 
     render() {
         return (
-            <pre contentEditable="true"
-                 onBlur={this.emitChange.bind(this)}
-                 onInput={this.emitChange.bind(this)}
-                 style={{minHeight: '30em', border: 'none'}}/>
+            <ul className="assembler"
+                contentEditable="true"
+                onBlur={this.emitChange.bind(this)}
+                onInput={this.emitChange.bind(this)}/>
         );
     }
 
     emitChange() {
-        var data = React.findDOMNode(this).innerHTML;
-        console.log(data);
-        console.log(getSelection(React.findDOMNode(this)).getRangeAt(0));
-        if (data !== this.state.assember) {
-            this.props.sourceCode.compile(data);
-            this.setState({assember: this.props.sourceCode.assembler});
+        var lines = []
+        for (var child of React.findDOMNode(this).children) {
+            lines.push(child.textContent);
+        }
+        if (lines.length !== this.state.instructions.length) {
+            this.props.sourceCode.compile(lines);
+            this.setState({instructions: this.props.sourceCode.instructions});
         }
     }
 }

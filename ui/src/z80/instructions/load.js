@@ -12,7 +12,8 @@ class LoadRegisterToRegister extends Instruction {
 
     createAssembler(to, from) {
         return {
-            assembler: `  LOAD\t$(to} <- ${from}`,
+            type: 'instruction',
+            assembler: `LOAD\t$(to} <- ${from}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         }
@@ -27,7 +28,8 @@ class LoadMemoryToRegister extends Instruction {
 
     createAssembler(to, from) {
         return {
-            assembler: `  LOAD\t$(to} <- ${from}`,
+            type: 'instruction',
+            assembler: `LOAD\t$(to} <- ${from}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         }
@@ -42,7 +44,8 @@ class LoadRegisterToMemory extends Instruction {
 
     createAssembler(to, from) {
         return {
-            assembler: `  LOAD\t$(to} <- ${from}`,
+            type: 'instruction',
+            assembler: `LOAD\t$(to} <- ${from}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         }

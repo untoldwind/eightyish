@@ -9,7 +9,8 @@ class Jump extends Instruction {
 
     createAssembler(labelOrAddress) {
         return {
-            assembler: `  JUMP\t${labelOrAddress}`,
+            type: 'instruction',
+            assembler: `JUMP\t${labelOrAddress}`,
             opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress)),
             size: 3
         };

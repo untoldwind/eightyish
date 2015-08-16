@@ -58,7 +58,8 @@ export function parseLine(line) {
 
 export function createBlank() {
     return {
-        assembler: '',
+        type: 'blank',
+        assembler: '  ',
         opcodes: (labels) => [],
         size: 0
 
@@ -67,6 +68,7 @@ export function createBlank() {
 
 export function createError(line) {
     return {
+        type: 'error',
         assembler: `<span style="color: red">${line}</span>`,
         opcodes: (labels) => [],
         size: 0
@@ -75,6 +77,7 @@ export function createError(line) {
 
 export function createLabel(label) {
     return {
+        type: 'jumplabel',
         assembler: `${label}:`,
         opcodes: (labels) => [],
         updateLabel: (offset, labels) => labels[label] = offset,

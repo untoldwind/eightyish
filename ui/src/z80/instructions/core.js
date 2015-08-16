@@ -8,7 +8,8 @@ class Halt extends Instruction {
 
     createAssembler() {
         return {
-            assembler: '  HALT',
+            type: 'instruction',
+            assembler: 'HALT',
             opcodes: (labels) => [this.opcode],
             size: 1
         };
@@ -22,7 +23,8 @@ class Nop extends Instruction {
 
     createAssembler() {
         return {
-            assembler: '  NOP',
+            type: 'instruction',
+            assembler: 'NOP',
             opcodes: (labels) => [this.opcode],
             size: 1
         };

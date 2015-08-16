@@ -10,7 +10,8 @@ class Call extends Instruction {
 
     createAssembler(labelOrAddress) {
         return {
-            assembler: `  CALL\t${labelOrAddress}`,
+            type: 'instruction',
+            assembler: `CALL\t${labelOrAddress}`,
             opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress)),
             size: 3
         };
@@ -24,7 +25,8 @@ class Return extends Instruction {
 
     createAssembler() {
         return {
-            assembler: '  RET',
+            type: 'instruction',
+            assembler: 'RET',
             opcodes: (labels) => [this.opcode],
             size: 1
         };
@@ -40,7 +42,8 @@ class CallCondition extends Instruction {
 
     createAssembler(condition, labelOrAddress) {
         return {
-            assembler: `  CALL\t${condition}, ${labelOrAddress}`,
+            type: 'instruction',
+            assembler: `CALL\t${condition}, ${labelOrAddress}`,
             opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress)),
             size: 3
         };
@@ -56,7 +59,8 @@ class ReturnCondition extends Instruction {
 
     createAssembler(condition) {
         return {
-            assembler: `  RET\t${condition}`,
+            type: 'instruction',
+            assembler: `RET\t${condition}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         };

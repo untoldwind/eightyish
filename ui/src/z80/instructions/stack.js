@@ -9,7 +9,8 @@ class Push extends Instruction {
 
     createAssembler(register) {
         return {
-            assembler: `  PUSH\t${register}`,
+            type: 'instruction',
+            assembler: `PUSH\t${register}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         }
@@ -23,7 +24,8 @@ class Pop extends Instruction {
 
     createAssembler(register) {
         return {
-            assembler: `  POP\t${register}`,
+            type: 'instruction',
+            assembler: `POP\t${register}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         }

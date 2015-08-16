@@ -10,7 +10,8 @@ class IncrementRegister extends Instruction {
 
     createAssembler(register) {
         return {
-            assembler: `  INC\t$(register}`,
+            type: 'instruction',
+            assembler: `INC\t$(register}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         }

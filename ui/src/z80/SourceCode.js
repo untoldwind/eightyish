@@ -33,17 +33,17 @@ export default class SourceCode {
     constructor() {
         this.instructions = [];
         this.labels = new Labels();
-        this.compile('  CALL	.bla\n  JUMP	1234\n  RET\n.bla:\n  HALT\n');
+        this.compile(['  CALL	.bla', '  JUMP	1234', '  RET', '.bla:', ' HALT']);
     }
 
-    compile(source) {
+    compile(lines) {
         this.instructions = [];
         this.label = new Labels();
 
-        if (source == undefined) {
+        if (lines == undefined) {
             return;
         }
-        for (var line of source.trim().split(/(<br>|\r|\n)/)) {
+        for (var line of lines) {
             this.instructions.push(InstructionSet.parseLine(line));
         }
         var offset = 0;
@@ -80,10 +80,10 @@ export default class SourceCode {
             offset += opcodes.length;
         }
 
-        return lines.join('\n');
+        return lines;
     }
 
     get assembler() {
-        return this.instructions.map(instruction => instruction.assembler).join('\n');
+        return this.instructions.map(instruction => instruction.assembler);
     }
 }

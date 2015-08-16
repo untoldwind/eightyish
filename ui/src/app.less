@@ -23,3 +23,23 @@ html, body {
 canvas {
   border: 1px solid black;
 }
+
+ul.assembler {
+  padding: 0;
+  list-style-type: none;
+  background-color: white;
+  font-family: monospace;
+  min-height: 30em;
+
+  li {
+    white-space: pre;
+  }
+
+  li.instruction:before {
+    content: '  ';
+  }
+
+  li.jumplabel {
+    color: blue;
+  }
+}

@@ -10,7 +10,8 @@ class DecrementRegister extends Instruction {
 
     createAssembler(register) {
         return {
-            assembler: `  DEC\t$(register}`,
+            type: 'instruction',
+            assembler: `DEC\t$(register}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         }

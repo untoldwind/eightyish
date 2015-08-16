@@ -11,7 +11,8 @@ class SubRegisterToRegister extends Instruction {
 
     createAssembler(to, from) {
         return {
-            assembler: `  SUB\t$(to} <- ${from}`,
+            type: 'instruction',
+            assembler: `SUB\t$(to} <- ${from}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         }
