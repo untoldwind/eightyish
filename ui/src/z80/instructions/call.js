@@ -1,60 +1,64 @@
 
 import * as args from './ArgumentPatterns';
 
-import InstructionFactory from './base';
+import Instruction from './base';
 
-class Call extends InstructionFactory {
+class Call extends Instruction {
     constructor() {
         super(0xcd, 'CALL', [args.AddressOrLabelPattern]);
     }
 
-    create(labelOrAddress) {
+    createAssembler(labelOrAddress) {
         return {
             assembler: `  CALL\t${labelOrAddress}`,
-            opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress))
+            opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress)),
+            size: 3
         };
     }
 }
 
-class Return extends InstructionFactory {
+class Return extends Instruction {
     constructor() {
         super(0xc9, 'RET', []);
     }
 
-    create() {
+    createAssembler() {
         return {
             assembler: '  RET',
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         };
     }
 }
 
-class CallCondition extends InstructionFactory {
+class CallCondition extends Instruction {
     constructor(opcode, flag, condition) {
         super(opcode, 'CALL', [(condition ? '' : 'N') + flag, args.AddressOrLabelPattern]);
         this.flag = flag;
         this.condition = condition;
     }
 
-    create(condition, labelOrAddress) {
+    createAssembler(condition, labelOrAddress) {
         return {
             assembler: `  CALL\t${condition}, ${labelOrAddress}`,
-            opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress))
+            opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress)),
+            size: 3
         };
     }
 }
 
-class ReturnCondition extends InstructionFactory {
+class ReturnCondition extends Instruction {
     constructor(opcode, flag, condition) {
         super(opcode, 'RET', [(condition ? '' : 'N') + flag]);
         this.flag = flag;
         this.condition = condition;
     }
 
-    create(condition) {
+    createAssembler(condition) {
         return {
             assembler: `  RET\t${condition}`,
-            opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress))
+            opcodes: (labels) => [this.opcode],
+            size: 1
         };
     }
 }

@@ -1,47 +1,50 @@
 
-import InstructionFactory from './base';
+import Instruction from './base';
 
 import * as args from './ArgumentPatterns';
 
-class LoadRegisterToRegister extends InstructionFactory {
+class LoadRegisterToRegister extends Instruction {
     constructor(opcode, to, from) {
         super(opcode, 'LOAD', [to, from]);
         this.to = to;
         this.from = from;
     }
 
-    create(to, from) {
+    createAssembler(to, from) {
         return {
             assembler: `  LOAD\t$(to} <- ${from}`,
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         }
     }
 }
 
-class LoadMemoryToRegister extends InstructionFactory {
+class LoadMemoryToRegister extends Instruction {
     constructor(opcode, to) {
         super(opcode, 'LOAD', [to, args.AddressOrLabelPattern]);
         this.to = to;
     }
 
-    create(to, from) {
+    createAssembler(to, from) {
         return {
             assembler: `  LOAD\t$(to} <- ${from}`,
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         }
     }
 }
 
-class LoadRegisterToMemory extends InstructionFactory {
+class LoadRegisterToMemory extends Instruction {
     constructor(opcode, from) {
         super(opcode, 'LOAD', [args.AddressOrLabelPattern, from]);
         this.from = from;
     }
 
-    create(to, from) {
+    createAssembler(to, from) {
         return {
             assembler: `  LOAD\t$(to} <- ${from}`,
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         }
     }
 }

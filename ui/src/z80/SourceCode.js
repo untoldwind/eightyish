@@ -6,29 +6,49 @@ import * as formats from '../components/formats';
 
 class Labels {
     getAddress(labelOfAddress) {
-        var address = parseInt(labelOfAddress, 16);
+        switch (typeof labelOfAddress) {
+        case 'string':
+            if (labelOfAddress.startsWith('.')) {
+                var address = this[labelOfAddress];
 
-        return [(address >> 8) & 0xff, address & 0xff];
+                if (address != undefined) {
+                    return [(address >> 8) & 0xff, address & 0xff];
+                }
+            } else {
+                var address = parseInt(labelOfAddress, 16);
+
+                if (address != undefined) {
+                    return [(address >> 8) & 0xff, address & 0xff];
+                }
+            }
+        case 'number':
+            return [(labelOfAddress >> 8) & 0xff, labelOfAddress & 0xff];
+        }
+
+        return 0;
     }
 }
 
 export default class SourceCode {
     constructor() {
-        this.instructions = [
-            InstructionSet.createInstruction(['CALL', '1234']),
-            InstructionSet.createInstruction(['JUMP', '1234']),
-            InstructionSet.createInstruction(['RET']),
-            InstructionSet.createLabel('.bla'),
-            InstructionSet.createInstruction(['HALT'])
-        ];
+        this.instructions = [];
         this.labels = new Labels();
-
-        this.compile('  CALL	1234\n  JUMP	1234\n  RET\n.bla:\n  HALT\n');
+        this.compile('  CALL	.bla\n  JUMP	1234\n  RET\n.bla:\n  HALT\n');
     }
 
     compile(source) {
-        for(var line of source.split('\n')) {
-            console.log(line.trim().split(/[\s,<\-]+/));
+        this.instructions = [];
+
+        for (var line of source.trim().split(/[\r\n]+/)) {
+            this.instructions.push(InstructionSet.parseLine(line));
+        }
+        this.label = new Labels();
+        var offset = 0;
+        for (var instruction of this.instructions) {
+            if (instruction.updateLabel != undefined) {
+                instruction.updateLabel(offset, this.labels);
+            }
+            offset += instruction.size;
         }
     }
 
@@ -36,7 +56,7 @@ export default class SourceCode {
         var offset = 0;
         var memory = [];
 
-        for(var instruction of this.instructions) {
+        for (var instruction of this.instructions) {
             var opcodes = instruction.opcodes(this.labels);
 
             memory.push(... opcodes);
@@ -47,10 +67,10 @@ export default class SourceCode {
     }
 
     get memoryDump() {
-        var lines = [];
         var offset = 0;
+        var lines = [];
 
-        for(var instruction of this.instructions) {
+        for (var instruction of this.instructions) {
             var opcodes = instruction.opcodes(this.labels);
 
             lines.push([`${formats.word2hex(offset)}:`].concat(opcodes.map(opcode => formats.byte2hex(opcode))).join(' '));

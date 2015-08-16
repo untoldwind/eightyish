@@ -1,28 +1,30 @@
 
-import InstructionFactory from './base';
+import Instruction from './base';
 
-class Halt extends InstructionFactory {
+class Halt extends Instruction {
     constructor() {
         super(0x76, 'HALT', []);
     }
 
-    create() {
+    createAssembler() {
         return {
             assembler: '  HALT',
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         };
     }
 }
 
-class Nop extends InstructionFactory {
+class Nop extends Instruction {
     constructor() {
         super(0x00, 'NOP', []);
     }
 
-    create() {
+    createAssembler() {
         return {
             assembler: '  NOP',
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         };
     }
 }

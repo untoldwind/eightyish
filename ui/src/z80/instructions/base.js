@@ -1,5 +1,5 @@
 
-export default class InstructionFactory {
+export default class Instruction {
     constructor(opcode, name, argumentPattern) {
         this.opcode = opcode;
         this.name = name;

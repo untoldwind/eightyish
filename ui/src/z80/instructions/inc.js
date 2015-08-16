@@ -1,17 +1,18 @@
-import InstructionFactory from './base';
+import Instruction from './base';
 
 import * as args from './ArgumentPatterns';
 
-class IncrementRegister extends InstructionFactory {
+class IncrementRegister extends Instruction {
     constructor(opcode, register) {
         super(opcode, 'INC', [register]);
         this.register = register;
     }
 
-    create(register) {
+    createAssembler(register) {
         return {
             assembler: `  INC\t$(register}`,
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         }
     }
 }

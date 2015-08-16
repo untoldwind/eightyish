@@ -1,16 +1,17 @@
-import InstructionFactory from './base';
+import Instruction from './base';
 
 import * as args from './ArgumentPatterns';
 
-class Jump extends InstructionFactory {
+class Jump extends Instruction {
     constructor() {
         super(0xc3, 'JUMP', [args.AddressOrLabelPattern]);
     }
 
-    create(labelOrAddress) {
+    createAssembler(labelOrAddress) {
         return {
             assembler: `  JUMP\t${labelOrAddress}`,
-            opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress))
+            opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress)),
+            size: 3
         };
     }
 }

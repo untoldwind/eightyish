@@ -8,6 +8,8 @@
     "build": "NODE_ENV=production npm run webpack",
     "clean": "rimraf $npm_package_config_buildDir && mkdir $npm_package_config_buildDir",
     "lint": "eslint --ext .js ./src && echo No linting errors.",
+    "prebuild": "npm run clean",
+    "prestart": "npm install",
     "start": "NODE_ENV=development webpack-dev-server",
     "watch": "webpack --watch",
     "webpack": "webpack --colors --progress"

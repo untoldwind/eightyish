@@ -39,10 +39,31 @@ instructions.forEach(instruction => {
     opcodes[instruction.opcode] = instruction;
 });
 
+export function parseLine(line) {
+    var trimmed = line.trim();
+    if (trimmed.length == 0) {
+        return createBlank()
+    }
+    if (trimmed.startsWith('.') && trimmed.endsWith(':')) {
+        return createLabel(trimmed.substr(0, trimmed.length - 1))
+    }
+    return createInstruction(line.trim().split(/[\s,<>\-]+/));
+}
+
+export function createBlank() {
+    return {
+        assembler: '',
+        opcodes: (labels) => [],
+        size: 0
+
+    }
+}
 export function createLabel(label) {
     return {
         assembler: `${label}:`,
-        opcodes: (labels) => []
+        opcodes: (labels) => [],
+        updateLabel: (offset, labels) => labels[label] = offset,
+        size: 0
     }
 }
 
@@ -67,7 +88,7 @@ export function createInstruction(elements) {
                 }
             }
             if( i == argumentPattern.length) {
-                return variant.create(... elements.slice(1));
+                return variant.createAssembler(... elements.slice(1));
             }
         }
     }

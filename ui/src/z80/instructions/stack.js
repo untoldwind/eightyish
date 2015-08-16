@@ -1,29 +1,31 @@
-import InstructionFactory from './base';
+import Instruction from './base';
 
 import * as args from './ArgumentPatterns';
 
-class Push extends InstructionFactory {
+class Push extends Instruction {
     constructor(opcode, register) {
         super(opcode, 'PUSH', [register]);
     }
 
-    create(register) {
+    createAssembler(register) {
         return {
             assembler: `  PUSH\t${register}`,
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         }
     }
 }
 
-class Pop extends InstructionFactory {
+class Pop extends Instruction {
     constructor(opcode, register) {
         super(opcode, 'POP', [register]);
     }
 
-    create(register) {
+    createAssembler(register) {
         return {
             assembler: `  POP\t${register}`,
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         }
     }
 }

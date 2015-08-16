@@ -1,33 +1,35 @@
-import InstructionFactory from './base';
+import Instruction from './base';
 
 import * as args from './ArgumentPatterns';
 
-class AddRegisterToRegister extends InstructionFactory {
+class AddRegisterToRegister extends Instruction {
     constructor(opcode, to, from) {
         super(opcode, 'ADD', [to, from]);
         this.to = to;
         this.from = from;
     }
 
-    create(to, from) {
+    createAssembler(to, from) {
         return {
             assembler: `  ADD\t$(to} <- ${from}`,
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         }
     }
 }
 
-class AddPointerToRegister extends InstructionFactory {
+class AddPointerToRegister extends Instruction {
     constructor(opcode, to, from) {
         super(opcode, 'ADD', [to, from]);
         this.to = to;
         this.from = from;
     }
 
-    create(to, from) {
+    createAssembler(to, from) {
         return {
             assembler: `  ADD\t$(to} <- ${from}`,
-            opcodes: (labels) => [this.opcode]
+            opcodes: (labels) => [this.opcode],
+            size: 1
         }
     }
 }
