@@ -23,6 +23,9 @@ export default class EditorAssembler extends React.Component {
         if(selection.rangeCount > 0) {
             var range = selection.getRangeAt(0);
             var selectedNode = range.startContainer;
+            if (selectedNode.nodeType != Node.ELEMENT_NODE) {
+                selectedNode = selectedNode.parentNode;
+            }
             if (selectedNode.parentNode == node) {
                 while( (selectedNode = selectedNode.previousSibling) != null ) {
                     offset++;
@@ -43,17 +46,25 @@ export default class EditorAssembler extends React.Component {
         return (
             <ul className="assembler"
                 contentEditable="true"
-                onBlur={this.emitChange.bind(this)}
-                onInput={this.emitChange.bind(this)}/>
+                onBlur={this.handleBlur.bind(this)}
+                onInput={this.handleInput.bind(this)}/>
         );
     }
 
-    emitChange() {
+    handleBlur() {
+        this.emitChange(true);
+    }
+
+    handleInput() {
+        this.emitChange(false);
+    }
+
+    emitChange(force) {
         var lines = []
         for (var child of React.findDOMNode(this).children) {
             lines.push(child.textContent);
         }
-        if (lines.length !== this.state.instructions.length) {
+        if (force || lines.length !== this.state.instructions.length) {
             this.props.sourceCode.compile(lines);
             this.setState({instructions: this.props.sourceCode.instructions});
         }

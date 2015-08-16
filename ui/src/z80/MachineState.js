@@ -13,6 +13,7 @@ class MachineState extends EventEmitter {
         super();
 
         this.registers = new Registers(memSize);
+        this.memSize = memSize;
         this.memory = Array.from(new Array(memSize), () => 0);
         this.videoOffset = 0x1000;
         this.videoWidth = videoWidth;
@@ -27,38 +28,44 @@ class MachineState extends EventEmitter {
             this.memory[i] = sourceMemory[i];
         }
 
-        this.dispatchToken = appDispatcher.register(action => {
-            switch (action.type) {
-            case AppConstants.MACHINE_RESET:
-                this.lastTransition = undefined;
-                this.transitions = [];
-                this.registers = new Registers(memSize);
-                this.memory = Array.from(new Array(memSize), () => 0);
-                if (this.videoMemory != undefined) {
-                    this.videoMemory = Array.from(new Array(videoWidth * videoHeight / 8), () => 0);
-                }
-                this.emitChange();
-                break;
-
-            case AppConstants.MACHINE_TRANSITION:
-                this.lastTransition = action.transition;
-                this.transitions.push(this.lastTransition);
-                this.lastTransition.perform(this);
-                this.emitChange();
-                break;
-            case AppConstants.MACHINE_TOGGLE_VIDEO:
-                if (action.videoEnabled && this.videoMemory == undefined) {
-                    this.videoMemory = Array.from(new Array(videoWidth * videoHeight / 8), () => 0)
-                    this.emitChange();
-                } else if(!action.videoEnabled){
-                    this.videoMemory = undefined
-                    this.emitChange();
-                }
-                break;
-            }
-        });
+        this.dispatchToken = appDispatcher.register(this.handleAction.bind(this));
 
         this.restore();
+    }
+
+    handleAction(action) {
+        switch (action.type) {
+        case AppConstants.MACHINE_RESET:
+            this.lastTransition = undefined;
+            this.transitions = [];
+            this.registers = new Registers(this.memSize);
+            this.memory = Array.from(new Array(this.memSize), () => 0);
+            if (this.videoMemory != undefined) {
+                this.videoMemory = Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0);
+            }
+            this.emitChange();
+            break;
+
+        case AppConstants.MACHINE_TRANSITION:
+            this.lastTransition = action.transition;
+            this.transitions.push(this.lastTransition);
+            this.lastTransition.perform(this);
+            this.emitChange();
+            break;
+
+        case AppConstants.MACHINE_TOGGLE_VIDEO:
+            if (action.videoEnabled && this.videoMemory == undefined) {
+                this.videoMemory = Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0)
+                this.emitChange();
+            } else if(!action.videoEnabled){
+                this.videoMemory = undefined;
+                this.emitChange();
+            }
+            break;
+
+        case AppConstants.MACHINE_COMPILE:
+            break;
+        }
     }
 
     get hasVideo() {

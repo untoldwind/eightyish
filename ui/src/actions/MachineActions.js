@@ -22,3 +22,10 @@ export function reset() {
         type: AppConstants.MACHINE_RESET
     });
 }
+
+export function compile(lines) {
+    appDispatcher.dispatch({
+        type: AppConstants.MACHINE_COMPILE,
+        lines: lines
+    });
+}

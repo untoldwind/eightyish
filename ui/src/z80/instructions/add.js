@@ -12,7 +12,7 @@ class AddRegisterToRegister extends Instruction {
     createAssembler(to, from) {
         return {
             type: 'instruction',
-            assembler: `ADD\t$(to} <- ${from}`,
+            assembler: `ADD\t${this.to} <- ${this.from}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         }
@@ -29,7 +29,7 @@ class AddPointerToRegister extends Instruction {
     createAssembler(to, from) {
         return {
             type: 'instruction',
-            assembler: `ADD\t$(to} <- ${from}`,
+            assembler: `ADD\t${this.to} <- ${this.from}`,
             opcodes: (labels) => [this.opcode],
             size: 1
         }
