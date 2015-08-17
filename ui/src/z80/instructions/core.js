@@ -1,5 +1,6 @@
-
 import Instruction from './base';
+
+import Transition from '../Transition';
 
 class Halt extends Instruction {
     constructor() {
@@ -13,6 +14,10 @@ class Halt extends Instruction {
             opcodes: (labels) => [this.opcode],
             size: 1
         };
+    }
+
+    process(registers, memory) {
+        return undefined
     }
 }
 
@@ -28,6 +33,10 @@ class Nop extends Instruction {
             opcodes: (labels) => [this.opcode],
             size: 1
         };
+    }
+
+    process(registers, memory) {
+        return new Transition({PC: registers.PC + 1})
     }
 }
 

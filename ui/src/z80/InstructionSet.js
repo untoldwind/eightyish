@@ -1,4 +1,3 @@
-
 import add_instructions from './instructions/add';
 import core_instructions from './instructions/core';
 import call_instructions from './instructions/call';
@@ -30,14 +29,46 @@ instructions.forEach(instruction => {
     var name = instruction.name;
     var variants = parseTree[name];
 
-    if(variants == undefined) {
+    if (variants == undefined) {
         variants = [];
         parseTree[name] = variants;
     }
     variants.push(instruction);
 
-    opcodes[instruction.opcode] = instruction;
+    if (instruction.opcode >= 256) {
+        var extended = opcodes[(instruction.opcode >> 8) & 0xff];
+
+        if (extended == undefined) {
+            extended = [];
+            opcodes[(instruction.opcode >> 8) & 0xff] = extended;
+        }
+        extended[instruction.opcode & 0xff] = instruction;
+    } else {
+        opcodes[instruction.opcode] = instruction
+    }
 });
+
+export function process(state) {
+    var memory = state.getMemory(state.registers.PC, 4);
+
+    if (memory.length > 0) {
+        var instruction = opcodes[memory[0]];
+
+        if (instruction instanceof Array) {
+            if (memory.length > 1) {
+                instruction = instruction[memory[1]];
+            } else {
+                instruction = undefined
+            }
+        }
+        if (instruction != undefined) {
+            console.log(instruction);
+            return instruction.process(state.registers, memory)
+        }
+    }
+
+    return undefined
+}
 
 export function parseLine(line) {
     var trimmed = line.trim();
@@ -53,7 +84,7 @@ export function parseLine(line) {
         return instruction;
     }
 
-    return createError(line);
+    return createError(line)
 }
 
 export function createBlank() {
@@ -86,7 +117,7 @@ export function createLabel(label) {
 }
 
 export function createInstruction(elements) {
-    if(!elements instanceof Array || elements.length == 0) {
+    if (!elements instanceof Array || elements.length == 0) {
         return undefined;
     }
     var variants = parseTree[elements[0].toUpperCase()];
@@ -95,17 +126,17 @@ export function createInstruction(elements) {
         return undefined;
     }
 
-    for(var variant of variants) {
+    for (var variant of variants) {
         var argumentPattern = variant.argumentPattern;
-        if(argumentPattern.length == elements.length - 1) {
-            for(var i = 0; i < argumentPattern.length; i++) {
-                if(argumentPattern[i] instanceof ArgumentPattern && !argumentPattern[i].matches(elements[i + 1])) {
+        if (argumentPattern.length == elements.length - 1) {
+            for (var i = 0; i < argumentPattern.length; i++) {
+                if (argumentPattern[i] instanceof ArgumentPattern && !argumentPattern[i].matches(elements[i + 1])) {
                     break;
-                } else if(typeof argumentPattern[i] == 'string' && argumentPattern[i] != elements[i + 1].toUpperCase()) {
+                } else if (typeof argumentPattern[i] == 'string' && argumentPattern[i] != elements[i + 1].toUpperCase()) {
                     break;
                 }
             }
-            if( i == argumentPattern.length) {
+            if (i == argumentPattern.length) {
                 return variant.createAssembler(... elements.slice(1));
             }
         }

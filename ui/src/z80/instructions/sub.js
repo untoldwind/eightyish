@@ -17,6 +17,10 @@ class SubRegisterToRegister extends Instruction {
             size: 1
         }
     }
+
+    process(registers, memory) {
+        return new Transition({PC: registers.PC + 1, [this.to]: registers[this.to] - registers[this.from]})
+    }
 }
 
 export default [

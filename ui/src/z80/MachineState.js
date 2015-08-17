@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 
+import * as InstructionSet from './InstructionSet';
 import Registers from './Registers';
 import SourceCode from './SourceCode';
 
@@ -21,7 +22,6 @@ class MachineState extends EventEmitter {
         this.videoMemory = undefined;
         this.sourceCode = new SourceCode();
         this.transitions = [];
-        this.lastTransition = undefined;
 
         this.dispatchToken = appDispatcher.register(this.handleAction.bind(this));
 
@@ -33,20 +33,42 @@ class MachineState extends EventEmitter {
     handleAction(action) {
         switch (action.type) {
         case AppConstants.MACHINE_RESET:
-            this.lastTransition = undefined;
             this.transitions = [];
             this.registers = new Registers(this.memSize);
             this.memory = Array.from(new Array(this.memSize), () => 0);
             if (this.videoMemory != undefined) {
                 this.videoMemory = Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0);
             }
+            this.transferSourceToMemory();
             this.emitChange();
             break;
 
+        case AppConstants.MACHINE_MOVE_TO_BEGIN:
+            this.transitions = [];
+            this.registers = new Registers(this.memSize);
+            this.emitChange();
+            break;
+
+        case AppConstants.MACHINE_STEP_FORWARD:
+            var transition = InstructionSet.process(this);
+            if (transition != undefined) {
+                this.transitions.push(transition);
+                transition.perform(this);
+                this.emitChange();
+            }
+            break;
+
+        case AppConstants.MACHINE_STEP_BACKWARD:
+            var transition = this.transitions.pop();
+            if (transition != undefined) {
+                transition.undo(this);
+                this.emitChange();
+            }
+            break;
+
         case AppConstants.MACHINE_TRANSITION:
-            this.lastTransition = action.transition;
-            this.transitions.push(this.lastTransition);
-            this.lastTransition.perform(this);
+            this.transitions.push(action.transition);
+            action.transition.perform(this);
             this.emitChange();
             break;
 
@@ -66,6 +88,16 @@ class MachineState extends EventEmitter {
             this.emitChange();
             break;
         }
+    }
+
+    getMemory(offset, length) {
+        if(offset < this.memory.length) {
+            return this.memory.slice(offset, offset + length);
+        }
+        if(this.hasVideo && offset >= this.videoOffset && offset - this.videoOffset < this.videoMemory.length) {
+            return this.video.slice(offset - this.videoOffset, offset + length);
+        }
+        return [];
     }
 
     transferSourceToMemory() {

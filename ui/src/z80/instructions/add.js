@@ -1,5 +1,7 @@
 import Instruction from './base';
 
+import Transition from '../Transition';
+
 import * as args from './ArgumentPatterns';
 
 class AddRegisterToRegister extends Instruction {
@@ -16,6 +18,10 @@ class AddRegisterToRegister extends Instruction {
             opcodes: (labels) => [this.opcode],
             size: 1
         }
+    }
+
+    process(registers, memory) {
+        return new Transition({PC: registers.PC + 1, [this.to]: registers[this.to] + registers[this.from]})
     }
 }
 

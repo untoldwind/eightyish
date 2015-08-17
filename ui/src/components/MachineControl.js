@@ -18,17 +18,27 @@ export default class MachineControl extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <button className="btn btn-danger" onClick={this.reset.bind(this)}>Reset</button>
+                    <button className="btn btn-danger" onClick={MachineActions.reset}>Reset</button>
                 </div>
                 <div className="col-md-2">
                     <Switch label='Video' valueLink={hasVideoLink}/>
                 </div>
+                <div className="col-md-2 btn-group">
+                    <button className="btn btn-danger" onClick={MachineActions.moveToSBegin}>
+                        <span className="glyphicon glyphicon-fast-backward"/>
+                    </button>
+                    <button className="btn btn-warning" onClick={MachineActions.stepBackward}>
+                        <span className="glyphicon glyphicon-step-backward"/>
+                    </button>
+                    <button className="btn btn-warning" onClick={MachineActions.stepForward}>
+                        <span className="glyphicon glyphicon-step-forward"/>
+                    </button>
+                    <button className="btn btn-success" onClick={MachineActions.run}>
+                        <span className="glyphicon glyphicon-play"/>
+                    </button>
+                </div>
             </div>
         );
-    }
-
-    reset() {
-        MachineActions.reset();
     }
 }
 
