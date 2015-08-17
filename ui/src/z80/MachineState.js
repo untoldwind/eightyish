@@ -51,6 +51,7 @@ class MachineState extends EventEmitter {
 
         case AppConstants.MACHINE_STEP_FORWARD:
             var transition = InstructionSet.process(this);
+            console.log(transition);
             if (transition != undefined) {
                 this.transitions.push(transition);
                 transition.perform(this);

@@ -78,7 +78,7 @@ export function parseLine(line) {
     if (trimmed.startsWith('.') && trimmed.endsWith(':')) {
         return createLabel(trimmed.substr(0, trimmed.length - 1))
     }
-    var instruction = createInstruction(line.trim().split(/[\s,<>\-]+/));
+    var instruction = createInstruction(line.trim().replace(/<\-|,/, ' ').split(/\s+/));
 
     if (instruction != undefined) {
         return instruction;
