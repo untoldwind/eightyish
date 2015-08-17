@@ -51,8 +51,7 @@ export default class MachineView extends React.Component {
                     </div>
                     <div className="col-md-8">
                         <h4>Assember</h4>
-                        <Editor memory={this.state.memory}
-                                pc={this.state.registers.PC}
+                        <Editor pc={this.state.registers.PC}
                                 sourceCode={this.state.sourceCode}/>
                     </div>
                 </div>

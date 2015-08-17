@@ -23,14 +23,11 @@ class MachineState extends EventEmitter {
         this.transitions = [];
         this.lastTransition = undefined;
 
-        var sourceMemory = this.sourceCode.memory;
-        for (var i = 0; i < sourceMemory.length; i++) {
-            this.memory[i] = sourceMemory[i];
-        }
-
         this.dispatchToken = appDispatcher.register(this.handleAction.bind(this));
 
         this.restore();
+
+        this.transferSourceToMemory();
     }
 
     handleAction(action) {
@@ -64,7 +61,17 @@ class MachineState extends EventEmitter {
             break;
 
         case AppConstants.MACHINE_COMPILE:
+            this.sourceCode.compile(action.lines);
+            this.transferSourceToMemory();
+            this.emitChange();
             break;
+        }
+    }
+
+    transferSourceToMemory() {
+        var sourceMemory = this.sourceCode.memory;
+        for (var i = 0; i < sourceMemory.length; i++) {
+            this.memory[i] = sourceMemory[i];
         }
     }
 

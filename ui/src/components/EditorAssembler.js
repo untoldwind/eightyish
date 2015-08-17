@@ -1,13 +1,8 @@
 import React from 'react';
 
-export default class EditorAssembler extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            instructions: this.props.sourceCode.instructions
-        };
-    }
+import * as MachineActions from '../actions/MachineActions';
 
+export default class EditorAssembler extends React.Component {
     componentDidMount() {
         this.updateContent()
     }
@@ -17,29 +12,45 @@ export default class EditorAssembler extends React.Component {
     }
 
     updateContent() {
-        var node = React.findDOMNode(this);
-        var selection = getSelection();
-        var offset = 0;
-        if(selection.rangeCount > 0) {
-            var range = selection.getRangeAt(0);
-            var selectedNode = range.startContainer;
-            if (selectedNode.nodeType != Node.ELEMENT_NODE) {
-                selectedNode = selectedNode.parentNode;
-            }
-            if (selectedNode.parentNode == node) {
-                while( (selectedNode = selectedNode.previousSibling) != null ) {
-                    offset++;
+        var selectedLine = this.getSelectedLine();
+        React.findDOMNode(this).innerHTML = this.props.sourceCode.instructions.map(instruction =>
+            `<li class="${instruction.type}">${instruction.assembler}</li>`).join('');
+        this.setSelectedLine(selectedLine);
+    }
+
+    getSelectedLine() {
+        var selectedLine = 0;
+        if (window.getSelection != undefined) {
+            var parent = React.findDOMNode(this);
+            var selection = getSelection();
+            if (selection.rangeCount > 0) {
+                var range = selection.getRangeAt(0);
+                var selectedNode = range.startContainer;
+                if (selectedNode.nodeType != Node.ELEMENT_NODE) {
+                    selectedNode = selectedNode.parentNode;
+                }
+                if (selectedNode.parentNode == parent) {
+                    while ((selectedNode = selectedNode.previousSibling) != null) {
+                        selectedLine++;
+                    }
                 }
             }
         }
-        node.innerHTML = this.state.instructions.map(instruction =>
-            `<li class="${instruction.type}">${instruction.assembler}</li>`).join('');
-        selection.removeAllRanges();
-        var child = React.findDOMNode(this).children[offset];
-        range = document.createRange();
-        range.setStart(child, 0);
-        range.setEnd(child, 0);
-        selection.addRange(range);
+        return selectedLine;
+    }
+
+    setSelectedLine(line) {
+        if (window.getSelection != undefined && document.createRange != undefined) {
+            var selection = getSelection();
+            selection.removeAllRanges();
+            var children = React.findDOMNode(this).children;
+            if (line < children.length) {
+                var range = document.createRange();
+                range.setStart(children[line], 1);
+                range.setEnd(children[line], 1);
+                selection.addRange(range);
+            }
+        }
     }
 
     render() {
@@ -64,9 +75,8 @@ export default class EditorAssembler extends React.Component {
         for (var child of React.findDOMNode(this).children) {
             lines.push(child.textContent);
         }
-        if (force || lines.length !== this.state.instructions.length) {
-            this.props.sourceCode.compile(lines);
-            this.setState({instructions: this.props.sourceCode.instructions});
+        if (force || lines.length !== this.props.sourceCode.instructions.length) {
+            MachineActions.compile(lines);
         }
     }
 }

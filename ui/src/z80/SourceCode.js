@@ -31,9 +31,10 @@ class Labels {
 
 export default class SourceCode {
     constructor() {
-        this.instructions = [];
+        this.instructions = [
+            InstructionSet.createInstruction(['HALT'])
+        ];
         this.labels = new Labels();
-        this.compile(['  CALL	.bla', '  JUMP	1234', '  RET', '.bla:', ' HALT']);
     }
 
     compile(lines) {
@@ -76,7 +77,7 @@ export default class SourceCode {
         for (var instruction of this.instructions) {
             var opcodes = instruction.opcodes(this.labels);
 
-            lines.push([`${formats.word2hex(offset)}:`].concat(opcodes.map(opcode => formats.byte2hex(opcode))).join(' '));
+            lines.push({offset: offset, dump: opcodes.map(opcode => formats.byte2hex(opcode)).join(' ')});
             offset += opcodes.length;
         }
 
