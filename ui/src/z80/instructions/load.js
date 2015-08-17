@@ -1,5 +1,5 @@
-
 import Instruction from './base';
+import Transition from '../Transition';
 
 import * as args from './ArgumentPatterns';
 
@@ -22,7 +22,7 @@ class LoadRegisterToRegister extends Instruction {
 
 class LoadMemoryToRegister extends Instruction {
     constructor(opcode, to) {
-        super(opcode, 'LOAD', [to, args.AddressOrLabelPattern]);
+        super(opcode, 'LOAD', [to, args.PointerPattern]);
         this.to = to;
     }
 
@@ -52,6 +52,30 @@ class LoadRegisterToMemory extends Instruction {
     }
 }
 
+class LoadValueToRegister extends Instruction {
+    constructor(opcode, to) {
+        super(opcode, 'LOAD', [to, args.ByteValuePattern], 1);
+        this.to = to;
+    }
+
+    createAssembler(to, num) {
+        var value = this.argumentPattern[1].extractValue(num);
+        return {
+            type: 'instruction',
+            assembler: `LOAD\t${this.to} <- ${value}`,
+            opcodes: (labels) => this.opcodes.concat(value),
+            size: this.size
+        }
+    }
+
+    process(state, pcMem) {
+        return new Transition({
+            PC: state.registers.PC + this.size,
+            [this.to]: pcMem[1]
+        })
+    }
+
+}
 export default [
     new LoadRegisterToRegister(0x7f, 'A', 'A'),
     new LoadRegisterToRegister(0x78, 'A', 'B'),
@@ -60,7 +84,6 @@ export default [
     new LoadRegisterToRegister(0x7b, 'A', 'E'),
     new LoadRegisterToRegister(0x7c, 'A', 'H'),
     new LoadRegisterToRegister(0x7d, 'A', 'L'),
-    new LoadMemoryToRegister(0x3a, 'A'),
     new LoadRegisterToRegister(0x47, 'B', 'A'),
     new LoadRegisterToRegister(0x40, 'B', 'B'),
     new LoadRegisterToRegister(0x41, 'B', 'C'),
@@ -103,5 +126,10 @@ export default [
     new LoadRegisterToRegister(0x6b, 'L', 'E'),
     new LoadRegisterToRegister(0x6c, 'L', 'H'),
     new LoadRegisterToRegister(0x6d, 'L', 'L'),
-    new LoadRegisterToMemory(0x32, 'A')
+    new LoadRegisterToMemory(0x32, 'A'),
+    new LoadValueToRegister(0x3e, 'A'),
+    new LoadValueToRegister(0x06, 'B'),
+    new LoadValueToRegister(0x0e, 'C'),
+    new LoadValueToRegister(0x16, 'D'),
+    new LoadValueToRegister(0x1e, 'E')
 ];

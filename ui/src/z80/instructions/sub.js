@@ -18,8 +18,10 @@ class SubRegisterToRegister extends Instruction {
         }
     }
 
-    process(registers, memory) {
-        return new Transition({PC: registers.PC + 1, [this.to]: registers[this.to] - registers[this.from]})
+    process(state, pcMem) {
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size).
+            withByteRegisterAndFlags(this.to, state.registers[this.to] - state.registers[this.from])
     }
 }
 

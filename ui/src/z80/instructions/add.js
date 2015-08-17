@@ -1,5 +1,4 @@
 import Instruction from './base';
-
 import Transition from '../Transition';
 
 import * as args from './ArgumentPatterns';
@@ -9,6 +8,7 @@ class AddRegisterToRegister extends Instruction {
         super(opcode, 'ADD', [to, from]);
         this.to = to;
         this.from = from;
+        this.byte = to.length == 1;
     }
 
     createAssembler(to, from) {
@@ -20,14 +20,22 @@ class AddRegisterToRegister extends Instruction {
         }
     }
 
-    process(registers, memory) {
-        return new Transition({PC: registers.PC + this.size, [this.to]: registers[this.to] + registers[this.from]})
+    process(state, pcMem) {
+        if (byte) {
+            return new Transition().
+                withWordRegister('PC', state.registers.PC + this.size).
+                withByteRegisterAndFlags(this.to, state.registers[this.to] + state.registers[this.from])
+        } else {
+            return new Transition().
+                withWordRegister('PC', state.registers.PC + this.size).
+                withWordRegister(this.to, state.registers[this.to] + state.registers[this.from])
+        }
     }
 }
 
 class AddPointerToRegister extends Instruction {
     constructor(opcode, to, from) {
-        super(opcode, 'ADD', [to, from]);
+        super(opcode, 'ADD', [to, `(${from})`]);
         this.to = to;
         this.from = from;
     }
@@ -39,6 +47,12 @@ class AddPointerToRegister extends Instruction {
             opcodes: (labels) => this.opcodes,
             size: this.size
         }
+    }
+
+    process(state, pcMem) {
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size).
+            withByteRegisterAndFlags(this.to, state.registers[this.to] + state.getMemoryByte(state.registers[this.from]))
     }
 }
 
@@ -77,8 +91,10 @@ class AddValueToRegister extends Instruction {
         }
     }
 
-    process(registers, memory) {
-        return new Transition({PC: registers.PC + this.size, [this.to]: registers[this.to] + memory[1]})
+    process(state, pcMem) {
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size).
+            withByteRegisterAndFlags(this.to, state.registers[this.to] + pcMem[1])
     }
 }
 
@@ -99,7 +115,7 @@ export default [
     new AddRegisterToRegister(0x81, 'A', 'C'),
     new AddRegisterToRegister(0x82, 'A', 'D'),
     new AddRegisterToRegister(0x83, 'A', 'E'),
-    new AddPointerToRegister(0x86, 'A', '(HL)'),
+    new AddPointerToRegister(0x86, 'A', 'HL'),
     new AddIndexPointerToRegister(0xdd86, 'A', 'IX'),
     new AddIndexPointerToRegister(0xfd86, 'A', 'IY'),
     new AddValueToRegister(0xc6, 'A')

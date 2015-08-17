@@ -1,4 +1,5 @@
 import add_instructions from './instructions/add';
+import and_instructions from './instructions/and';
 import core_instructions from './instructions/core';
 import call_instructions from './instructions/call';
 import dec_instructions from './instructions/dec';
@@ -12,6 +13,7 @@ import {ArgumentPattern} from './instructions/ArgumentPatterns';
 
 var instructions = [].concat(
     add_instructions,
+    and_instructions,
     core_instructions,
     call_instructions,
     dec_instructions,
@@ -49,21 +51,21 @@ instructions.forEach(instruction => {
 });
 
 export function process(state) {
-    var memory = state.getMemory(state.registers.PC, 4);
+    var pcMem = state.getMemory(state.registers.PC, 4);
 
-    if (memory.length > 0) {
-        var instruction = opcodes[memory[0]];
+    if (pcMem.length > 0) {
+        var instruction = opcodes[pcMem[0]];
 
         if (instruction instanceof Array) {
-            if (memory.length > 1) {
-                instruction = instruction[memory[1]];
+            if (pcMem.length > 1) {
+                instruction = instruction[pcMem[1]];
             } else {
                 instruction = undefined
             }
         }
         if (instruction != undefined) {
             console.log(instruction);
-            return instruction.process(state.registers, memory)
+            return instruction.process(state, pcMem)
         }
     }
 

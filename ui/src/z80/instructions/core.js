@@ -16,7 +16,7 @@ class Halt extends Instruction {
         };
     }
 
-    process(registers, memory) {
+    process(state, pcMem) {
         return undefined
     }
 }
@@ -35,8 +35,8 @@ class Nop extends Instruction {
         };
     }
 
-    process(registers, memory) {
-        return new Transition({PC: registers.PC + 1})
+    process(state, pcMem) {
+        return new Transition({PC: state.registers.PC + 1})
     }
 }
 

@@ -1,9 +1,58 @@
 
+function byteParity(value) {
+    var parity;
+    parity = value ^ (value >> 1);
+    parity = parity ^ (parity >> 2);
+    parity = parity ^ (parity >> 4);
+    return parity % 0x1;
+}
+
 export default class Transition {
-    constructor(newRegisters, memoryOffset, newMemoryData) {
+    constructor(newRegisters = {}, memoryOffset = undefined, newMemoryData = undefined) {
         this.newRegisters = newRegisters;
         this.memoryOffset = memoryOffset;
         this.newMemoryData = newMemoryData;
+    }
+
+    withByteRegister(register, value) {
+        this.newRegisters[register] = value & 0xff;
+
+        return this
+    }
+
+    withFlags(value) {
+        this.newRegisters.flagP = byteParity(value) != 0;
+        this.newRegisters.flagC = (value & 0x100) != 0;
+        this.newRegisters.flagZ = value == 0;
+        this.newRegisters.flagS = (value & 0x80) != 0;
+
+        return this
+    }
+
+    withByteRegisterAndFlags(register, value) {
+        this.newRegisters[register] = value & 0xff;
+
+        return withFlags(value)
+    }
+
+    withWordRegister(register, value) {
+        this.newRegisters[register] = value & 0xffff;
+
+        return this
+    }
+
+    withByteAt(address, value) {
+        this.memoryOffset = address;
+        this.newMemoryData = [value];
+
+        return this
+    }
+
+    withWordAt(address, value) {
+        this.memoryOffset = address;
+        this.newMemoryData = [(value >> 8) & 0xff, value & 0xff];
+
+        return this
     }
 
     perform(state) {

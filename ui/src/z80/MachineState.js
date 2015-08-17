@@ -101,6 +101,26 @@ class MachineState extends EventEmitter {
         return [];
     }
 
+    getMemoryByte(address) {
+        if(offset < this.memory.length) {
+            return this.memory[address];
+        }
+        if(this.hasVideo && offset >= this.videoOffset && offset - this.videoOffset < this.videoMemory.length) {
+            return this.video[address - this.videoOffset];
+        }
+        return 0;
+    }
+
+    getMemoryWord(address) {
+        if(offset < this.memory.length) {
+            return (this.memory[address] << 8) | this.memory[address + 1];
+        }
+        if(this.hasVideo && offset >= this.videoOffset && offset - this.videoOffset < this.videoMemory.length) {
+            return (this.video[address - this.videoOffset] << 8) | this.video[address - this.videoOffset + 1];
+        }
+        return 0;
+    }
+
     transferSourceToMemory() {
         var sourceMemory = this.sourceCode.memory;
         for (var i = 0; i < sourceMemory.length; i++) {
