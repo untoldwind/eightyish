@@ -20,7 +20,7 @@ export default class EditorAssembler extends React.Component {
     }
 
     getSelectedLine() {
-        let selectedLine = 0;
+        let selectedLine = -1;
         if (window.getSelection != undefined) {
             let parent = React.findDOMNode(this);
             let selection = getSelection();
@@ -31,6 +31,7 @@ export default class EditorAssembler extends React.Component {
                     selectedNode = selectedNode.parentNode;
                 }
                 if (selectedNode.parentNode == parent) {
+                    selectedLine = 0;
                     while ((selectedNode = selectedNode.previousSibling) != null) {
                         selectedLine++;
                     }
@@ -41,6 +42,9 @@ export default class EditorAssembler extends React.Component {
     }
 
     setSelectedLine(line) {
+        if (line < 0) {
+            return
+        }
         if (window.getSelection != undefined && document.createRange != undefined) {
             let selection = getSelection();
             selection.removeAllRanges();
@@ -64,7 +68,7 @@ export default class EditorAssembler extends React.Component {
     }
 
     handleBlur() {
-//        this.emitChange(true);
+        this.emitChange(true);
     }
 
     handleInput() {
