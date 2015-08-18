@@ -11,7 +11,7 @@ class AddRegisterToRegister extends Instruction {
         this.byte = to.length == 1;
     }
 
-    createAssembler(to, from) {
+    createAssembler() {
         return {
             type: 'instruction',
             assembler: `ADD\t${this.to} <- ${this.from}`,
@@ -40,10 +40,10 @@ class AddPointerToRegister extends Instruction {
         this.from = from;
     }
 
-    createAssembler(to, from) {
+    createAssembler() {
         return {
             type: 'instruction',
-            assembler: `ADD\t${this.to} <- ${this.from}`,
+            assembler: `ADD\t${this.to} <- (${this.from})`,
             opcodes: (labels) => this.opcodes,
             size: this.size
         }
@@ -71,6 +71,12 @@ class AddIndexPointerToRegister extends Instruction {
             opcodes: (labels) => this.opcodes.concat(parseInt(offset) & 0xff),
             size: this.size
         }
+    }
+
+    process(state, pcMem) {
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size).
+            withByteRegisterAndFlags(this.to, state.registers[this.to] + state.getMemoryByte(state.registers[this.from] + pcMem[2]))
     }
 }
 

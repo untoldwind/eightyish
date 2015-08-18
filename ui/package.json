@@ -12,7 +12,8 @@
     "prestart": "npm install",
     "start": "NODE_ENV=development webpack-dev-server",
     "test": "jest",
-    "watch:test": "nodemon -w __tests__ -w ./src -e js -x npm test",
+    "coverage": "jest --coverage",
+    "watch:test": "nodemon -w __tests__ -w ./src -e js -x npm run coverage",
     "watch": "webpack --watch",
     "webpack": "webpack --colors --progress"
   },
