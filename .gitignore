@@ -3,5 +3,6 @@ ui/dist
 ui/node_modules
 ui/bower_components
 ui/lib
+ui/coverage
 .idea/
 *.iml

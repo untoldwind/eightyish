@@ -1,7 +1,7 @@
 
 import * as args from './ArgumentPatterns';
 
-import Instruction from './base';
+import Instruction from './Instruction';
 
 class Call extends Instruction {
     constructor() {

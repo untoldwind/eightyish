@@ -1,4 +1,4 @@
-import Instruction from './base';
+import Instruction from './Instruction';
 
 import * as args from './ArgumentPatterns';
 

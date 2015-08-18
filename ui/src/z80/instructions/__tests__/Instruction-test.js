@@ -1,6 +1,6 @@
 jest.autoMockOff();
 
-let Instruction = require('../base');
+let Instruction = require('../Instruction');
 
 describe('Instruction', () => {
     it('should create single byte opcode for simple instructions', () => {
@@ -12,7 +12,6 @@ describe('Instruction', () => {
     });
 
     it('should create double opcode for extension instructions', () => {
-        let Instruction = require('../base');
         let instruction = new Instruction(0x1234, 'EXTENDED', []);
 
         expect(instruction.size).toBe(2);
@@ -20,7 +19,6 @@ describe('Instruction', () => {
     })
 
     it('should honor extra size', () => {
-        let Instruction = require('../base');
         let instruction = new Instruction(0x1234, 'EXTENDED2', [], 2);
 
         expect(instruction.size).toBe(4);
