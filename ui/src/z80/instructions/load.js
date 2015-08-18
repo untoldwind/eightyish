@@ -59,7 +59,7 @@ class LoadValueToRegister extends Instruction {
     }
 
     createAssembler(to, num) {
-        var value = this.argumentPattern[1].extractValue(num);
+        let value = this.argumentPattern[1].extractValue(num);
         return {
             type: 'instruction',
             assembler: `LOAD\t${this.to} <- ${value}`,

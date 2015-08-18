@@ -33,62 +33,90 @@ class MachineState extends EventEmitter {
     handleAction(action) {
         switch (action.type) {
         case AppConstants.MACHINE_RESET:
-            this.transitions = [];
-            this.registers = new Registers(this.memSize);
-            this.memory = Array.from(new Array(this.memSize), () => 0);
-            if (this.videoMemory != undefined) {
-                this.videoMemory = Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0);
-            }
-            this.transferSourceToMemory();
-            this.emitChange();
+            this.reset();
             break;
 
         case AppConstants.MACHINE_MOVE_TO_BEGIN:
-            this.transitions = [];
-            this.registers = new Registers(this.memSize);
-            this.emitChange();
+            this.moveToBegin();
             break;
 
         case AppConstants.MACHINE_STEP_FORWARD:
-            var transition = InstructionSet.process(this);
-            console.log(transition);
-            if (transition != undefined) {
-                this.transitions.push(transition);
-                transition.perform(this);
-                this.emitChange();
-            }
+            this.stepForward();
             break;
 
         case AppConstants.MACHINE_STEP_BACKWARD:
-            var transition = this.transitions.pop();
-            if (transition != undefined) {
-                transition.undo(this);
-                this.emitChange();
-            }
+            this.stepBackward();
             break;
 
         case AppConstants.MACHINE_TRANSITION:
-            this.transitions.push(action.transition);
-            action.transition.perform(this);
-            this.emitChange();
+            this.pushTransition(action.transition);
             break;
 
         case AppConstants.MACHINE_TOGGLE_VIDEO:
-            if (action.videoEnabled && this.videoMemory == undefined) {
-                this.videoMemory = Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0)
-                this.emitChange();
-            } else if(!action.videoEnabled){
-                this.videoMemory = undefined;
-                this.emitChange();
-            }
+            this.toggleVideo(action.videoEnabled);
             break;
 
         case AppConstants.MACHINE_COMPILE:
-            this.sourceCode.compile(action.lines);
-            this.transferSourceToMemory();
-            this.emitChange();
+            this.compile(action.lines);
             break;
         }
+    }
+
+    reset() {
+        this.transitions = [];
+        this.registers = new Registers(this.memSize);
+        this.memory = Array.from(new Array(this.memSize), () => 0);
+        if (this.videoMemory != undefined) {
+            this.videoMemory = Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0);
+        }
+        this.transferSourceToMemory();
+        this.emitChange();
+    }
+
+    moveToBegin() {
+        this.transitions = [];
+        this.registers = new Registers(this.memSize);
+        this.emitChange();
+    }
+
+    stepForward() {
+        let transition = InstructionSet.process(this);
+        console.log(transition);
+        if (transition != undefined) {
+            this.transitions.push(transition);
+            transition.perform(this);
+            this.emitChange();
+        }
+    }
+
+    stepBackward() {
+        let transition = this.transitions.pop();
+        if (transition != undefined) {
+            transition.undo(this);
+            this.emitChange();
+        }
+    }
+
+    pushTransition(transition) {
+        this.transitions.push(transition);
+        transition.perform(this);
+        this.emitChange();
+    }
+
+    toggleVideo(videoEnabled) {
+        if (videoEnabled && this.videoMemory == undefined) {
+            this.videoMemory = Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0);
+            this.emitChange();
+        } else if(!videoEnabled){
+            this.videoMemory = undefined;
+            this.emitChange();
+        }
+    }
+
+    compile(lines) {
+        this.sourceCode.compile(lines);
+        this.transferSourceToMemory();
+        this.emitChange();
     }
 
     getMemory(offset, length) {
@@ -122,8 +150,8 @@ class MachineState extends EventEmitter {
     }
 
     transferSourceToMemory() {
-        var sourceMemory = this.sourceCode.memory;
-        for (var i = 0; i < sourceMemory.length; i++) {
+        let sourceMemory = this.sourceCode.memory;
+        for (let i = 0; i < sourceMemory.length; i++) {
             this.memory[i] = sourceMemory[i];
         }
     }
@@ -147,7 +175,7 @@ class MachineState extends EventEmitter {
 
     restore() {
         if (localStorage != undefined && localStorage.machineState != undefined) {
-            var storedState = JSON.parse(localStorage.machineState);
+            let storedState = JSON.parse(localStorage.machineState);
 
             Object.assign(this.registers, storedState.registers);
             this.memory = storedState.memory;

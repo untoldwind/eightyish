@@ -11,7 +11,7 @@ import stack_instructions from './instructions/stack';
 
 import {ArgumentPattern} from './instructions/ArgumentPatterns';
 
-var instructions = [].concat(
+let instructions = [].concat(
     add_instructions,
     and_instructions,
     core_instructions,
@@ -23,13 +23,13 @@ var instructions = [].concat(
     sub_instructions,
     stack_instructions);
 
-var parseTree = {};
+let parseTree = {};
 
-var opcodes = [];
+let opcodes = [];
 
 instructions.forEach(instruction => {
-    var name = instruction.name;
-    var variants = parseTree[name];
+    let name = instruction.name;
+    let variants = parseTree[name];
 
     if (variants == undefined) {
         variants = [];
@@ -38,7 +38,7 @@ instructions.forEach(instruction => {
     variants.push(instruction);
 
     if (instruction.opcode >= 256) {
-        var extended = opcodes[(instruction.opcode >> 8) & 0xff];
+        let extended = opcodes[(instruction.opcode >> 8) & 0xff];
 
         if (extended == undefined) {
             extended = [];
@@ -51,10 +51,10 @@ instructions.forEach(instruction => {
 });
 
 export function process(state) {
-    var pcMem = state.getMemory(state.registers.PC, 4);
+    let pcMem = state.getMemory(state.registers.PC, 4);
 
     if (pcMem.length > 0) {
-        var instruction = opcodes[pcMem[0]];
+        let instruction = opcodes[pcMem[0]];
 
         if (instruction instanceof Array) {
             if (pcMem.length > 1) {
@@ -73,7 +73,7 @@ export function process(state) {
 }
 
 export function parseLine(line) {
-    var trimmed = line.trim();
+    let trimmed = line.trim();
     if (trimmed.length == 0) {
         return createBlank()
     }
@@ -122,7 +122,7 @@ export function createInstruction(elements) {
     if (!elements instanceof Array || elements.length == 0) {
         return undefined;
     }
-    var variants = parseTree[elements[0].toUpperCase()];
+    let variants = parseTree[elements[0].toUpperCase()];
 
     if (variants == undefined) {
         return undefined;

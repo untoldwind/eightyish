@@ -45,7 +45,7 @@ export default class EditableCell extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        var inputElem = React.findDOMNode(this.refs.input);
+        let inputElem = React.findDOMNode(this.refs.input);
         if (this.state.editing && !prevState.editing) {
             inputElem.focus();
             inputElem.setSelectionRange(0, inputElem.value.length);

@@ -47,7 +47,7 @@ export default class Registers {
     }
 
     get F() {
-        var result = 0;
+        let result = 0;
         if (this.flagC) result |= 0x1;
         if (this.flagN) result |= 0x2;
         if (this.flagP) result |= 0x4;

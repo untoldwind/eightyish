@@ -39,15 +39,15 @@ export default class RegistersView extends React.Component {
     }
 
     renderByteRegisters(highRegister, lowRegister) {
-        var highValueLink = {
+        let highValueLink = {
             value: this.props.registers[highRegister],
             requestChange: value => MachineActions.transition({[highRegister]: value})
         };
-        var lowValueLink = {
+        let lowValueLink = {
             value: this.props.registers[lowRegister],
             requestChange: value => MachineActions.transition({[lowRegister]: value})
         };
-        var valueLink = {
+        let valueLink = {
             value: this.props.registers[highRegister + lowRegister],
             requestChange: value => MachineActions.transition({[highRegister + lowRegister]: value})
         };
@@ -79,11 +79,11 @@ export default class RegistersView extends React.Component {
     }
 
     renderWordRegister(register, className, flagName, flagDescription) {
-        var valueLink = {
+        let valueLink = {
             value: this.props.registers[register],
             requestChange: value => MachineActions.transition({[register]: value})
         };
-        var flag;
+        let flag;
         if (flagName) {
             flag = (
                 <td colSpan='4'>

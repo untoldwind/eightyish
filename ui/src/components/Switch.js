@@ -10,7 +10,7 @@ export default class Switch extends React.Component {
     }
 
     updateWidths() {
-        var width = React.findDOMNode(this.refs.label).offsetWidth;
+        let width = React.findDOMNode(this.refs.label).offsetWidth;
 
         React.findDOMNode(this.refs.label).style.width = width + 'px';
         React.findDOMNode(this.refs.on).style.width = width + 'px';
@@ -26,7 +26,7 @@ export default class Switch extends React.Component {
     }
 
     render() {
-        var className = 'bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate ';
+        let className = 'bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate ';
         if (this.props.valueLink.value) {
             className += 'bootstrap-switch-on';
         } else {

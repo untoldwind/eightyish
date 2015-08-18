@@ -8,7 +8,7 @@ export const ByteValuePattern = {
     __proto__: ArgumentPattern.prototype,
 
     matches(value) {
-        var b = parseInt(value);
+        let b = parseInt(value);
 
         return typeof b == 'number' && b >= 0 && b <= 255;
     },
@@ -22,7 +22,7 @@ export const WordValuePattern = {
     __proto__: ArgumentPattern.prototype,
 
     matches(value) {
-        var w = parseInt(value);
+        let w = parseInt(value);
 
         return typeof w == 'number' && w >= 0 && w <= 65355;
     }
@@ -36,7 +36,7 @@ export const PointerPattern = {
             return true
         }
         if (value.startsWith('(') && value.endsWith(')')) {
-            var w = parseInt(value.substring(1, value.length - 1));
+            let w = parseInt(value.substring(1, value.length - 1));
 
             return typeof w == 'number' && w >= 0 && w <= 65355
         }
@@ -61,7 +61,7 @@ export const AddressOrLabelPattern = {
         if (value.startsWith('.')) {
             return true;
         }
-        var w = parseInt(value);
+        let w = parseInt(value);
 
         return typeof w == 'number' && w >= 0 && w <= 65355;
     }

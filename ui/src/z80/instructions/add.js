@@ -21,7 +21,7 @@ class AddRegisterToRegister extends Instruction {
     }
 
     process(state, pcMem) {
-        if (byte) {
+        if (this.byte) {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
                 withByteRegisterAndFlags(this.to, state.registers[this.to] + state.registers[this.from])
@@ -64,8 +64,7 @@ class AddIndexPointerToRegister extends Instruction {
     }
 
     createAssembler(to, from) {
-        console.log("here");
-        var offset = this.argumentPattern[1].extractValue(from);
+        let offset = this.argumentPattern[1].extractValue(from);
         return {
             type: 'instruction',
             assembler: `ADD\t${this.to} <- (${this.from}${offset})`,
@@ -82,7 +81,7 @@ class AddValueToRegister extends Instruction {
     }
 
     createAssembler(to, num) {
-        var value = this.argumentPattern[1].extractValue(num);
+        let value = this.argumentPattern[1].extractValue(num);
         return {
             type: 'instruction',
             assembler: `ADD\t${this.to} <- ${value}`,

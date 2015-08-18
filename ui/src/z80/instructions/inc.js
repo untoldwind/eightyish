@@ -19,7 +19,7 @@ class IncrementRegister extends Instruction {
     }
 
     process(state, pcMem) {
-        if (byte) {
+        if (this.byte) {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
                 withByteRegisterAndFlags(this.to, state.registers[this.to] + 1)

@@ -9,7 +9,7 @@ class Labels {
         switch (typeof labelOfAddress) {
         case 'string':
             if (labelOfAddress.startsWith('.')) {
-                var address = this[labelOfAddress];
+                let address = this[labelOfAddress];
 
                 if (address != undefined) {
                     return [(address >> 8) & 0xff, address & 0xff];
@@ -47,7 +47,7 @@ export default class SourceCode {
         for (var line of lines) {
             this.instructions.push(InstructionSet.parseLine(line));
         }
-        var offset = 0;
+        let offset = 0;
         for (var instruction of this.instructions) {
             if (instruction.updateLabel != undefined) {
                 instruction.updateLabel(offset, this.labels);
@@ -57,8 +57,8 @@ export default class SourceCode {
     }
 
     get memory() {
-        var offset = 0;
-        var memory = [];
+        let offset = 0;
+        let memory = [];
 
         for (var instruction of this.instructions) {
             var opcodes = instruction.opcodes(this.labels);
@@ -71,11 +71,11 @@ export default class SourceCode {
     }
 
     get memoryDump() {
-        var offset = 0;
-        var lines = [];
+        let offset = 0;
+        let lines = [];
 
-        for (var instruction of this.instructions) {
-            var opcodes = instruction.opcodes(this.labels);
+        for (let instruction of this.instructions) {
+            let opcodes = instruction.opcodes(this.labels);
 
             lines.push({offset: offset, dump: opcodes.map(opcode => formats.byte2hex(opcode)).join(' ')});
             offset += opcodes.length;

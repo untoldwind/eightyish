@@ -51,7 +51,7 @@ class AndIndexPointerToRegister extends Instruction {
     }
 
     createAssembler(to, from) {
-        var offset = this.argumentPattern[1].extractOffset(from);
+        let offset = this.argumentPattern[1].extractOffset(from);
         return {
             type: 'instruction',
             assembler: `AND\t${this.to} <- (${this.from}${offset})`,
@@ -68,7 +68,7 @@ class AndValueToRegister extends Instruction {
     }
 
     createAssembler(to, num) {
-        var value = this.argumentPattern[1].extractValue(num);
+        let value = this.argumentPattern[1].extractValue(num);
         return {
             type: 'instruction',
             assembler: `AND\t${this.to} <- ${value}`,
