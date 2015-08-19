@@ -1,4 +1,5 @@
 import Instruction from './Instruction';
+import Transition from '../Transition';
 
 export default class RegisterToRegisterInstruction extends Instruction {
     constructor(opcode, name, to, from, operation) {
