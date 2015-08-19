@@ -1,20 +1,27 @@
+import Instruction from './Instruction';
+import Transition from '../Transition';
 
 import * as args from './ArgumentPatterns';
 
-import Instruction from './Instruction';
-
 class Call extends Instruction {
     constructor() {
-        super(0xcd, 'CALL', [args.AddressOrLabelPattern]);
+        super(0xcd, 'CALL', [args.AddressOrLabelPattern], 2);
     }
 
     createAssembler(labelOrAddress) {
         return {
             type: 'instruction',
             assembler: `CALL\t${labelOrAddress}`,
-            opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress)),
-            size: 3
+            opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
+            size: this.size
         };
+    }
+
+    process(state, pcMem) {
+        return new Transition().
+            withWordRegister('PC', (pcMem[1] << 8) | pcMem[2]).
+            withWordRegister('SP', state.registers.SP - 2).
+            withWordAt(state.registers.SP - 2, state.registers.PC + this.size)
     }
 }
 
@@ -27,9 +34,16 @@ class Return extends Instruction {
         return {
             type: 'instruction',
             assembler: 'RET',
-            opcodes: (labels) => [this.opcode],
-            size: 1
+            opcodes: (labels) => this.opcodes,
+            size: this.size
         };
+    }
+
+    process(state, pcMem) {
+        let returnAddress = state.getMemoryWord(state.registers.SP);
+        return new Transition().
+            withWordRegister('PC', returnAddress).
+            withWordRegister('SP', state.registers.SP + 2)
     }
 }
 

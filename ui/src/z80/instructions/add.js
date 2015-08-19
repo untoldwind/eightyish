@@ -1,9 +1,7 @@
-import Instruction from './Instruction';
 import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction';
 import RegisterToRegisterInstruction from './RegisterToRegisterInstruction';
 import PointerToRegisterInstruction from './PointerToRegisterInstruction';
 import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
-import Transition from '../Transition';
 
 import * as args from './ArgumentPatterns';
 

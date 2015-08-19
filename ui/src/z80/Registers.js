@@ -8,7 +8,7 @@ export default class Registers {
         this.E = 0;
         this.HL = 0;
         this.PC = 0;
-        this.SP = mem_size - 1;
+        this.SP = mem_size;
         this.IX = 0;
         this.IY = 0;
         this.flagS = false;
