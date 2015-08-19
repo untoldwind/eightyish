@@ -40,6 +40,46 @@ describe('Call Instruction', () => {
         expect(labels.getAddress).toBeCalledWith('.label');
     });
 
+    it('should support CALL NZ, address', () => {
+        let callAddress = byOpcode.get(0xc4);
+
+        expect(callAddress).toBeDefined();
+        let state = {
+            registers: {
+                PC: 0x1234,
+                SP: 0x2345,
+                flagZ: true
+            }
+        };
+        let zeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd]);
+
+        expect(zeroTransition).toBeDefined();
+        expect(zeroTransition.newRegisters.PC).toBe(0x1237);
+        expect(zeroTransition.newRegisters.SP).toBeUndefined();
+        expect(zeroTransition.memoryOffset).toBeUndefined();
+
+        state.registers.flagZ = false;
+        let nonZeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd]);
+
+        expect(nonZeroTransition).toBeDefined();
+        expect(nonZeroTransition.newRegisters.PC).toBe(0xabcd);
+        expect(nonZeroTransition.newRegisters.SP).toBe(0x2343);
+        expect(nonZeroTransition.memoryOffset).toBe(0x2343);
+        expect(nonZeroTransition.newMemoryData).toEqual([0x12, 0x37])
+
+        let assembler = callAddress.createAssembler(undefined, '.label');
+        let labels = {
+            getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
+        };
+
+        expect(assembler).toBeDefined();
+        expect(assembler.type).toBe('instruction');
+        expect(assembler.assembler).toBe('CALL\tNZ, .label');
+        expect(assembler.opcodes(labels)).toEqual([0xc4, 0x12, 0x34]);
+        expect(assembler.size).toBe(3);
+        expect(labels.getAddress).toBeCalledWith('.label');
+    });
+
     it('should support RET', () => {
         let ret = byOpcode.get(0xc9);
 
@@ -63,6 +103,39 @@ describe('Call Instruction', () => {
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('RET');
         expect(assembler.opcodes(undefined)).toEqual([0xc9]);
+        expect(assembler.size).toBe(1);
+    });
+
+    it('should support RET NZ', () => {
+        let ret = byOpcode.get(0xc0);
+
+        expect(ret).toBeDefined();
+
+        let state = {
+            registers: {
+                PC: 0xabcd,
+                SP: 0x2345,
+                flagZ : true
+            },
+            getMemoryWord: jest.genMockFunction().mockReturnValue(0x1234)
+        };
+        let zeroTransition = ret.process(state, [0xc0]);
+        expect(zeroTransition).toBeDefined();
+        expect(zeroTransition.newRegisters.PC).toBe(0xabce);
+        expect(zeroTransition.newRegisters.SP).toBeUndefined();
+
+        state.registers.flagZ = false;
+        let nonZerotransition = ret.process(state, [0xc0]);
+        expect(nonZerotransition).toBeDefined();
+        expect(nonZerotransition.newRegisters.PC).toBe(0x1234);
+        expect(nonZerotransition.newRegisters.SP).toBe(0x2347);
+
+        let assembler = ret.createAssembler();
+
+        expect(assembler).toBeDefined();
+        expect(assembler.type).toBe('instruction');
+        expect(assembler.assembler).toBe('RET\tNZ');
+        expect(assembler.opcodes(undefined)).toEqual([0xc0]);
         expect(assembler.size).toBe(1);
     });
 });

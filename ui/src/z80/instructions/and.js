@@ -3,8 +3,6 @@ import RegisterToRegisterInstruction from './RegisterToRegisterInstruction';
 import PointerToRegisterInstruction from './PointerToRegisterInstruction';
 import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
 
-import * as args from './ArgumentPatterns';
-
 function operation(target, source) {
     return target & source;
 }
