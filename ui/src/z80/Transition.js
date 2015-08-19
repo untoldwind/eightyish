@@ -4,7 +4,7 @@ function byteParity(value) {
     parity = value ^ (value >> 1);
     parity = parity ^ (parity >> 2);
     parity = parity ^ (parity >> 4);
-    return parity % 0x1;
+    return parity & 0x1;
 }
 
 export default class Transition {

@@ -1,46 +1,19 @@
-import Instruction from './Instruction';
+import RegisterInstruction from './RegisterInstruction';
 
-import * as args from './ArgumentPatterns';
-
-class IncrementRegister extends Instruction {
-    constructor(opcode, register) {
-        super(opcode, 'INC', [register]);
-        this.register = register;
-        this.byte = register.length == 1
-    }
-
-    createAssembler(register) {
-        return {
-            type: 'instruction',
-            assembler: `INC\t$(register}`,
-            opcodes: (labels) => [this.opcode],
-            size: 1
-        }
-    }
-
-    process(state, pcMem) {
-        if (this.byte) {
-            return new Transition().
-                withWordRegister('PC', state.registers.PC + this.size).
-                withByteRegisterAndFlags(this.to, state.registers[this.to] + 1)
-        } else {
-            return new Transition().
-                withWordRegister('PC', state.registers.PC + this.size).
-                withWordRegister(this.to, state.registers[this.to] + 1)
-        }
-    }
+function operation(register) {
+    return register + 1
 }
 
 export default [
-    new IncrementRegister(0x3c, 'A'),
-    new IncrementRegister(0x03, 'BC'),
-    new IncrementRegister(0x04, 'B'),
-    new IncrementRegister(0x13, 'DE'),
-    new IncrementRegister(0x0c, 'C'),
-    new IncrementRegister(0x14, 'D'),
-    new IncrementRegister(0x1c, 'E'),
-    new IncrementRegister(0x23, 'HL'),
-    new IncrementRegister(0xdd23, 'IX'),
-    new IncrementRegister(0xfd23, 'IY'),
-    new IncrementRegister(0x33, 'SP')
+    new RegisterInstruction(0x3c, 'INC', 'A', operation),
+    new RegisterInstruction(0x03, 'INC', 'BC', operation),
+    new RegisterInstruction(0x04, 'INC', 'B', operation),
+    new RegisterInstruction(0x13, 'INC', 'DE', operation),
+    new RegisterInstruction(0x0c, 'INC', 'C', operation),
+    new RegisterInstruction(0x14, 'INC', 'D', operation),
+    new RegisterInstruction(0x1c, 'INC', 'E', operation),
+    new RegisterInstruction(0x23, 'INC', 'HL', operation),
+    new RegisterInstruction(0xdd23, 'INC', 'IX', operation),
+    new RegisterInstruction(0xfd23, 'INC', 'IY', operation),
+    new RegisterInstruction(0x33, 'INC', 'SP', operation)
 ];
