@@ -22,7 +22,8 @@ export default class IndexPointerToRegisterInstruction extends Instruction {
     }
 
     process(state, pcMem) {
-        let result = this.operation(state.registers[this.to], state.getMemoryByte(state.registers[this.from] + pcMem[2]));
+        let offset = this.opcodes.length;
+        let result = this.operation(state.registers[this.to], state.getMemoryByte(state.registers[this.from] + pcMem[offset]));
         return new Transition().
             withWordRegister('PC', state.registers.PC + this.size).
             withByteRegisterAndFlags(this.to, result)

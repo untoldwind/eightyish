@@ -1,135 +1,132 @@
+import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction';
+import WordValueToRegisterInstruction from './WordValueToRegisterInstruction';
+import RegisterToRegisterInstruction from './RegisterToRegisterInstruction';
+import PointerToRegisterInstruction from './PointerToRegisterInstruction';
+import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
+
 import Instruction from './Instruction';
 import Transition from '../Transition';
 
 import * as args from './ArgumentPatterns';
 
-class LoadRegisterToRegister extends Instruction {
-    constructor(opcode, to, from) {
-        super(opcode, 'LOAD', [to, from]);
-        this.to = to;
-        this.from = from;
-    }
-
-    createAssembler(to, from) {
-        return {
-            type: 'instruction',
-            assembler: `LOAD\t$(to} <- ${from}`,
-            opcodes: (labels) => [this.opcode],
-            size: 1
-        }
-    }
-}
-
 class LoadMemoryToRegister extends Instruction {
     constructor(opcode, to) {
-        super(opcode, 'LOAD', [to, args.PointerPattern]);
+        super(opcode, 'LOAD', [to, args.PointerPattern], 2);
         this.to = to;
+        this.byte = to.length == 1;
     }
 
     createAssembler(to, from) {
+        var labelOrAddress = this.argumentPattern[1].extractValue(from);
         return {
             type: 'instruction',
-            assembler: `LOAD\t$(to} <- ${from}`,
-            opcodes: (labels) => [this.opcode],
-            size: 1
+            assembler: `LOAD\t${this.to} <- (${labelOrAddress})`,
+            opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
+            size: this.size
+        }
+    }
+
+    process(state, pcMem) {
+        let offset = this.opcodes.length;
+        if (this.byte) {
+            return new Transition().
+                withWordRegister('PC', state.registers.PC + this.size).
+                withByteRegisterAndFlags(this.to, state.getMemoryByte((pcMem[offset] << 8) | pcMem[offset + 1]))
+        } else {
+            return new Transition().
+                withWordRegister('PC', state.registers.PC + this.size).
+                withWordRegister(this.to, state.getMemoryWord((pcMem[offset] << 8) | pcMem[offset + 1]))
         }
     }
 }
 
 class LoadRegisterToMemory extends Instruction {
     constructor(opcode, from) {
-        super(opcode, 'LOAD', [args.AddressOrLabelPattern, from]);
+        super(opcode, 'LOAD', [args.PointerPattern, from], 2);
         this.from = from;
+        this.byte = from.length == 1;
     }
 
-    createAssembler(to, from) {
+    createAssembler(to) {
+        var labelOrAddress = this.argumentPattern[0].extractValue(to);
         return {
             type: 'instruction',
-            assembler: `LOAD\t$(to} <- ${from}`,
-            opcodes: (labels) => [this.opcode],
-            size: 1
-        }
-    }
-}
-
-class LoadValueToRegister extends Instruction {
-    constructor(opcode, to) {
-        super(opcode, 'LOAD', [to, args.ByteValuePattern], 1);
-        this.to = to;
-    }
-
-    createAssembler(to, num) {
-        let value = this.argumentPattern[1].extractValue(num);
-        return {
-            type: 'instruction',
-            assembler: `LOAD\t${this.to} <- ${value}`,
-            opcodes: (labels) => this.opcodes.concat(value),
+            assembler: `LOAD\t(${labelOrAddress}) <- ${this.from}`,
+            opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
             size: this.size
         }
     }
 
     process(state, pcMem) {
-        return new Transition({
-            PC: state.registers.PC + this.size,
-            [this.to]: pcMem[1]
-        })
+        let offset = this.opcodes.length;
+        if (this.byte) {
+            return new Transition().
+                withWordRegister('PC', state.registers.PC + this.size).
+                withByteAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from])
+        } else {
+            return new Transition().
+                withWordRegister('PC', state.registers.PC + this.size).
+                withWordAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from])
+        }
     }
-
 }
+
+function operation(target, source) {
+    return source;
+}
+
 export default [
-    new LoadRegisterToRegister(0x7f, 'A', 'A'),
-    new LoadRegisterToRegister(0x78, 'A', 'B'),
-    new LoadRegisterToRegister(0x79, 'A', 'C'),
-    new LoadRegisterToRegister(0x7a, 'A', 'D'),
-    new LoadRegisterToRegister(0x7b, 'A', 'E'),
-    new LoadRegisterToRegister(0x7c, 'A', 'H'),
-    new LoadRegisterToRegister(0x7d, 'A', 'L'),
-    new LoadRegisterToRegister(0x47, 'B', 'A'),
-    new LoadRegisterToRegister(0x40, 'B', 'B'),
-    new LoadRegisterToRegister(0x41, 'B', 'C'),
-    new LoadRegisterToRegister(0x42, 'B', 'D'),
-    new LoadRegisterToRegister(0x43, 'B', 'E'),
-    new LoadRegisterToRegister(0x44, 'B', 'H'),
-    new LoadRegisterToRegister(0x45, 'B', 'L'),
-    new LoadRegisterToRegister(0x4f, 'C', 'A'),
-    new LoadRegisterToRegister(0x48, 'C', 'B'),
-    new LoadRegisterToRegister(0x49, 'C', 'C'),
-    new LoadRegisterToRegister(0x4a, 'C', 'D'),
-    new LoadRegisterToRegister(0x4b, 'C', 'E'),
-    new LoadRegisterToRegister(0x4c, 'C', 'H'),
-    new LoadRegisterToRegister(0x4d, 'C', 'L'),
-    new LoadRegisterToRegister(0x57, 'D', 'A'),
-    new LoadRegisterToRegister(0x50, 'D', 'B'),
-    new LoadRegisterToRegister(0x51, 'D', 'C'),
-    new LoadRegisterToRegister(0x52, 'D', 'D'),
-    new LoadRegisterToRegister(0x53, 'D', 'E'),
-    new LoadRegisterToRegister(0x54, 'D', 'H'),
-    new LoadRegisterToRegister(0x55, 'D', 'L'),
-    new LoadRegisterToRegister(0x5f, 'E', 'A'),
-    new LoadRegisterToRegister(0x58, 'E', 'B'),
-    new LoadRegisterToRegister(0x59, 'E', 'C'),
-    new LoadRegisterToRegister(0x5a, 'E', 'D'),
-    new LoadRegisterToRegister(0x5b, 'E', 'E'),
-    new LoadRegisterToRegister(0x5c, 'E', 'H'),
-    new LoadRegisterToRegister(0x5d, 'E', 'L'),
-    new LoadRegisterToRegister(0x67, 'H', 'A'),
-    new LoadRegisterToRegister(0x60, 'H', 'B'),
-    new LoadRegisterToRegister(0x61, 'H', 'C'),
-    new LoadRegisterToRegister(0x62, 'H', 'D'),
-    new LoadRegisterToRegister(0x63, 'H', 'E'),
-    new LoadRegisterToRegister(0x64, 'H', 'H'),
-    new LoadRegisterToRegister(0x65, 'H', 'L'),
-    new LoadRegisterToRegister(0x6f, 'L', 'A'),
-    new LoadRegisterToRegister(0x68, 'L', 'B'),
-    new LoadRegisterToRegister(0x69, 'L', 'C'),
-    new LoadRegisterToRegister(0x6a, 'L', 'D'),
-    new LoadRegisterToRegister(0x6b, 'L', 'E'),
-    new LoadRegisterToRegister(0x6c, 'L', 'H'),
-    new LoadRegisterToRegister(0x6d, 'L', 'L'),
+    new RegisterToRegisterInstruction(0x7f, 'LOAD', 'A', 'A', operation),
+    new RegisterToRegisterInstruction(0x78, 'LOAD', 'A', 'B', operation),
+    new RegisterToRegisterInstruction(0x79, 'LOAD', 'A', 'C', operation),
+    new RegisterToRegisterInstruction(0x7a, 'LOAD', 'A', 'D', operation),
+    new RegisterToRegisterInstruction(0x7b, 'LOAD', 'A', 'E', operation),
+    new RegisterToRegisterInstruction(0x47, 'LOAD', 'B', 'A', operation),
+    new RegisterToRegisterInstruction(0x40, 'LOAD', 'B', 'B', operation),
+    new RegisterToRegisterInstruction(0x41, 'LOAD', 'B', 'C', operation),
+    new RegisterToRegisterInstruction(0x42, 'LOAD', 'B', 'D', operation),
+    new RegisterToRegisterInstruction(0x43, 'LOAD', 'B', 'E', operation),
+    new RegisterToRegisterInstruction(0x4f, 'LOAD', 'C', 'A', operation),
+    new RegisterToRegisterInstruction(0x48, 'LOAD', 'C', 'B', operation),
+    new RegisterToRegisterInstruction(0x49, 'LOAD', 'C', 'C', operation),
+    new RegisterToRegisterInstruction(0x4a, 'LOAD', 'C', 'D', operation),
+    new RegisterToRegisterInstruction(0x4b, 'LOAD', 'C', 'E', operation),
+    new RegisterToRegisterInstruction(0x57, 'LOAD', 'D', 'A', operation),
+    new RegisterToRegisterInstruction(0x50, 'LOAD', 'D', 'B', operation),
+    new RegisterToRegisterInstruction(0x51, 'LOAD', 'D', 'C', operation),
+    new RegisterToRegisterInstruction(0x52, 'LOAD', 'D', 'D', operation),
+    new RegisterToRegisterInstruction(0x53, 'LOAD', 'D', 'E', operation),
+    new RegisterToRegisterInstruction(0x5f, 'LOAD', 'E', 'A', operation),
+    new RegisterToRegisterInstruction(0x58, 'LOAD', 'E', 'B', operation),
+    new RegisterToRegisterInstruction(0x59, 'LOAD', 'E', 'C', operation),
+    new RegisterToRegisterInstruction(0x5a, 'LOAD', 'E', 'D', operation),
+    new RegisterToRegisterInstruction(0x5b, 'LOAD', 'E', 'E', operation),
+    new RegisterToRegisterInstruction(0xf9, 'LOAD', 'SP', 'HL', operation),
+    new RegisterToRegisterInstruction(0xddf9, 'LOAD', 'SP', 'IX', operation),
+    new RegisterToRegisterInstruction(0xfdf9, 'LOAD', 'SP', 'IY', operation),
     new LoadRegisterToMemory(0x32, 'A'),
-    new LoadValueToRegister(0x3e, 'A'),
-    new LoadValueToRegister(0x06, 'B'),
-    new LoadValueToRegister(0x0e, 'C'),
-    new LoadValueToRegister(0x16, 'D'),
-    new LoadValueToRegister(0x1e, 'E')
+    new LoadRegisterToMemory(0xed43, 'BC'),
+    new LoadRegisterToMemory(0xed53, 'DE'),
+    new LoadRegisterToMemory(0x22, 'HL'),
+    new LoadRegisterToMemory(0xdd22, 'IX'),
+    new LoadRegisterToMemory(0xfd22, 'IY'),
+    new LoadRegisterToMemory(0x3d73, 'SP'),
+    new LoadMemoryToRegister(0x3a, 'A'),
+    new LoadMemoryToRegister(0xed4b, 'BC'),
+    new LoadMemoryToRegister(0xed5b, 'DE'),
+    new LoadMemoryToRegister(0x2a, 'HL'),
+    new LoadMemoryToRegister(0xdd2a, 'IX'),
+    new LoadMemoryToRegister(0xfd2a, 'IY'),
+    new LoadMemoryToRegister(0xed7b, 'SP'),
+    new ByteValueToRegisterInstruction(0x3e, 'LOAD', 'A', operation),
+    new ByteValueToRegisterInstruction(0x06, 'LOAD', 'B', operation),
+    new ByteValueToRegisterInstruction(0x0e, 'LOAD', 'C', operation),
+    new ByteValueToRegisterInstruction(0x16, 'LOAD', 'D', operation),
+    new ByteValueToRegisterInstruction(0x1e, 'LOAD', 'E', operation),
+    new WordValueToRegisterInstruction(0x01, 'LOAD', 'BC', operation),
+    new WordValueToRegisterInstruction(0x11, 'LOAD', 'DE', operation),
+    new WordValueToRegisterInstruction(0x21, 'LOAD', 'HL', operation),
+    new WordValueToRegisterInstruction(0xdd21, 'LOAD', 'IX', operation),
+    new WordValueToRegisterInstruction(0xfd21, 'LOAD', 'IY', operation),
+    new WordValueToRegisterInstruction(0x31, 'LOAD', 'SP', operation)
 ];
