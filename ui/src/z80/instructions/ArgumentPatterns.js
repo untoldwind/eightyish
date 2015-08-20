@@ -8,7 +8,7 @@ export const ByteValuePattern = {
     __proto__: ArgumentPattern.prototype,
 
     matches(value) {
-        let b = parseInt(value);
+        const b = parseInt(value);
 
         return typeof b == 'number' && b >= 0 && b <= 255;
     },
@@ -22,7 +22,7 @@ export const WordValuePattern = {
     __proto__: ArgumentPattern.prototype,
 
     matches(value) {
-        let w = parseInt(value);
+        const w = parseInt(value);
 
         return typeof w == 'number' && w >= 0 && w <= 65355;
     }
@@ -33,24 +33,24 @@ export const PointerPattern = {
 
     matches(value) {
         if (value.startsWith('(.') && value.endsWith(')')) {
-            return true
+            return true;
         }
         if (value.startsWith('(') && value.endsWith(')')) {
-            let w = parseInt(value.substring(1, value.length - 1));
+            const w = parseInt(value.substring(1, value.length - 1));
 
-            return typeof w == 'number' && w >= 0 && w <= 65355
+            return typeof w == 'number' && w >= 0 && w <= 65355;
         }
-        return false
+        return false;
     },
 
     extractValue(value) {
         if (value.startsWith('(.') && value.endsWith(')')) {
-            return value.substring(1, value.length - 1)
+            return value.substring(1, value.length - 1);
         }
         if (value.startsWith('(') && value.endsWith(')')) {
             return parseInt(value.substring(1, value.length - 1));
         }
-        return 0
+        return 0;
     }
 };
 
@@ -61,7 +61,7 @@ export const AddressOrLabelPattern = {
         if (value.startsWith('.')) {
             return true;
         }
-        let w = parseInt(value);
+        const w = parseInt(value);
 
         return typeof w == 'number' && w >= 0 && w <= 65355;
     }
@@ -74,10 +74,10 @@ export class IndexPointerPattern extends ArgumentPattern {
     }
 
     matches(value) {
-        return value.match(this.pattern)
+        return value.match(this.pattern);
     }
 
     extractValue(value) {
-        return value.match(this.pattern)[1]
+        return value.match(this.pattern)[1];
     }
 }

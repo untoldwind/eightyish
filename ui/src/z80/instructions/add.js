@@ -1,7 +1,7 @@
 import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction';
 import RegisterToRegisterInstruction from './RegisterToRegisterInstruction';
 import PointerToRegisterInstruction from './PointerToRegisterInstruction';
-import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
+import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction';
 
 function operation(target, source) {
     return target + source;
@@ -28,4 +28,4 @@ export default [
     new IndexPointerToRegisterInstruction(0xdd86, 'ADD', 'A', 'IX', operation),
     new IndexPointerToRegisterInstruction(0xfd86, 'ADD', 'A', 'IY', operation),
     new ByteValueToRegisterInstruction(0xc6, 'ADD', 'A', operation)
-]
+];

@@ -1,7 +1,7 @@
 import RegisterInstruction from './RegisterInstruction';
 
 function operation(register) {
-    return register + 1
+    return register + 1;
 }
 
 export default [

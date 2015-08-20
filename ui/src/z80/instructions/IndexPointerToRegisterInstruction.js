@@ -12,20 +12,20 @@ export default class IndexPointerToRegisterInstruction extends Instruction {
     }
 
     createAssembler(to, from) {
-        let offset = this.argumentPattern[1].extractValue(from);
+        const offset = this.argumentPattern[1].extractValue(from);
         return {
             type: 'instruction',
             assembler: `${this.name}\t${this.to} <- (${this.from}${offset})`,
             opcodes: (labels) => this.opcodes.concat(parseInt(offset) & 0xff),
             size: this.size
-        }
+        };
     }
 
     process(state, pcMem) {
-        let offset = this.opcodes.length;
-        let result = this.operation(state.registers[this.to], state.getMemoryByte(state.registers[this.from] + pcMem[offset]));
+        const offset = this.opcodes.length;
+        const result = this.operation(state.registers[this.to], state.getMemoryByte(state.registers[this.from] + pcMem[offset]));
         return new Transition().
             withWordRegister('PC', state.registers.PC + this.size).
-            withByteRegisterAndFlags(this.to, result)
+            withByteRegisterAndFlags(this.to, result);
     }
 }

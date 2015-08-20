@@ -15,19 +15,19 @@ export default class RegisterInstruction extends Instruction {
             assembler: `${this.name}\t${this.register}`,
             opcodes: (labels) => this.opcodes,
             size: this.size
-        }
+        };
     }
 
     process(state, pcMem) {
-        let result = this.operation(state.registers[this.register], state);
+        const result = this.operation(state.registers[this.register], state);
         if (this.byte) {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
-                withByteRegisterAndFlags(this.register, result)
+                withByteRegisterAndFlags(this.register, result);
         } else {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
-                withWordRegister(this.register, result)
+                withWordRegister(this.register, result);
         }
     }
 }

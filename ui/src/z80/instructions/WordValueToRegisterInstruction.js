@@ -16,14 +16,14 @@ export default class WordValueToRegisterInstruction extends Instruction {
             assembler: `${this.name}\t${this.to} <- ${labelOrAddress}`,
             opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
             size: this.size
-        }
+        };
     }
 
     process(state, pcMem) {
-        let offset = this.opcodes.length;
-        let result = this.operation(state.registers[this.to], (pcMem[offset] << 8) | pcMem[offset + 1]);
+        const offset = this.opcodes.length;
+        const result = this.operation(state.registers[this.to], (pcMem[offset] << 8) | pcMem[offset + 1]);
         return new Transition().
             withWordRegister('PC', state.registers.PC + this.size).
-            withByteRegisterAndFlags(this.to, result)
+            withByteRegisterAndFlags(this.to, result);
     }
 }

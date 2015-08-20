@@ -17,7 +17,7 @@ export default class Transition {
     withByteRegister(register, value) {
         this.newRegisters[register] = value & 0xff;
 
-        return this
+        return this;
     }
 
     withFlags(value) {
@@ -26,33 +26,33 @@ export default class Transition {
         this.newRegisters.flagZ = value == 0;
         this.newRegisters.flagS = (value & 0x80) != 0;
 
-        return this
+        return this;
     }
 
     withByteRegisterAndFlags(register, value) {
         this.newRegisters[register] = value & 0xff;
 
-        return this.withFlags(value)
+        return this.withFlags(value);
     }
 
     withWordRegister(register, value) {
         this.newRegisters[register] = value & 0xffff;
 
-        return this
+        return this;
     }
 
     withByteAt(address, value) {
         this.memoryOffset = address;
         this.newMemoryData = [value];
 
-        return this
+        return this;
     }
 
     withWordAt(address, value) {
         this.memoryOffset = address;
         this.newMemoryData = [(value >> 8) & 0xff, value & 0xff];
 
-        return this
+        return this;
     }
 
     perform(state) {
@@ -63,13 +63,13 @@ export default class Transition {
                 this.oldMemoryData = state.memory.slice(this.memoryOffset,
                     this.memoryOffset + this.newMemoryData.length);
                 for(let i = 0; i < this.newMemoryData.length; i++) {
-                    state.memory[this.memoryOffset + i] = this.newMemoryData[i]
+                    state.memory[this.memoryOffset + i] = this.newMemoryData[i];
                 }
             } else if(this.memoryOffset - state.videoOffset < state.videoMemory.length) {
                 this.oldMemoryData = state.videoMemory.slice(this.memoryOffset - state.videoOffset,
-                    this.memoryOffset - state.videoOffset + this.newMemoryData.length)
+                    this.memoryOffset - state.videoOffset + this.newMemoryData.length);
                 for(let i = 0; i < this.newMemoryData.length; i++) {
-                    state.videoMemory[this.memoryOffset - state.videoOffset + i] = this.newMemoryData[i]
+                    state.videoMemory[this.memoryOffset - state.videoOffset + i] = this.newMemoryData[i];
                 }
             }
         }
@@ -80,11 +80,11 @@ export default class Transition {
         if (typeof this.memoryOffset == 'number') {
             if(this.memoryOffset < state.memory.length) {
                 for(let i = 0; i < this.oldMemoryData.length; i++) {
-                    state.memory[this.memoryOffset + i] = this.oldMemoryData[i]
+                    state.memory[this.memoryOffset + i] = this.oldMemoryData[i];
                 }
             } else if(this.memoryOffset - state.videoOffset < state.videoMemory.length) {
                 for(let i = 0; i < this.oldMemoryData.length; i++) {
-                    state.videoMemory[this.memoryOffset - state.videoOffset + i] = this.oldMemoryData[i]
+                    state.videoMemory[this.memoryOffset - state.videoOffset + i] = this.oldMemoryData[i];
                 }
             }
         }

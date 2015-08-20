@@ -15,13 +15,13 @@ class SubRegisterToRegister extends Instruction {
             assembler: `SUB\t$(to} <- ${from}`,
             opcodes: (labels) => [this.opcode],
             size: 1
-        }
+        };
     }
 
     process(state, pcMem) {
         return new Transition().
             withWordRegister('PC', state.registers.PC + this.size).
-            withByteRegisterAndFlags(this.to, state.registers[this.to] - state.registers[this.from])
+            withByteRegisterAndFlags(this.to, state.registers[this.to] - state.registers[this.from]);
     }
 }
 

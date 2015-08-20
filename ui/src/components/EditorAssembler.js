@@ -5,15 +5,15 @@ import * as MachineActions from '../actions/MachineActions';
 export default class EditorAssembler extends React.Component {
 
     componentDidMount() {
-        this.updateContent()
+        this.updateContent();
     }
 
     componentDidUpdate() {
-        this.updateContent()
+        this.updateContent();
     }
 
     updateContent() {
-        let selectedLine = this.getSelectedLine();
+        const selectedLine = this.getSelectedLine();
         React.findDOMNode(this).innerHTML = this.props.sourceCode.instructions.map(instruction =>
             `<li class="${instruction.type}">${instruction.assembler}</li>`).join('');
         this.setSelectedLine(selectedLine);
@@ -22,10 +22,10 @@ export default class EditorAssembler extends React.Component {
     getSelectedLine() {
         let selectedLine = -1;
         if (window.getSelection != undefined) {
-            let parent = React.findDOMNode(this);
-            let selection = getSelection();
+            const parent = React.findDOMNode(this);
+            const selection = getSelection();
             if (selection.rangeCount > 0) {
-                let range = selection.getRangeAt(0);
+                const range = selection.getRangeAt(0);
                 let selectedNode = range.startContainer;
                 if (selectedNode.nodeType != Node.ELEMENT_NODE) {
                     selectedNode = selectedNode.parentNode;
@@ -43,14 +43,14 @@ export default class EditorAssembler extends React.Component {
 
     setSelectedLine(line) {
         if (line < 0) {
-            return
+            return;
         }
         if (window.getSelection != undefined && document.createRange != undefined) {
-            let selection = getSelection();
+            const selection = getSelection();
             selection.removeAllRanges();
-            let children = React.findDOMNode(this).children;
+            const children = React.findDOMNode(this).children;
             if (line < children.length) {
-                let range = document.createRange();
+                const range = document.createRange();
                 range.setStart(children[line], 1);
                 range.setEnd(children[line], 1);
                 selection.addRange(range);
@@ -76,7 +76,7 @@ export default class EditorAssembler extends React.Component {
     }
 
     emitChange(force) {
-        let lines = []
+        const lines = [];
         for (let child of React.findDOMNode(this).children) {
             lines.push(child.textContent);
         }

@@ -6,7 +6,7 @@ export default class EditableCell extends React.Component {
 
         this.state = {
             editing: false
-        }
+        };
     }
 
     startEditing() {
@@ -33,7 +33,7 @@ export default class EditableCell extends React.Component {
     textChanged(event) {
         this.setState({
             text: event.target.value.trim()
-        })
+        });
     }
 
     keyDown(event) {
@@ -45,7 +45,7 @@ export default class EditableCell extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        let inputElem = React.findDOMNode(this.refs.input);
+        const inputElem = React.findDOMNode(this.refs.input);
         if (this.state.editing && !prevState.editing) {
             inputElem.focus();
             inputElem.setSelectionRange(0, inputElem.value.length);
@@ -63,7 +63,7 @@ export default class EditableCell extends React.Component {
                     style={this.props.style}>
                     {this.props.valueLink.value}
                 </td>
-            )
+            );
         } else {
             return (
                 <td className={this.props.className}
@@ -79,7 +79,7 @@ export default class EditableCell extends React.Component {
                            ref="input"
                            size={this.props.valueLink.value.length}/>
                 </td>
-            )
+            );
         }
     }
 }

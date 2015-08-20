@@ -1,5 +1,5 @@
 import Instruction from './Instruction';
-import ConditionalInstruction from './ConditionalInstruction'
+import ConditionalInstruction from './ConditionalInstruction';
 import Transition from '../Transition';
 
 import * as args from './ArgumentPatterns';
@@ -22,7 +22,7 @@ class Call extends Instruction {
         return new Transition().
             withWordRegister('PC', (pcMem[1] << 8) | pcMem[2]).
             withWordRegister('SP', state.registers.SP - 2).
-            withWordAt(state.registers.SP - 2, state.registers.PC + this.size)
+            withWordAt(state.registers.SP - 2, state.registers.PC + this.size);
     }
 }
 
@@ -41,10 +41,10 @@ class Return extends Instruction {
     }
 
     process(state, pcMem) {
-        let returnAddress = state.getMemoryWord(state.registers.SP);
+        const returnAddress = state.getMemoryWord(state.registers.SP);
         return new Transition().
             withWordRegister('PC', returnAddress).
-            withWordRegister('SP', state.registers.SP + 2)
+            withWordRegister('SP', state.registers.SP + 2);
     }
 }
 
@@ -69,10 +69,10 @@ class ConditionalCall extends ConditionalInstruction {
             return new Transition().
                 withWordRegister('PC', (pcMem[1] << 8) | pcMem[2]).
                 withWordRegister('SP', state.registers.SP - 2).
-                withWordAt(state.registers.SP - 2, state.registers.PC + this.size)
+                withWordAt(state.registers.SP - 2, state.registers.PC + this.size);
         } else {
             return new Transition().
-                withWordRegister('PC', state.registers.PC + this.size)
+                withWordRegister('PC', state.registers.PC + this.size);
         }
     }
 }
@@ -95,13 +95,13 @@ class ConditionalReturn extends ConditionalInstruction {
 
     process(state, pcMem) {
         if (this.isConditionStasified(state)) {
-            let returnAddress = state.getMemoryWord(state.registers.SP);
+            const returnAddress = state.getMemoryWord(state.registers.SP);
             return new Transition().
                 withWordRegister('PC', returnAddress).
-                withWordRegister('SP', state.registers.SP + 2)
+                withWordRegister('SP', state.registers.SP + 2);
         } else {
             return new Transition().
-                withWordRegister('PC', state.registers.PC + this.size)
+                withWordRegister('PC', state.registers.PC + this.size);
         }
     }
 }
@@ -125,4 +125,4 @@ export default [
     new ConditionalReturn(0xe8, 'P', true),
     new ConditionalReturn(0xf0, 'S', false),
     new ConditionalReturn(0xf8, 'S', true)
-]
+];

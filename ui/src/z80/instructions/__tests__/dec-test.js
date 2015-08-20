@@ -1,25 +1,25 @@
 jest.autoMockOff();
 
-let dec_instructions = require('../dec');
-let byOpcode = new Map(dec_instructions.map(i => [i.opcode, i]));
+const dec_instructions = require('../dec');
+const byOpcode = new Map(dec_instructions.map(i => [i.opcode, i]));
 
 describe('Dec Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(dec_instructions.length)
+        expect(byOpcode.size).toBe(dec_instructions.length);
     });
 
     it('should support DEC A', () => {
-        let decA = byOpcode.get(0x3d);
+        const decA = byOpcode.get(0x3d);
 
         expect(decA).toBeDefined();
 
-        let state = {
+        const state = {
             registers: {
                 PC: 1234,
                 A: 9
             }
         };
-        let transition = decA.process(state, [0x3d]);
+        const transition = decA.process(state, [0x3d]);
 
         expect(transition).toBeDefined();
         expect(transition.newRegisters.PC).toBe(1235);
@@ -29,27 +29,27 @@ describe('Dec Instruction', () => {
         expect(transition.newRegisters.flagP).toBe(true);
         expect(transition.newRegisters.flagZ).toBe(false);
 
-        let assembler = decA.createAssembler();
+        const assembler = decA.createAssembler();
 
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('DEC\tA');
         expect(assembler.opcodes(undefined)).toEqual([0x3d]);
-        expect(assembler.size).toBe(1)
+        expect(assembler.size).toBe(1);
     });
 
     it('should support DEC BC', () => {
-        let decBC = byOpcode.get(0x0b);
+        const decBC = byOpcode.get(0x0b);
 
         expect(decBC).toBeDefined();
 
-        let state = {
+        const state = {
             registers: {
                 PC: 1234,
                 BC: 123
             }
         };
-        let transition = decBC.process(state, [0x0b]);
+        const transition = decBC.process(state, [0x0b]);
 
         expect(transition).toBeDefined();
         expect(transition.newRegisters.PC).toBe(1235);
@@ -59,12 +59,12 @@ describe('Dec Instruction', () => {
         expect(transition.newRegisters.flagP).toBeUndefined();
         expect(transition.newRegisters.flagZ).toBeUndefined();
 
-        let assembler = decBC.createAssembler();
+        const assembler = decBC.createAssembler();
 
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('DEC\tBC');
         expect(assembler.opcodes(undefined)).toEqual([0x0b]);
-        expect(assembler.size).toBe(1)
+        expect(assembler.size).toBe(1);
     });
 });

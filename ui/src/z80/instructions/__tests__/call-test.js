@@ -1,34 +1,34 @@
 jest.autoMockOff();
 
-let call_instructions = require('../call');
-let byOpcode = new Map(call_instructions.map(i => [i.opcode, i]));
+const call_instructions = require('../call');
+const byOpcode = new Map(call_instructions.map(i => [i.opcode, i]));
 
 describe('Call Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(call_instructions.length)
+        expect(byOpcode.size).toBe(call_instructions.length);
     });
 
     it('should support CALL address', () => {
-        let callAddress = byOpcode.get(0xcd);
+        const callAddress = byOpcode.get(0xcd);
 
         expect(callAddress).toBeDefined();
 
-        let state = {
+        const state = {
             registers: {
                 PC: 0x1234,
                 SP: 0x2345
             }
         };
-        let transition = callAddress.process(state, [0xcd, 0xab, 0xcd]);
+        const transition = callAddress.process(state, [0xcd, 0xab, 0xcd]);
 
         expect(transition).toBeDefined();
         expect(transition.newRegisters.PC).toBe(0xabcd);
         expect(transition.newRegisters.SP).toBe(0x2343);
         expect(transition.memoryOffset).toBe(0x2343);
-        expect(transition.newMemoryData).toEqual([0x12, 0x37])
+        expect(transition.newMemoryData).toEqual([0x12, 0x37]);
 
-        let assembler = callAddress.createAssembler('.label');
-        let labels = {
+        const assembler = callAddress.createAssembler('.label');
+        const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         };
 
@@ -41,17 +41,17 @@ describe('Call Instruction', () => {
     });
 
     it('should support CALL NZ, address', () => {
-        let callAddress = byOpcode.get(0xc4);
+        const callAddress = byOpcode.get(0xc4);
 
         expect(callAddress).toBeDefined();
-        let state = {
+        const state = {
             registers: {
                 PC: 0x1234,
                 SP: 0x2345,
                 flagZ: true
             }
         };
-        let zeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd]);
+        const zeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd]);
 
         expect(zeroTransition).toBeDefined();
         expect(zeroTransition.newRegisters.PC).toBe(0x1237);
@@ -59,16 +59,16 @@ describe('Call Instruction', () => {
         expect(zeroTransition.memoryOffset).toBeUndefined();
 
         state.registers.flagZ = false;
-        let nonZeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd]);
+        const nonZeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd]);
 
         expect(nonZeroTransition).toBeDefined();
         expect(nonZeroTransition.newRegisters.PC).toBe(0xabcd);
         expect(nonZeroTransition.newRegisters.SP).toBe(0x2343);
         expect(nonZeroTransition.memoryOffset).toBe(0x2343);
-        expect(nonZeroTransition.newMemoryData).toEqual([0x12, 0x37])
+        expect(nonZeroTransition.newMemoryData).toEqual([0x12, 0x37]);
 
-        let assembler = callAddress.createAssembler(undefined, '.label');
-        let labels = {
+        const assembler = callAddress.createAssembler(undefined, '.label');
+        const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         };
 
@@ -81,23 +81,23 @@ describe('Call Instruction', () => {
     });
 
     it('should support RET', () => {
-        let ret = byOpcode.get(0xc9);
+        const ret = byOpcode.get(0xc9);
 
         expect(ret).toBeDefined();
 
-        let state = {
+        const state = {
             registers: {
                 PC: 0xabcd,
                 SP: 0x2345
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(0x1234)
         };
-        let transition = ret.process(state, [0xc9]);
+        const transition = ret.process(state, [0xc9]);
         expect(transition).toBeDefined();
         expect(transition.newRegisters.PC).toBe(0x1234);
         expect(transition.newRegisters.SP).toBe(0x2347);
 
-        let assembler = ret.createAssembler();
+        const assembler = ret.createAssembler();
 
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
@@ -107,11 +107,11 @@ describe('Call Instruction', () => {
     });
 
     it('should support RET NZ', () => {
-        let ret = byOpcode.get(0xc0);
+        const ret = byOpcode.get(0xc0);
 
         expect(ret).toBeDefined();
 
-        let state = {
+        const state = {
             registers: {
                 PC: 0xabcd,
                 SP: 0x2345,
@@ -119,18 +119,18 @@ describe('Call Instruction', () => {
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(0x1234)
         };
-        let zeroTransition = ret.process(state, [0xc0]);
+        const zeroTransition = ret.process(state, [0xc0]);
         expect(zeroTransition).toBeDefined();
         expect(zeroTransition.newRegisters.PC).toBe(0xabce);
         expect(zeroTransition.newRegisters.SP).toBeUndefined();
 
         state.registers.flagZ = false;
-        let nonZerotransition = ret.process(state, [0xc0]);
+        const nonZerotransition = ret.process(state, [0xc0]);
         expect(nonZerotransition).toBeDefined();
         expect(nonZerotransition.newRegisters.PC).toBe(0x1234);
         expect(nonZerotransition.newRegisters.SP).toBe(0x2347);
 
-        let assembler = ret.createAssembler();
+        const assembler = ret.createAssembler();
 
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');

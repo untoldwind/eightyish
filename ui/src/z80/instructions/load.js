@@ -2,7 +2,7 @@ import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction';
 import WordValueToRegisterInstruction from './WordValueToRegisterInstruction';
 import RegisterToRegisterInstruction from './RegisterToRegisterInstruction';
 import PointerToRegisterInstruction from './PointerToRegisterInstruction';
-import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
+import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction';
 
 import Instruction from './Instruction';
 import Transition from '../Transition';
@@ -17,25 +17,25 @@ class LoadMemoryToRegister extends Instruction {
     }
 
     createAssembler(to, from) {
-        var labelOrAddress = this.argumentPattern[1].extractValue(from);
+        const labelOrAddress = this.argumentPattern[1].extractValue(from);
         return {
             type: 'instruction',
             assembler: `LOAD\t${this.to} <- (${labelOrAddress})`,
             opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
             size: this.size
-        }
+        };
     }
 
     process(state, pcMem) {
-        let offset = this.opcodes.length;
+        const offset = this.opcodes.length;
         if (this.byte) {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
-                withByteRegisterAndFlags(this.to, state.getMemoryByte((pcMem[offset] << 8) | pcMem[offset + 1]))
+                withByteRegisterAndFlags(this.to, state.getMemoryByte((pcMem[offset] << 8) | pcMem[offset + 1]));
         } else {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
-                withWordRegister(this.to, state.getMemoryWord((pcMem[offset] << 8) | pcMem[offset + 1]))
+                withWordRegister(this.to, state.getMemoryWord((pcMem[offset] << 8) | pcMem[offset + 1]));
         }
     }
 }
@@ -48,25 +48,25 @@ class LoadRegisterToMemory extends Instruction {
     }
 
     createAssembler(to) {
-        var labelOrAddress = this.argumentPattern[0].extractValue(to);
+        const labelOrAddress = this.argumentPattern[0].extractValue(to);
         return {
             type: 'instruction',
             assembler: `LOAD\t(${labelOrAddress}) <- ${this.from}`,
             opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
             size: this.size
-        }
+        };
     }
 
     process(state, pcMem) {
-        let offset = this.opcodes.length;
+        const offset = this.opcodes.length;
         if (this.byte) {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
-                withByteAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from])
+                withByteAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from]);
         } else {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
-                withWordAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from])
+                withWordAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from]);
         }
     }
 }

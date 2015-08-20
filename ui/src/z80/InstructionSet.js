@@ -1,6 +1,7 @@
 import add_instructions from './instructions/add';
 import and_instructions from './instructions/and';
 import core_instructions from './instructions/core';
+import comp_instructions from './instructions/comp';
 import call_instructions from './instructions/call';
 import dec_instructions from './instructions/dec';
 import inc_instructions from './instructions/inc';
@@ -11,11 +12,12 @@ import stack_instructions from './instructions/stack';
 
 import {ArgumentPattern} from './instructions/ArgumentPatterns';
 
-let instructions = [].concat(
+export const INSTRUCTIONS = [].concat(
     add_instructions,
     and_instructions,
     core_instructions,
     call_instructions,
+    comp_instructions,
     dec_instructions,
     inc_instructions,
     jump_instructions,
@@ -23,12 +25,12 @@ let instructions = [].concat(
     sub_instructions,
     stack_instructions);
 
-let parseTree = {};
+const parseTree = {};
 
-let opcodes = [];
+const opcodes = [];
 
-instructions.forEach(instruction => {
-    let name = instruction.name;
+INSTRUCTIONS.forEach(instruction => {
+    const name = instruction.name;
     let variants = parseTree[name];
 
     if (variants == undefined) {
@@ -46,12 +48,12 @@ instructions.forEach(instruction => {
         }
         extended[instruction.opcode & 0xff] = instruction;
     } else {
-        opcodes[instruction.opcode] = instruction
+        opcodes[instruction.opcode] = instruction;
     }
 });
 
 export function process(state) {
-    let pcMem = state.getMemory(state.registers.PC, 4);
+    const pcMem = state.getMemory(state.registers.PC, 4);
 
     if (pcMem.length > 0) {
         let instruction = opcodes[pcMem[0]];
@@ -60,33 +62,32 @@ export function process(state) {
             if (pcMem.length > 1) {
                 instruction = instruction[pcMem[1]];
             } else {
-                instruction = undefined
+                instruction = undefined;
             }
         }
         if (instruction != undefined) {
-            console.log(instruction);
-            return instruction.process(state, pcMem)
+            return instruction.process(state, pcMem);
         }
     }
 
-    return undefined
+    return undefined;
 }
 
 export function parseLine(line) {
-    let trimmed = line.trim();
+    const trimmed = line.trim();
     if (trimmed.length == 0) {
-        return createBlank()
+        return createBlank();
     }
     if (trimmed.startsWith('.') && trimmed.endsWith(':')) {
-        return createLabel(trimmed.substr(0, trimmed.length - 1))
+        return createLabel(trimmed.substr(0, trimmed.length - 1));
     }
-    var instruction = createInstruction(line.trim().replace(/<\-|,/, ' ').split(/\s+/));
+    const instruction = createInstruction(line.trim().replace(/<\-|,/, ' ').split(/\s+/));
 
     if (instruction != undefined) {
         return instruction;
     }
 
-    return createError(line)
+    return createError(line);
 }
 
 export function createBlank() {
@@ -95,17 +96,16 @@ export function createBlank() {
         assembler: '  ',
         opcodes: (labels) => [],
         size: 0
-
-    }
+    };
 }
 
 export function createError(line) {
     return {
         type: 'error',
-        assembler: `<span style="color: red">${line}</span>`,
+        assembler: line,
         opcodes: (labels) => [],
         size: 0
-    }
+    };
 }
 
 export function createLabel(label) {
@@ -115,23 +115,23 @@ export function createLabel(label) {
         opcodes: (labels) => [],
         updateLabel: (offset, labels) => labels[label] = offset,
         size: 0
-    }
+    };
 }
 
 export function createInstruction(elements) {
     if (!elements instanceof Array || elements.length == 0) {
         return undefined;
     }
-    let variants = parseTree[elements[0].toUpperCase()];
+    const variants = parseTree[elements[0].toUpperCase()];
 
     if (variants == undefined) {
         return undefined;
     }
 
-    for (var variant of variants) {
-        var argumentPattern = variant.argumentPattern;
+    for (let variant of variants) {
+        const argumentPattern = variant.argumentPattern;
         if (argumentPattern.length == elements.length - 1) {
-            for (var i = 0; i < argumentPattern.length; i++) {
+            for (let i = 0; i < argumentPattern.length; i++) {
                 if (argumentPattern[i] instanceof ArgumentPattern && !argumentPattern[i].matches(elements[i + 1])) {
                     break;
                 } else if (typeof argumentPattern[i] == 'string' && argumentPattern[i] != elements[i + 1].toUpperCase()) {

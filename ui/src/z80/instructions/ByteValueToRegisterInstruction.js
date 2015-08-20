@@ -11,20 +11,20 @@ export default class ByteValueToRegisterInstruction extends Instruction {
     }
 
     createAssembler(to, num) {
-        let value = this.argumentPattern[1].extractValue(num);
+        const value = this.argumentPattern[1].extractValue(num);
         return {
             type: 'instruction',
             assembler: `${this.name}\t${this.to} <- ${value}`,
             opcodes: (labels) => this.opcodes.concat(value),
             size: this.size
-        }
+        };
     }
 
     process(state, pcMem) {
-        let offset = this.opcodes.length;
-        let result = this.operation(state.registers[this.to], pcMem[offset]);
+        const offset = this.opcodes.length;
+        const result = this.operation(state.registers[this.to], pcMem[offset]);
         return new Transition().
             withWordRegister('PC', state.registers.PC + this.size).
-            withByteRegisterAndFlags(this.to, result)
+            withByteRegisterAndFlags(this.to, result);
     }
 }

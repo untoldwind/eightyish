@@ -18,7 +18,7 @@ function getCurrentState() {
         videoHeight: machineState.videoHeight,
         videoMemory: machineState.videoMemory,
         sourceCode: machineState.sourceCode
-    }
+    };
 }
 
 export default class MachineView extends React.Component {
@@ -28,15 +28,15 @@ export default class MachineView extends React.Component {
     }
 
     componentDidMount() {
-        machineState.addChangeListener(this.onChange.bind(this))
+        machineState.addChangeListener(this.onChange.bind(this));
     }
 
     componentWillUnmount() {
-        machineState.removeChangeListener(this.onChange.bind(this))
+        machineState.removeChangeListener(this.onChange.bind(this));
     }
 
     onChange() {
-        this.setState(getCurrentState())
+        this.setState(getCurrentState());
     }
 
     render() {
@@ -59,7 +59,7 @@ export default class MachineView extends React.Component {
                 {this.renderMemory()}
                 {this.renderVideoMemory()}
             </div>
-        )
+        );
     }
 
     renderVideo() {
@@ -84,7 +84,7 @@ export default class MachineView extends React.Component {
                                 segmentOffset={0} />
                 </div>
             </div>
-        )
+        );
     }
 
     renderVideoMemory() {
@@ -99,7 +99,7 @@ export default class MachineView extends React.Component {
                                     segmentOffset={this.state.videoOffset}                              />
                     </div>
                 </div>
-            )
+            );
         }
     }
 }

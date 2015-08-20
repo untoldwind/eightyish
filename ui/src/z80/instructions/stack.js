@@ -13,7 +13,7 @@ class Push extends Instruction {
             assembler: `PUSH\t${register}`,
             opcodes: (labels) => [this.opcode],
             size: 1
-        }
+        };
     }
 }
 
@@ -28,7 +28,7 @@ class Pop extends Instruction {
             assembler: `POP\t${register}`,
             opcodes: (labels) => [this.opcode],
             size: 1
-        }
+        };
     }
 }
 

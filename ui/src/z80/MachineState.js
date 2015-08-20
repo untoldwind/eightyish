@@ -81,7 +81,6 @@ class MachineState extends EventEmitter {
 
     stepForward() {
         let transition = InstructionSet.process(this);
-        console.log(transition);
         if (transition != undefined) {
             this.transitions.push(transition);
             transition.perform(this);
@@ -157,7 +156,7 @@ class MachineState extends EventEmitter {
     }
 
     get hasVideo() {
-        return this.videoMemory != undefined
+        return this.videoMemory != undefined;
     }
 
     emitChange() {
@@ -196,4 +195,4 @@ class MachineState extends EventEmitter {
     }
 }
 
-export default new MachineState(1024, 128, 64)
+export default new MachineState(1024, 128, 64);

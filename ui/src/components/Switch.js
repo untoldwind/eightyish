@@ -2,15 +2,15 @@ import React from 'react';
 
 export default class Switch extends React.Component {
     componentDidMount() {
-        this.updateWidths()
+        this.updateWidths();
     }
 
     componentDidUpdate() {
-        this.updateWidths()
+        this.updateWidths();
     }
 
     updateWidths() {
-        let width = React.findDOMNode(this.refs.label).offsetWidth;
+        const width = React.findDOMNode(this.refs.label).offsetWidth;
 
         React.findDOMNode(this.refs.label).style.width = width + 'px';
         React.findDOMNode(this.refs.on).style.width = width + 'px';
@@ -44,7 +44,7 @@ export default class Switch extends React.Component {
     }
 
     toggle() {
-        this.props.valueLink.requestChange(!this.props.valueLink.value)
+        this.props.valueLink.requestChange(!this.props.valueLink.value);
     }
 }
 

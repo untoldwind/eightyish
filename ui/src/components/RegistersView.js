@@ -39,15 +39,15 @@ export default class RegistersView extends React.Component {
     }
 
     renderByteRegisters(highRegister, lowRegister) {
-        let highValueLink = {
+        const highValueLink = {
             value: this.props.registers[highRegister],
             requestChange: value => MachineActions.transition({[highRegister]: value})
         };
-        let lowValueLink = {
+        const lowValueLink = {
             value: this.props.registers[lowRegister],
             requestChange: value => MachineActions.transition({[lowRegister]: value})
         };
-        let valueLink = {
+        const valueLink = {
             value: this.props.registers[highRegister + lowRegister],
             requestChange: value => MachineActions.transition({[highRegister + lowRegister]: value})
         };
@@ -75,11 +75,11 @@ export default class RegistersView extends React.Component {
                 <EditableCell activeClassName="form-control input-sm"
                               valueLink={formats.byteValueLink(2, lowValueLink)}/>
             </tr>
-        ]
+        ];
     }
 
     renderWordRegister(register, className, flagName, flagDescription) {
-        let valueLink = {
+        const valueLink = {
             value: this.props.registers[register],
             requestChange: value => MachineActions.transition({[register]: value})
         };

@@ -25,12 +25,12 @@ export default class MemoryRow extends React.Component {
         return {
             value: formats.byte2hex(this.props.memory[i + this.props.offset]),
             requestChange: str => {
-                let newValue = parseInt(str, 16);
+                const newValue = parseInt(str, 16);
                 if (typeof newValue == 'number' && newValue >= 0 && newValue <= 255) {
                     MachineActions.transition({}, this.props.segmentOffset + this.props.offset + i, [newValue]);
                 }
             }
-        }
+        };
     }
 
     mark(address) {

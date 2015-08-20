@@ -7,9 +7,9 @@ export default class EditorMemory extends React.Component {
         return (
             <ul className="assembler">
                 {this.props.sourceCode.memoryDump.map((line, index) => {
-                    let className = line.offset == this.props.pc ? 'bg-primary': '';
+                    const className = line.offset == this.props.pc ? 'bg-primary': '';
 
-                    return <li className={className} key={index}>{formats.word2hex(line.offset)}: {line.dump}</li>
+                    return <li className={className} key={index}>{formats.word2hex(line.offset)}: {line.dump}</li>;
                 })}
             </ul>
         );

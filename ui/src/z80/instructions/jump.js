@@ -1,5 +1,5 @@
 import Instruction from './Instruction';
-import ConditionalInstruction from './ConditionalInstruction'
+import ConditionalInstruction from './ConditionalInstruction';
 import Transition from '../Transition';
 
 import * as args from './ArgumentPatterns';
@@ -20,7 +20,7 @@ class Jump extends Instruction {
 
     process(state, pcMem) {
         return new Transition().
-            withWordRegister('PC', (pcMem[1] << 8) | pcMem[2])
+            withWordRegister('PC', (pcMem[1] << 8) | pcMem[2]);
     }
 }
 
@@ -43,10 +43,10 @@ class ConditionalJump extends ConditionalInstruction {
     process(state, pcMem) {
         if (this.isConditionStasified(state)) {
             return new Transition().
-                withWordRegister('PC', (pcMem[1] << 8) | pcMem[2])
+                withWordRegister('PC', (pcMem[1] << 8) | pcMem[2]);
         } else {
             return new Transition().
-                withWordRegister('PC', state.registers.PC + this.size)
+                withWordRegister('PC', state.registers.PC + this.size);
         }
     }
 }

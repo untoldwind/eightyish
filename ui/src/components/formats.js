@@ -36,15 +36,15 @@ function wordRadixLength(radix) {
 }
 
 export function byteValueLink(radix, valueLink) {
-    var prefix = radixPrefix(radix);
-    var value = valueLink.value.toString(radix);
-    var length = byteRadixLength(radix);
-    var fill = prefix.length > 0 ? '0' : ' ';
+    const prefix = radixPrefix(radix);
+    const value = valueLink.value.toString(radix);
+    const length = byteRadixLength(radix);
+    const fill = prefix.length > 0 ? '0' : ' ';
 
     return {
         value: prefix + repeat(fill, length - value.length) + value,
         requestChange: str => {
-            var newValue;
+            let newValue;
 
             if (str.startsWith(prefix)) {
                 newValue = parseInt(str.substring(prefix.length), radix);
@@ -55,19 +55,19 @@ export function byteValueLink(radix, valueLink) {
                 valueLink.requestChange(newValue);
             }
         }
-    }
+    };
 }
 
 export function wordValueLink(radix, valueLink) {
-    var prefix = radixPrefix(radix);
-    var value = valueLink.value.toString(radix);
-    var length = wordRadixLength(radix);
-    var fill = prefix.length > 0 ? '0' : ' ';
+    const prefix = radixPrefix(radix);
+    const value = valueLink.value.toString(radix);
+    const length = wordRadixLength(radix);
+    const fill = prefix.length > 0 ? '0' : ' ';
 
     return {
         value: prefix + repeat(fill, length - value.length) + value,
         requestChange: str => {
-            var newValue;
+            let newValue;
 
             if (str.startsWith(prefix)) {
                 newValue = parseInt(str.substring(prefix.length), radix);
@@ -78,14 +78,14 @@ export function wordValueLink(radix, valueLink) {
                 valueLink.requestChange(newValue);
             }
         }
-    }
+    };
 }
 
 export function byte2bin(v) {
     if (v == undefined) {
         return '';
     }
-    var bin = v.toString(2);
+    const bin = v.toString(2);
 
     return repeat('0', 8 - bin.length) + bin;
 }
@@ -94,7 +94,7 @@ export function byte2hex(v) {
     if (v == undefined) {
         return '';
     }
-    var hex = v.toString(16);
+    const hex = v.toString(16);
 
     return repeat('0', 2 - hex.length) + hex;
 }
@@ -103,7 +103,7 @@ export function word2hex(v) {
     if (v == undefined) {
         return '';
     }
-    var hex = v.toString(16);
+    const hex = v.toString(16);
 
     return repeat('0', 4 - hex.length) + hex;
 }

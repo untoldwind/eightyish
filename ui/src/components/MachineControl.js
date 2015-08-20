@@ -11,7 +11,7 @@ export default class MachineControl extends React.Component {
     }
 
     render() {
-        let hasVideoLink = {
+        const hasVideoLink = {
             value: this.props.hasVideo,
             requestChange: (value) => MachineActions.toggleVideo(value)
         };
