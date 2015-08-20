@@ -14,12 +14,12 @@ class CompWithRegister extends Instruction {
         return {
             type: 'instruction',
             assembler: `COMP\t${to}, ${from}}`,
-            opcodes: (labels) => this.opcodes,
+            opcodes: () => this.opcodes,
             size: this.size
         };
     }
 
-    process(state, pcMem) {
+    process(state) {
         return new Transition().
             withWordRegister('PC', state.registers.PC + this.size).
             withFlags(state.registers[this.to] - state.registers[this.from]);
@@ -27,7 +27,7 @@ class CompWithRegister extends Instruction {
 }
 
 class CompWithValue extends Instruction {
-    constructor(opcode, to, from) {
+    constructor(opcode, to) {
         super(opcode, 'COMP', [to, args.ByteValuePattern], 1);
         this.to = to;
     }
@@ -37,7 +37,7 @@ class CompWithValue extends Instruction {
         return {
             type: 'instruction',
             assembler: `COMP\t${to}, ${value}}`,
-            opcodes: (labels) => this.opcodes,
+            opcodes: () => this.opcodes,
             size: this.size
         };
     }

@@ -1,7 +1,5 @@
 import * as InstructionSet from './InstructionSet';
 
-import appDispatcher from '../dispatcher/AppDispatcher';
-import * as AppConstants from '../dispatcher/AppConstants';
 import * as formats from '../components/formats';
 
 class Labels {
@@ -13,19 +11,20 @@ class Labels {
             if (labelOfAddress.startsWith('.')) {
                 const address = this[labelOfAddress];
 
-                if (address != undefined) {
+                if (address) {
                     return [(address >> 8) & 0xff, address & 0xff];
                 }
             } else {
                 const address = parseInt(labelOfAddress, 16);
 
-                if (address != undefined) {
+                if (address) {
                     return [(address >> 8) & 0xff, address & 0xff];
                 }
             }
+            return 0;
+        default:
+            return 0;
         }
-
-        return 0;
     }
 }
 
@@ -41,13 +40,13 @@ export default class SourceCode {
         this.instructions = [];
         this.label = new Labels();
 
-        if (lines == undefined) {
+        if (!lines) {
             return;
         }
         lines.forEach(line => this.instructions.push(InstructionSet.parseLine(line)));
         let offset = 0;
         for (let instruction of this.instructions) {
-            if (instruction.updateLabel != undefined) {
+            if (instruction.updateLabel) {
                 instruction.updateLabel(offset, this.labels);
             }
             offset += instruction.size;
@@ -75,7 +74,7 @@ export default class SourceCode {
         for (let instruction of this.instructions) {
             const opcodes = instruction.opcodes(this.labels);
 
-            lines.push({offset: offset, dump: opcodes.map(opcode => formats.byte2hex(opcode)).join(' ')});
+            lines.push({offset: offset, dump: opcodes.map(formats.byte2hex).join(' ')});
             offset += opcodes.length;
         }
 

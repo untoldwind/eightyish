@@ -1,11 +1,11 @@
 jest.autoMockOff();
 
-const and_instructions = require('../and');
-const byOpcode = new Map(and_instructions.map(i => [i.opcode, i]));
+const AndInstructions = require('../and');
+const byOpcode = new Map(AndInstructions.map(i => [i.opcode, i]));
 
 describe('And Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(and_instructions.length);
+        expect(byOpcode.size).toBe(AndInstructions.length);
     });
 
     it('should support AND A, B', () => {
@@ -35,7 +35,7 @@ describe('And Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('AND\tA <- B');
-        expect(assembler.opcodes(undefined)).toEqual([0xa0]);
+        expect(assembler.opcodes(null)).toEqual([0xa0]);
         expect(assembler.size).toBe(1);
     });
 
@@ -65,7 +65,7 @@ describe('And Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('AND\tA <- 135');
-        expect(assembler.opcodes(undefined)).toEqual([0xe6, 0x87]);
+        expect(assembler.opcodes(null)).toEqual([0xe6, 0x87]);
         expect(assembler.size).toBe(2);
     });
 
@@ -98,7 +98,7 @@ describe('And Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('AND\tA <- (HL)');
-        expect(assembler.opcodes(undefined)).toEqual([0xa6]);
+        expect(assembler.opcodes(null)).toEqual([0xa6]);
         expect(assembler.size).toBe(1);
     });
 
@@ -131,7 +131,7 @@ describe('And Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('AND\tA <- (IX+10)');
-        expect(assembler.opcodes(undefined)).toEqual([0xdd, 0xa6, 0x0a]);
+        expect(assembler.opcodes(null)).toEqual([0xdd, 0xa6, 0x0a]);
         expect(assembler.size).toBe(3);
     });
 });

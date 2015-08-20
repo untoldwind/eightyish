@@ -1,29 +1,29 @@
-import add_instructions from './instructions/add';
-import and_instructions from './instructions/and';
-import core_instructions from './instructions/core';
-import comp_instructions from './instructions/comp';
-import call_instructions from './instructions/call';
-import dec_instructions from './instructions/dec';
-import inc_instructions from './instructions/inc';
-import jump_instructions from './instructions/jump';
-import load_instructions from './instructions/load';
-import sub_instructions from './instructions/sub';
-import stack_instructions from './instructions/stack';
+import AddInstructions from './instructions/add';
+import AndInstructions from './instructions/and';
+import CoreInstructions from './instructions/core';
+import CompInstructions from './instructions/comp';
+import CallInstructions from './instructions/call';
+import DecInstructions from './instructions/dec';
+import IncInstructions from './instructions/inc';
+import JumpInstructions from './instructions/jump';
+import LoadInstructions from './instructions/load';
+import SubInstructions from './instructions/sub';
+import StackInstructions from './instructions/stack';
 
 import {ArgumentPattern} from './instructions/ArgumentPatterns';
 
 export const INSTRUCTIONS = [].concat(
-    add_instructions,
-    and_instructions,
-    core_instructions,
-    call_instructions,
-    comp_instructions,
-    dec_instructions,
-    inc_instructions,
-    jump_instructions,
-    load_instructions,
-    sub_instructions,
-    stack_instructions);
+    AddInstructions,
+    AndInstructions,
+    CoreInstructions,
+    CallInstructions,
+    CompInstructions,
+    DecInstructions,
+    IncInstructions,
+    JumpInstructions,
+    LoadInstructions,
+    SubInstructions,
+    StackInstructions);
 
 const parseTree = {};
 
@@ -33,7 +33,7 @@ INSTRUCTIONS.forEach(instruction => {
     const name = instruction.name;
     let variants = parseTree[name];
 
-    if (variants == undefined) {
+    if (!variants) {
         variants = [];
         parseTree[name] = variants;
     }
@@ -42,7 +42,7 @@ INSTRUCTIONS.forEach(instruction => {
     if (instruction.opcode >= 256) {
         let extended = opcodes[(instruction.opcode >> 8) & 0xff];
 
-        if (extended == undefined) {
+        if (!extended) {
             extended = [];
             opcodes[(instruction.opcode >> 8) & 0xff] = extended;
         }
@@ -62,39 +62,22 @@ export function process(state) {
             if (pcMem.length > 1) {
                 instruction = instruction[pcMem[1]];
             } else {
-                instruction = undefined;
+                instruction = null;
             }
         }
-        if (instruction != undefined) {
+        if (instruction) {
             return instruction.process(state, pcMem);
         }
     }
 
-    return undefined;
-}
-
-export function parseLine(line) {
-    const trimmed = line.trim();
-    if (trimmed.length == 0) {
-        return createBlank();
-    }
-    if (trimmed.startsWith('.') && trimmed.endsWith(':')) {
-        return createLabel(trimmed.substr(0, trimmed.length - 1));
-    }
-    const instruction = createInstruction(line.trim().replace(/<\-|,/, ' ').split(/\s+/));
-
-    if (instruction != undefined) {
-        return instruction;
-    }
-
-    return createError(line);
+    return null;
 }
 
 export function createBlank() {
     return {
         type: 'blank',
         assembler: '  ',
-        opcodes: (labels) => [],
+        opcodes: () => [],
         size: 0
     };
 }
@@ -103,7 +86,7 @@ export function createError(line) {
     return {
         type: 'error',
         assembler: line,
-        opcodes: (labels) => [],
+        opcodes: () => [],
         size: 0
     };
 }
@@ -112,36 +95,54 @@ export function createLabel(label) {
     return {
         type: 'jumplabel',
         assembler: `${label}:`,
-        opcodes: (labels) => [],
+        opcodes: () => [],
         updateLabel: (offset, labels) => labels[label] = offset,
         size: 0
     };
 }
 
 export function createInstruction(elements) {
-    if (!elements instanceof Array || elements.length == 0) {
-        return undefined;
+    if (!elements instanceof Array || elements.length === 0) {
+        return null;
     }
     const variants = parseTree[elements[0].toUpperCase()];
 
-    if (variants == undefined) {
-        return undefined;
+    if (!variants) {
+        return null;
     }
 
     for (let variant of variants) {
         const argumentPattern = variant.argumentPattern;
-        if (argumentPattern.length == elements.length - 1) {
-            for (let i = 0; i < argumentPattern.length; i++) {
+        if (argumentPattern.length === elements.length - 1) {
+            let i;
+            for (i = 0; i < argumentPattern.length; i++) {
                 if (argumentPattern[i] instanceof ArgumentPattern && !argumentPattern[i].matches(elements[i + 1])) {
                     break;
-                } else if (typeof argumentPattern[i] == 'string' && argumentPattern[i] != elements[i + 1].toUpperCase()) {
+                } else if (typeof argumentPattern[i] === 'string' && argumentPattern[i] !== elements[i + 1].toUpperCase()) {
                     break;
                 }
             }
-            if (i == argumentPattern.length) {
+            if (i === argumentPattern.length) {
                 return variant.createAssembler(... elements.slice(1));
             }
         }
     }
-    return undefined;
+    return null;
+}
+
+export function parseLine(line) {
+    const trimmed = line.trim();
+    if (trimmed.length === 0) {
+        return createBlank();
+    }
+    if (trimmed.startsWith('.') && trimmed.endsWith(':')) {
+        return createLabel(trimmed.substr(0, trimmed.length - 1));
+    }
+    const instruction = createInstruction(line.trim().replace(/<\-|,/, ' ').split(/\s+/));
+
+    if (instruction) {
+        return instruction;
+    }
+
+    return createError(line);
 }

@@ -1,7 +1,5 @@
 import Instruction from './Instruction';
 
-import * as args from './ArgumentPatterns';
-
 class Push extends Instruction {
     constructor(opcode, register) {
         super(opcode, 'PUSH', [register]);
@@ -11,8 +9,8 @@ class Push extends Instruction {
         return {
             type: 'instruction',
             assembler: `PUSH\t${register}`,
-            opcodes: (labels) => [this.opcode],
-            size: 1
+            opcodes: () => this.opcodes,
+            size: this.size
         };
     }
 }
@@ -26,8 +24,8 @@ class Pop extends Instruction {
         return {
             type: 'instruction',
             assembler: `POP\t${register}`,
-            opcodes: (labels) => [this.opcode],
-            size: 1
+            opcodes: () => this.opcodes,
+            size: this.size
         };
     }
 }

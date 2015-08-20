@@ -41,13 +41,12 @@ class ConditionalJump extends ConditionalInstruction {
     }
 
     process(state, pcMem) {
-        if (this.isConditionStasified(state)) {
+        if (this.isConditionSatisfied(state)) {
             return new Transition().
                 withWordRegister('PC', (pcMem[1] << 8) | pcMem[2]);
-        } else {
-            return new Transition().
-                withWordRegister('PC', state.registers.PC + this.size);
         }
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size);
     }
 }
 

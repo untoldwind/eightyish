@@ -1,11 +1,11 @@
 jest.autoMockOff();
 
-const jump_instructions = require('../jump');
-const byOpcode = new Map(jump_instructions.map(i => [i.opcode, i]));
+const JumpInstructions = require('../jump');
+const byOpcode = new Map(JumpInstructions.map(i => [i.opcode, i]));
 
 describe('Call Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(jump_instructions.length);
+        expect(byOpcode.size).toBe(JumpInstructions.length);
     });
 
     it('should support JUMP address', () => {
@@ -57,7 +57,7 @@ describe('Call Instruction', () => {
         expect(nonZeroTransition).toBeDefined();
         expect(nonZeroTransition.newRegisters.PC).toBe(0xabcd);
 
-        const assembler = jumpAddress.createAssembler(undefined, '.label');
+        const assembler = jumpAddress.createAssembler(null, '.label');
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         };

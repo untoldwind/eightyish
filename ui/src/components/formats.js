@@ -51,7 +51,7 @@ export function byteValueLink(radix, valueLink) {
             } else {
                 newValue = parseInt(str, radix);
             }
-            if (typeof newValue == 'number' && newValue >= 0 && newValue <= 255) {
+            if (typeof newValue === 'number' && newValue >= 0 && newValue <= 255) {
                 valueLink.requestChange(newValue);
             }
         }
@@ -74,7 +74,7 @@ export function wordValueLink(radix, valueLink) {
             } else {
                 newValue = parseInt(str, radix);
             }
-            if (typeof newValue == 'number' && newValue >= 0 && newValue <= 65355) {
+            if (typeof newValue === 'number' && newValue >= 0 && newValue <= 65355) {
                 valueLink.requestChange(newValue);
             }
         }
@@ -82,7 +82,7 @@ export function wordValueLink(radix, valueLink) {
 }
 
 export function byte2bin(v) {
-    if (v == undefined) {
+    if (typeof v !== 'number') {
         return '';
     }
     const bin = v.toString(2);
@@ -91,7 +91,7 @@ export function byte2bin(v) {
 }
 
 export function byte2hex(v) {
-    if (v == undefined) {
+    if (typeof v !== 'number') {
         return '';
     }
     const hex = v.toString(16);
@@ -100,7 +100,7 @@ export function byte2hex(v) {
 }
 
 export function word2hex(v) {
-    if (v == undefined) {
+    if (typeof v !== 'number') {
         return '';
     }
     const hex = v.toString(16);

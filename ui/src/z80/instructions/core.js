@@ -11,13 +11,13 @@ class Halt extends Instruction {
         return {
             type: 'instruction',
             assembler: 'HALT',
-            opcodes: (labels) => [this.opcode],
+            opcodes: () => [this.opcode],
             size: 1
         };
     }
 
-    process(state, pcMem) {
-        return undefined;
+    process() {
+        return null;
     }
 }
 
@@ -30,12 +30,12 @@ class Nop extends Instruction {
         return {
             type: 'instruction',
             assembler: 'NOP',
-            opcodes: (labels) => [this.opcode],
+            opcodes: () => [this.opcode],
             size: 1
         };
     }
 
-    process(state, pcMem) {
+    process(state) {
         return new Transition({PC: state.registers.PC + 1});
     }
 }

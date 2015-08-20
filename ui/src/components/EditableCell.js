@@ -14,9 +14,9 @@ export default class EditableCell extends React.Component {
     }
 
     finishEditing() {
-        if (this.props.text != this.state.text) {
+        if (this.props.valueLink.value !== this.state.text) {
             this.commitEditing();
-        } else if (this.props.text === this.state.text) {
+        } else if (this.props.valueLink.value === this.state.text) {
             this.cancelEditing();
         }
     }
@@ -49,7 +49,7 @@ export default class EditableCell extends React.Component {
         if (this.state.editing && !prevState.editing) {
             inputElem.focus();
             inputElem.setSelectionRange(0, inputElem.value.length);
-        } else if (this.state.editing && prevProps.text != this.props.text) {
+        } else if (this.state.editing && prevProps.valueLink.value !== this.props.valueLink.value) {
             this.finishEditing();
         }
     }
@@ -64,23 +64,22 @@ export default class EditableCell extends React.Component {
                     {this.props.valueLink.value}
                 </td>
             );
-        } else {
-            return (
-                <td className={this.props.className}
-                    onClick={this.startEditing.bind(this)}
-                    rowSpan={this.props.rowSpan}
-                    style={this.props.style}>
-                    <input className={this.props.activeClassName}
-                           defaultValue={this.state.text}
-                           onBlur={this.finishEditing.bind(this)}
-                           onChange={this.textChanged.bind(this)}
-                           onKeyDown={this.keyDown.bind(this)}
-                           onReturn={this.finishEditing.bind(this)}
-                           ref="input"
-                           size={this.props.valueLink.value.length}/>
-                </td>
-            );
         }
+        return (
+            <td className={this.props.className}
+                onClick={this.startEditing.bind(this)}
+                rowSpan={this.props.rowSpan}
+                style={this.props.style}>
+                <input className={this.props.activeClassName}
+                       defaultValue={this.state.text}
+                       onBlur={this.finishEditing.bind(this)}
+                       onChange={this.textChanged.bind(this)}
+                       onKeyDown={this.keyDown.bind(this)}
+                       onReturn={this.finishEditing.bind(this)}
+                       ref="input"
+                       size={this.props.valueLink.value.length}/>
+            </td>
+        );
     }
 }
 

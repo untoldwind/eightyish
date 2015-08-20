@@ -1,7 +1,5 @@
 import Instruction from './Instruction';
 
-import * as args from './ArgumentPatterns';
-
 class SubRegisterToRegister extends Instruction {
     constructor(opcode, to, from) {
         super(opcode, 'SUB', [to, from]);
@@ -13,12 +11,12 @@ class SubRegisterToRegister extends Instruction {
         return {
             type: 'instruction',
             assembler: `SUB\t$(to} <- ${from}`,
-            opcodes: (labels) => [this.opcode],
-            size: 1
+            opcodes: () => this.opcodes,
+            size: this.size
         };
     }
 
-    process(state, pcMem) {
+    process(state) {
         return new Transition().
             withWordRegister('PC', state.registers.PC + this.size).
             withByteRegisterAndFlags(this.to, state.registers[this.to] - state.registers[this.from]);

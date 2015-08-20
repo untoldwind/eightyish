@@ -26,7 +26,7 @@ export default class MemoryRow extends React.Component {
             value: formats.byte2hex(this.props.memory[i + this.props.offset]),
             requestChange: str => {
                 const newValue = parseInt(str, 16);
-                if (typeof newValue == 'number' && newValue >= 0 && newValue <= 255) {
+                if (typeof newValue === 'number' && newValue >= 0 && newValue <= 255) {
                     MachineActions.transition({}, this.props.segmentOffset + this.props.offset + i, [newValue]);
                 }
             }
@@ -34,15 +34,15 @@ export default class MemoryRow extends React.Component {
     }
 
     mark(address) {
-        if (address == this.props.registers.PC) {
+        if (address === this.props.registers.PC) {
             return 'bg-primary';
-        } else if (address == this.props.registers.SP) {
+        } else if (address === this.props.registers.SP) {
             return 'bg-danger';
-        } else if (address == this.props.registers.HL) {
+        } else if (address === this.props.registers.HL) {
             return 'bg-success';
-        } else if (address == this.props.registers.IX) {
+        } else if (address === this.props.registers.IX) {
             return 'bg-info';
-        } else if (address == this.props.registers.IY) {
+        } else if (address === this.props.registers.IY) {
             return 'bg-warning';
         }
         return '';

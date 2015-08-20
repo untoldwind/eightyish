@@ -15,7 +15,7 @@ describe('InstructionSet', () => {
         expect(blank).toBeDefined();
         expect(blank.type).toBe('blank');
         expect(blank.assembler).toBe('  ');
-        expect(blank.opcodes(undefined)).toEqual([]);
+        expect(blank.opcodes(null)).toEqual([]);
         expect(blank.size).toBe(0);
     });
 

@@ -1,11 +1,11 @@
 jest.autoMockOff();
 
-const dec_instructions = require('../dec');
-const byOpcode = new Map(dec_instructions.map(i => [i.opcode, i]));
+const DecInstructions = require('../dec');
+const byOpcode = new Map(DecInstructions.map(i => [i.opcode, i]));
 
 describe('Dec Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(dec_instructions.length);
+        expect(byOpcode.size).toBe(DecInstructions.length);
     });
 
     it('should support DEC A', () => {
@@ -34,7 +34,7 @@ describe('Dec Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('DEC\tA');
-        expect(assembler.opcodes(undefined)).toEqual([0x3d]);
+        expect(assembler.opcodes(null)).toEqual([0x3d]);
         expect(assembler.size).toBe(1);
     });
 
@@ -64,7 +64,7 @@ describe('Dec Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('DEC\tBC');
-        expect(assembler.opcodes(undefined)).toEqual([0x0b]);
+        expect(assembler.opcodes(null)).toEqual([0x0b]);
         expect(assembler.size).toBe(1);
     });
 });

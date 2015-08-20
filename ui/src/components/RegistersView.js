@@ -11,8 +11,8 @@ export default class RegistersView extends React.Component {
             <table className="table table-condensed table-bordered">
                 <thead>
                 <tr>
-                    <th colSpan='4'>8-bit</th>
-                    <th colSpan='3'>16-bit</th>
+                    <th colSpan="4">8-bit</th>
+                    <th colSpan="3">16-bit</th>
                 </tr>
                 <tr>
                     <th></th>
@@ -52,7 +52,7 @@ export default class RegistersView extends React.Component {
             requestChange: value => MachineActions.transition({[highRegister + lowRegister]: value})
         };
         return [
-            <tr key='high'>
+            <tr key="high">
                 <td>{highRegister}</td>
                 <EditableCell activeClassName="form-control input-sm"
                               valueLink={formats.byteValueLink(10, highValueLink)}/>
@@ -60,13 +60,13 @@ export default class RegistersView extends React.Component {
                               valueLink={formats.byteValueLink(16, highValueLink)}/>
                 <EditableCell activeClassName="form-control input-sm"
                               valueLink={formats.byteValueLink(2, highValueLink)}/>
-                <td rowSpan='2' style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
+                <td rowSpan="2" style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
                 <EditableCell activeClassName="form-control input-sm" rowSpan={2} style={{verticalAlign: 'middle'}}
                               valueLink={formats.wordValueLink(10, valueLink)}/>
                 <EditableCell activeClassName="form-control input-sm" rowSpan={2} style={{verticalAlign: 'middle'}}
                               valueLink={formats.wordValueLink(16, valueLink)}/>
             </tr>,
-            <tr key='low'>
+            <tr key="low">
                 <td>{lowRegister}</td>
                 <EditableCell activeClassName="form-control input-sm"
                               valueLink={formats.byteValueLink(10, lowValueLink)}/>
@@ -86,7 +86,7 @@ export default class RegistersView extends React.Component {
         let flag;
         if (flagName) {
             flag = (
-                <td colSpan='4'>
+                <td colSpan="4">
                 <span className={this.props.registers[flagName] ? 'label label-success' : 'label label-default'}>
                     {flagDescription.substring(0, 1)}
                 </span>
@@ -94,7 +94,7 @@ export default class RegistersView extends React.Component {
                 </td>
             );
         } else {
-            flag = <td colSpan='4'>Flags</td>;
+            flag = <td colSpan="4">Flags</td>;
         }
         return (
             <tr>

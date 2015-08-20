@@ -21,7 +21,7 @@ export default class MachineControl extends React.Component {
                     <button className="btn btn-danger" onClick={MachineActions.reset}>Reset</button>
                 </div>
                 <div className="col-md-2">
-                    <Switch label='Video' valueLink={hasVideoLink}/>
+                    <Switch label="Video" valueLink={hasVideoLink}/>
                 </div>
                 <div className="col-md-3 btn-group">
                     <button className="btn btn-danger" onClick={MachineActions.moveToSBegin}>

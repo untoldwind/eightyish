@@ -1,11 +1,11 @@
 jest.autoMockOff();
 
-const inc_instructions = require('../inc');
-const byOpcode = new Map(inc_instructions.map(i => [i.opcode, i]));
+const IncInstructions = require('../inc');
+const byOpcode = new Map(IncInstructions.map(i => [i.opcode, i]));
 
 describe('Inc Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(inc_instructions.length);
+        expect(byOpcode.size).toBe(IncInstructions.length);
     });
 
     it('should support INC A', () => {
@@ -34,7 +34,7 @@ describe('Inc Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('INC\tA');
-        expect(assembler.opcodes(undefined)).toEqual([0x3c]);
+        expect(assembler.opcodes(null)).toEqual([0x3c]);
         expect(assembler.size).toBe(1);
     });
 
@@ -64,7 +64,7 @@ describe('Inc Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('INC\tBC');
-        expect(assembler.opcodes(undefined)).toEqual([0x03]);
+        expect(assembler.opcodes(null)).toEqual([0x03]);
         expect(assembler.size).toBe(1);
     });
 });

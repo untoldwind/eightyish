@@ -1,5 +1,5 @@
 export class ArgumentPattern {
-    matches(value) {
+    matches() {
         return false;
     }
 }
@@ -10,7 +10,7 @@ export const ByteValuePattern = {
     matches(value) {
         const b = parseInt(value);
 
-        return typeof b == 'number' && b >= 0 && b <= 255;
+        return typeof b === 'number' && b >= 0 && b <= 255;
     },
 
     extractValue(value) {
@@ -24,7 +24,7 @@ export const WordValuePattern = {
     matches(value) {
         const w = parseInt(value);
 
-        return typeof w == 'number' && w >= 0 && w <= 65355;
+        return typeof w === 'number' && w >= 0 && w <= 65355;
     }
 };
 
@@ -38,7 +38,7 @@ export const PointerPattern = {
         if (value.startsWith('(') && value.endsWith(')')) {
             const w = parseInt(value.substring(1, value.length - 1));
 
-            return typeof w == 'number' && w >= 0 && w <= 65355;
+            return typeof w === 'number' && w >= 0 && w <= 65355;
         }
         return false;
     },
@@ -63,7 +63,7 @@ export const AddressOrLabelPattern = {
         }
         const w = parseInt(value);
 
-        return typeof w == 'number' && w >= 0 && w <= 65355;
+        return typeof w === 'number' && w >= 0 && w <= 65355;
     }
 };
 

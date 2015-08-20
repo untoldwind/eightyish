@@ -18,10 +18,10 @@ export default class VideoDisplay extends React.Component {
         ctx.fillStyle = 'black';
 
         let bitOffset = 0;
-        for(let y = 0; y < this.props.height; y++ ) {
-            for (let x = 0; x < this.props.width; x++ ) {
+        for (let y = 0; y < this.props.height; y++) {
+            for (let x = 0; x < this.props.width; x++) {
                 const offset = bitOffset >> 3;
-                if (((this.props.memory[offset] << (bitOffset & 0x7)) & 0x80) != 0) {
+                if (((this.props.memory[offset] << (bitOffset & 0x7)) & 0x80) !== 0) {
                     ctx.fillRect(x * this.props.scale, y * this.props.scale, this.props.scale, this.props.scale);
                 }
                 bitOffset++;

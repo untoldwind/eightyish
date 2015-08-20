@@ -1,11 +1,11 @@
 jest.autoMockOff();
 
-const core_instructions = require('../core');
-const byOpcode = new Map(core_instructions.map(i => [i.opcode, i]));
+const CoreInstructions = require('../core');
+const byOpcode = new Map(CoreInstructions.map(i => [i.opcode, i]));
 
 describe('Core Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(core_instructions.length);
+        expect(byOpcode.size).toBe(CoreInstructions.length);
     });
 
     it('should support NOP', () => {
@@ -28,7 +28,7 @@ describe('Core Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('NOP');
-        expect(assembler.opcodes(undefined)).toEqual([0x0]);
+        expect(assembler.opcodes(null)).toEqual([0x0]);
         expect(assembler.size).toBe(1);
     });
 
@@ -40,14 +40,14 @@ describe('Core Instruction', () => {
         const state = {};
         const transition = nop.process(state, [0x76]);
 
-        expect(transition).toBeUndefined();
+        expect(transition).toBeNull();
 
         const assembler = nop.createAssembler();
 
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('HALT');
-        expect(assembler.opcodes(undefined)).toEqual([0x76]);
+        expect(assembler.opcodes(null)).toEqual([0x76]);
         expect(assembler.size).toBe(1);
     });
 });

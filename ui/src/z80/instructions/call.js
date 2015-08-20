@@ -35,12 +35,12 @@ class Return extends Instruction {
         return {
             type: 'instruction',
             assembler: 'RET',
-            opcodes: (labels) => this.opcodes,
+            opcodes: () => this.opcodes,
             size: this.size
         };
     }
 
-    process(state, pcMem) {
+    process(state) {
         const returnAddress = state.getMemoryWord(state.registers.SP);
         return new Transition().
             withWordRegister('PC', returnAddress).
@@ -65,15 +65,14 @@ class ConditionalCall extends ConditionalInstruction {
     }
 
     process(state, pcMem) {
-        if (this.isConditionStasified(state)) {
+        if (this.isConditionSatisfied(state)) {
             return new Transition().
                 withWordRegister('PC', (pcMem[1] << 8) | pcMem[2]).
                 withWordRegister('SP', state.registers.SP - 2).
                 withWordAt(state.registers.SP - 2, state.registers.PC + this.size);
-        } else {
-            return new Transition().
-                withWordRegister('PC', state.registers.PC + this.size);
         }
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size);
     }
 }
 
@@ -88,21 +87,20 @@ class ConditionalReturn extends ConditionalInstruction {
         return {
             type: 'instruction',
             assembler: `RET\t${this.readableCondition()}`,
-            opcodes: (labels) => this.opcodes,
+            opcodes: () => this.opcodes,
             size: this.size
         };
     }
 
-    process(state, pcMem) {
-        if (this.isConditionStasified(state)) {
+    process(state) {
+        if (this.isConditionSatisfied(state)) {
             const returnAddress = state.getMemoryWord(state.registers.SP);
             return new Transition().
                 withWordRegister('PC', returnAddress).
                 withWordRegister('SP', state.registers.SP + 2);
-        } else {
-            return new Transition().
-                withWordRegister('PC', state.registers.PC + this.size);
         }
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size);
     }
 }
 

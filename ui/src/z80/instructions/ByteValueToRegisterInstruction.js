@@ -15,7 +15,7 @@ export default class ByteValueToRegisterInstruction extends Instruction {
         return {
             type: 'instruction',
             assembler: `${this.name}\t${this.to} <- ${value}`,
-            opcodes: (labels) => this.opcodes.concat(value),
+            opcodes: () => this.opcodes.concat(value),
             size: this.size
         };
     }

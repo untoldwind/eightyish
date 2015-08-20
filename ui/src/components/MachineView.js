@@ -96,7 +96,7 @@ export default class MachineView extends React.Component {
                         <MemoryGrid columns={32}
                                     memory={this.state.videoMemory}
                                     registers={this.state.registers}
-                                    segmentOffset={this.state.videoOffset}                              />
+                                    segmentOffset={this.state.videoOffset}/>
                     </div>
                 </div>
             );

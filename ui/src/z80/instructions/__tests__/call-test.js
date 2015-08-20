@@ -1,11 +1,11 @@
 jest.autoMockOff();
 
-const call_instructions = require('../call');
-const byOpcode = new Map(call_instructions.map(i => [i.opcode, i]));
+const CallInstructions = require('../call');
+const byOpcode = new Map(CallInstructions.map(i => [i.opcode, i]));
 
 describe('Call Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(call_instructions.length);
+        expect(byOpcode.size).toBe(CallInstructions.length);
     });
 
     it('should support CALL address', () => {
@@ -67,7 +67,7 @@ describe('Call Instruction', () => {
         expect(nonZeroTransition.memoryOffset).toBe(0x2343);
         expect(nonZeroTransition.newMemoryData).toEqual([0x12, 0x37]);
 
-        const assembler = callAddress.createAssembler(undefined, '.label');
+        const assembler = callAddress.createAssembler(null, '.label');
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         };
@@ -102,7 +102,7 @@ describe('Call Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('RET');
-        expect(assembler.opcodes(undefined)).toEqual([0xc9]);
+        expect(assembler.opcodes(null)).toEqual([0xc9]);
         expect(assembler.size).toBe(1);
     });
 
@@ -115,7 +115,7 @@ describe('Call Instruction', () => {
             registers: {
                 PC: 0xabcd,
                 SP: 0x2345,
-                flagZ : true
+                flagZ: true
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(0x1234)
         };
@@ -135,7 +135,7 @@ describe('Call Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('RET\tNZ');
-        expect(assembler.opcodes(undefined)).toEqual([0xc0]);
+        expect(assembler.opcodes(null)).toEqual([0xc0]);
         expect(assembler.size).toBe(1);
     });
 });

@@ -1,8 +1,6 @@
 import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction';
 import WordValueToRegisterInstruction from './WordValueToRegisterInstruction';
 import RegisterToRegisterInstruction from './RegisterToRegisterInstruction';
-import PointerToRegisterInstruction from './PointerToRegisterInstruction';
-import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction';
 
 import Instruction from './Instruction';
 import Transition from '../Transition';
@@ -13,7 +11,7 @@ class LoadMemoryToRegister extends Instruction {
     constructor(opcode, to) {
         super(opcode, 'LOAD', [to, args.PointerPattern], 2);
         this.to = to;
-        this.byte = to.length == 1;
+        this.byte = to.length === 1;
     }
 
     createAssembler(to, from) {
@@ -32,11 +30,10 @@ class LoadMemoryToRegister extends Instruction {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
                 withByteRegisterAndFlags(this.to, state.getMemoryByte((pcMem[offset] << 8) | pcMem[offset + 1]));
-        } else {
-            return new Transition().
-                withWordRegister('PC', state.registers.PC + this.size).
-                withWordRegister(this.to, state.getMemoryWord((pcMem[offset] << 8) | pcMem[offset + 1]));
         }
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size).
+            withWordRegister(this.to, state.getMemoryWord((pcMem[offset] << 8) | pcMem[offset + 1]));
     }
 }
 
@@ -44,7 +41,7 @@ class LoadRegisterToMemory extends Instruction {
     constructor(opcode, from) {
         super(opcode, 'LOAD', [args.PointerPattern, from], 2);
         this.from = from;
-        this.byte = from.length == 1;
+        this.byte = from.length === 1;
     }
 
     createAssembler(to) {
@@ -63,11 +60,10 @@ class LoadRegisterToMemory extends Instruction {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
                 withByteAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from]);
-        } else {
-            return new Transition().
-                withWordRegister('PC', state.registers.PC + this.size).
-                withWordAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from]);
         }
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size).
+            withWordAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from]);
     }
 }
 

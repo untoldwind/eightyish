@@ -1,11 +1,11 @@
 jest.autoMockOff();
 
-const load_instructions = require('../load');
-const byOpcode = new Map(load_instructions.map(i => [i.opcode, i]));
+const LoadInstructions = require('../load');
+const byOpcode = new Map(LoadInstructions.map(i => [i.opcode, i]));
 
 describe('Load Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(load_instructions.length);
+        expect(byOpcode.size).toBe(LoadInstructions.length);
     });
 
     it('should support LOAD A, B', () => {
@@ -34,7 +34,7 @@ describe('Load Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('LOAD\tA <- B');
-        expect(assembler.opcodes(undefined)).toEqual([0x78]);
+        expect(assembler.opcodes(null)).toEqual([0x78]);
         expect(assembler.size).toBe(1);
     });
 
@@ -60,7 +60,7 @@ describe('Load Instruction', () => {
         expect(assembler).toBeDefined();
         expect(assembler.type).toBe('instruction');
         expect(assembler.assembler).toBe('LOAD\tSP <- HL');
-        expect(assembler.opcodes(undefined)).toEqual([0xf9]);
+        expect(assembler.opcodes(null)).toEqual([0xf9]);
         expect(assembler.size).toBe(1);
     });
 
@@ -86,7 +86,7 @@ describe('Load Instruction', () => {
         expect(transition.newRegisters.flagZ).toBe(false);
         expect(state.getMemoryByte).toBeCalledWith(0xabcd);
 
-        const assembler = loadAMem.createAssembler(undefined, '(.label)');
+        const assembler = loadAMem.createAssembler(null, '(.label)');
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         };
@@ -146,7 +146,7 @@ describe('Load Instruction', () => {
         expect(transition.newRegisters.BC).toBe(2345);
         expect(state.getMemoryWord).toBeCalledWith(0xabcd);
 
-        const assembler = loadAMem.createAssembler(undefined, '(.label)');
+        const assembler = loadAMem.createAssembler(null, '(.label)');
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         };
