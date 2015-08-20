@@ -55,6 +55,9 @@
       "js",
       "json",
       "es6"
+    ],
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules"
     ]
   }
 }

@@ -1,32 +1,49 @@
 import Instruction from './Instruction';
+import Transition from '../Transition';
 
 class Push extends Instruction {
     constructor(opcode, register) {
         super(opcode, 'PUSH', [register]);
+        this.register = register;
     }
 
-    createAssembler(register) {
+    createAssembler() {
         return {
             type: 'instruction',
-            assembler: `PUSH\t${register}`,
+            assembler: `PUSH\t${this.register}`,
             opcodes: () => this.opcodes,
             size: this.size
         };
+    }
+
+    process(state) {
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size).
+            withWordRegister('SP', state.registers.SP - 2).
+            withWordAt(state.registers.SP - 2, state.registers[this.register]);
     }
 }
 
 class Pop extends Instruction {
     constructor(opcode, register) {
         super(opcode, 'POP', [register]);
+        this.register = register;
     }
 
-    createAssembler(register) {
+    createAssembler() {
         return {
             type: 'instruction',
-            assembler: `POP\t${register}`,
+            assembler: `POP\t${this.register}`,
             opcodes: () => this.opcodes,
             size: this.size
         };
+    }
+
+    process(state) {
+        return new Transition().
+            withWordRegister('PC', state.registers.PC + this.size).
+            withWordRegister('SP', state.registers.SP + 2).
+            withWordRegister(this.register, state.getMemoryWord(state.registers.SP));
     }
 }
 
