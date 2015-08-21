@@ -1,8 +1,8 @@
 import Instruction from './Instruction'
 
 export default class TransferInstruction extends Instruction {
-    constructor(opcode, name, argumentPattern, extra = 0) {
-        super(opcode, name, argumentPattern, extra)
+    constructor(opcode, name, argumentPattern) {
+        super(opcode, name, argumentPattern)
     }
 
     createAssembler(...params) {

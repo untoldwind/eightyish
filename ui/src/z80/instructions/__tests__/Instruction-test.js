@@ -1,6 +1,7 @@
 jest.autoMockOff()
 
 const Instruction = require('../Instruction')
+const args = require('../ArgumentPatterns')
 
 describe('Instruction', () => {
     it('should create single byte opcode for simple instructions', () => {
@@ -19,7 +20,7 @@ describe('Instruction', () => {
     })
 
     it('should honor extra size', () => {
-        const instruction = new Instruction(0x1234, 'EXTENDED2', [], 2)
+        const instruction = new Instruction(0x1234, 'EXTENDED2', [args.PointerPattern])
 
         expect(instruction.size).toBe(4)
         expect(instruction.opcodes).toEqual([0x12, 0x34])

@@ -5,7 +5,7 @@ import * as args from './ArgumentPatterns'
 
 export default class IndexPointerToRegisterInstruction extends TransferInstruction {
     constructor(opcode, name, to, from, operation) {
-        super(opcode, name, [args.RegisterPattern(to), args.IndexPointerPattern(from)], 1)
+        super(opcode, name, [args.RegisterPattern(to), args.IndexPointerPattern(from)])
         this.to = to
         this.from = from
         this.operation = operation

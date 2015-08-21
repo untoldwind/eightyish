@@ -5,7 +5,7 @@ import * as args from './ArgumentPatterns'
 
 export default class WordValueToRegisterInstruction extends Instruction {
     constructor(opcode, name, to, operation) {
-        super(opcode, name, [args.RegisterPattern(to), args.AddressOrLabelPattern], 2)
+        super(opcode, name, [args.RegisterPattern(to), args.AddressOrLabelPattern])
         this.to = to
         this.operation = operation
     }

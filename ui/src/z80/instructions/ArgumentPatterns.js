@@ -3,7 +3,8 @@ export function RegisterPattern(register) {
         matches: (value) => value.toUpperCase() === register,
         extractValue: () => null,
         formatValue: () => register,
-        extraOpcodes: () => []
+        extraOpcodes: () => [],
+        extraSize: 0
     }
 }
 
@@ -12,7 +13,8 @@ export function RegisterPointerPattern(register) {
         matches: (value) => value.toUpperCase() === `(${register})`,
         extractValue: () => null,
         formatValue: () => `(${register})`,
-        extraOpcodes: () => []
+        extraOpcodes: () => [],
+        extraSize: 0
     }
 }
 
@@ -23,7 +25,8 @@ export function ConditionPattern(flag, condition) {
         matches: (value) => value.toUpperCase() === formatted,
         extractValue: () => null,
         formatValue: () => formatted,
-        extraOpcodes: () => []
+        extraOpcodes: () => [],
+        extraSize: 0
     }
 }
 
@@ -35,7 +38,8 @@ export const ByteValuePattern = {
     },
     extractValue: (value) => parseInt(value),
     formatValue: (value) => value.toString(10),
-    extraOpcodes: (value) => [value & 0xff]
+    extraOpcodes: (value) => [value & 0xff],
+    extraSize: 1
 }
 
 export const PointerPattern = {
@@ -65,7 +69,8 @@ export const PointerPattern = {
         }
         return `(${value})`
     },
-    extraOpcodes: (value, labels) => labels.getAddress(value)
+    extraOpcodes: (value, labels) => labels.getAddress(value),
+    extraSize: 2
 }
 
 export const AddressOrLabelPattern = {
@@ -84,7 +89,8 @@ export const AddressOrLabelPattern = {
         }
         return value
     },
-    extraOpcodes: (value, labels) => labels.getAddress(value)
+    extraOpcodes: (value, labels) => labels.getAddress(value),
+    extraSize: 2
 }
 
 
@@ -100,6 +106,7 @@ export function IndexPointerPattern(indexRegister) {
             }
             return `(${indexRegister}+${value.toString(10)})`
         },
-        extraOpcodes: (value) => [value & 0xff]
+        extraOpcodes: (value) => [value & 0xff],
+        extraSize: 1
     }
 }

@@ -3,8 +3,8 @@ import GenericInstruction from './GenericInstruction'
 import * as args from './ArgumentPatterns'
 
 export default class ConditionalInstruction extends GenericInstruction {
-    constructor(opcode, name, flag, condition, argumentPattern, extra = 0) {
-        super(opcode, name, [args.ConditionPattern(flag, condition)].concat(argumentPattern), extra)
+    constructor(opcode, name, flag, condition, argumentPattern) {
+        super(opcode, name, [args.ConditionPattern(flag, condition)].concat(argumentPattern))
         this.flag = flag
         this.condition = condition
     }

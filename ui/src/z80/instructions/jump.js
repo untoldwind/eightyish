@@ -6,7 +6,7 @@ import * as args from './ArgumentPatterns'
 
 class Jump extends GenericInstruction {
     constructor() {
-        super(0xc3, 'JUMP', [args.AddressOrLabelPattern], 2)
+        super(0xc3, 'JUMP', [args.AddressOrLabelPattern])
     }
 
     process(state, pcMem) {
@@ -17,7 +17,7 @@ class Jump extends GenericInstruction {
 
 class ConditionalJump extends ConditionalInstruction {
     constructor(opcode, flag, condition) {
-        super(opcode, 'JUMP', flag, condition, [args.AddressOrLabelPattern], 2)
+        super(opcode, 'JUMP', flag, condition, [args.AddressOrLabelPattern])
         this.flag = flag
         this.condition = condition
     }

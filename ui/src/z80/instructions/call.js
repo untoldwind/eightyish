@@ -7,7 +7,7 @@ import * as args from './ArgumentPatterns'
 
 class Call extends Instruction {
     constructor() {
-        super(0xcd, 'CALL', [args.AddressOrLabelPattern], 2)
+        super(0xcd, 'CALL', [args.AddressOrLabelPattern])
     }
 
     createAssembler(labelOrAddress) {
@@ -42,7 +42,7 @@ class Return extends GenericInstruction {
 
 class ConditionalCall extends ConditionalInstruction {
     constructor(opcode, flag, condition) {
-        super(opcode, 'CALL', flag, condition, [args.AddressOrLabelPattern], 2)
+        super(opcode, 'CALL', flag, condition, [args.AddressOrLabelPattern])
         this.flag = flag
         this.condition = condition
     }

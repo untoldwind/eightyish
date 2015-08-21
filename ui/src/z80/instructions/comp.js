@@ -33,7 +33,7 @@ class CompWithPointer extends GenericInstruction {
 
 class CompWithIndexPointer extends GenericInstruction {
     constructor(opcode, to, from) {
-        super(opcode, 'COMP', [args.RegisterPattern(to), args.IndexPointerPattern(from)], 1)
+        super(opcode, 'COMP', [args.RegisterPattern(to), args.IndexPointerPattern(from)])
         this.to = to
         this.from = from
     }
@@ -49,7 +49,7 @@ class CompWithIndexPointer extends GenericInstruction {
 
 class CompWithValue extends GenericInstruction {
     constructor(opcode, to) {
-        super(opcode, 'COMP', [args.RegisterPattern(to), args.ByteValuePattern], 1)
+        super(opcode, 'COMP', [args.RegisterPattern(to), args.ByteValuePattern])
         this.to = to
     }
 

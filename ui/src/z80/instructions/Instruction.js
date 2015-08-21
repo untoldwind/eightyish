@@ -1,6 +1,6 @@
 
 export default class Instruction {
-    constructor(opcode, name, argumentPattern, extra = 0) {
+    constructor(opcode, name, argumentPattern) {
         this.opcode = opcode
         this.name = name
         this.argumentPattern = argumentPattern
@@ -9,6 +9,6 @@ export default class Instruction {
         } else {
             this.opcodes = [(opcode >> 8) & 0xff, opcode & 0xff]
         }
-        this.size = this.opcodes.length + extra
+        this.size = this.opcodes.length + this.argumentPattern.reduce((prev, pattern) => prev + pattern.extraSize, 0)
     }
 }

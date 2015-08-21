@@ -11,7 +11,7 @@ import * as args from './ArgumentPatterns'
 
 class LoadMemoryToRegister extends TransferInstruction {
     constructor(opcode, to) {
-        super(opcode, 'LOAD', [args.RegisterPattern(to), args.PointerPattern], 2)
+        super(opcode, 'LOAD', [args.RegisterPattern(to), args.PointerPattern])
         this.to = to
         this.byte = to.length === 1
     }
@@ -31,7 +31,7 @@ class LoadMemoryToRegister extends TransferInstruction {
 
 class LoadRegisterToMemory extends TransferInstruction {
     constructor(opcode, from) {
-        super(opcode, 'LOAD', [args.PointerPattern, args.RegisterPattern(from)], 2)
+        super(opcode, 'LOAD', [args.PointerPattern, args.RegisterPattern(from)])
         this.from = from
         this.byte = from.length === 1
     }
