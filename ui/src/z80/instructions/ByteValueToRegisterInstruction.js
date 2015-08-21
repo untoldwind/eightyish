@@ -1,23 +1,13 @@
-import Instruction from './Instruction'
+import TransferInstruction from './TransferInstruction'
 import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
-export default class ByteValueToRegisterInstruction extends Instruction {
+export default class ByteValueToRegisterInstruction extends TransferInstruction {
     constructor(opcode, name, to, operation) {
         super(opcode, name, [args.RegisterPattern(to), args.ByteValuePattern], 1)
         this.to = to
         this.operation = operation
-    }
-
-    createAssembler(to, num) {
-        const value = this.argumentPattern[1].extractValue(num)
-        return {
-            type: 'instruction',
-            assembler: `${this.name}\t${this.to} <- ${value}`,
-            opcodes: () => this.opcodes.concat(value),
-            size: this.size
-        }
     }
 
     process(state, pcMem) {

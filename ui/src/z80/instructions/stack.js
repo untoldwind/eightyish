@@ -1,19 +1,12 @@
-import Instruction from './Instruction'
+import GenericInstruction from './GenericInstruction'
 import Transition from '../Transition'
 
-class Push extends Instruction {
-    constructor(opcode, register) {
-        super(opcode, 'PUSH', [register])
-        this.register = register
-    }
+import * as args from './ArgumentPatterns'
 
-    createAssembler() {
-        return {
-            type: 'instruction',
-            assembler: `PUSH\t${this.register}`,
-            opcodes: () => this.opcodes,
-            size: this.size
-        }
+class Push extends GenericInstruction {
+    constructor(opcode, register) {
+        super(opcode, 'PUSH', [args.RegisterPattern(register)])
+        this.register = register
     }
 
     process(state) {
@@ -24,19 +17,10 @@ class Push extends Instruction {
     }
 }
 
-class Pop extends Instruction {
+class Pop extends GenericInstruction {
     constructor(opcode, register) {
-        super(opcode, 'POP', [register])
+        super(opcode, 'POP', [args.RegisterPattern(register)])
         this.register = register
-    }
-
-    createAssembler() {
-        return {
-            type: 'instruction',
-            assembler: `POP\t${this.register}`,
-            opcodes: () => this.opcodes,
-            size: this.size
-        }
     }
 
     process(state) {

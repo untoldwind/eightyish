@@ -1,19 +1,10 @@
-import Instruction from './Instruction'
+import GenericInstruction from './GenericInstruction'
 
 import Transition from '../Transition'
 
-class Halt extends Instruction {
+class Halt extends GenericInstruction {
     constructor() {
         super(0x76, 'HALT', [])
-    }
-
-    createAssembler() {
-        return {
-            type: 'instruction',
-            assembler: 'HALT',
-            opcodes: () => [this.opcode],
-            size: 1
-        }
     }
 
     process() {
@@ -21,18 +12,9 @@ class Halt extends Instruction {
     }
 }
 
-class Nop extends Instruction {
+class Nop extends GenericInstruction {
     constructor() {
         super(0x00, 'NOP', [])
-    }
-
-    createAssembler() {
-        return {
-            type: 'instruction',
-            assembler: 'NOP',
-            opcodes: () => [this.opcode],
-            size: 1
-        }
     }
 
     process(state) {

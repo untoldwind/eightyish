@@ -1,4 +1,5 @@
 import Instruction from './Instruction'
+import GenericInstruction from './GenericInstruction'
 import ConditionalInstruction from './ConditionalInstruction'
 import Transition from '../Transition'
 
@@ -26,18 +27,9 @@ class Call extends Instruction {
     }
 }
 
-class Return extends Instruction {
+class Return extends GenericInstruction {
     constructor() {
         super(0xc9, 'RET', [])
-    }
-
-    createAssembler() {
-        return {
-            type: 'instruction',
-            assembler: 'RET',
-            opcodes: () => this.opcodes,
-            size: this.size
-        }
     }
 
     process(state) {
@@ -53,15 +45,6 @@ class ConditionalCall extends ConditionalInstruction {
         super(opcode, 'CALL', flag, condition, [args.AddressOrLabelPattern], 2)
         this.flag = flag
         this.condition = condition
-    }
-
-    createAssembler(condition, labelOrAddress) {
-        return {
-            type: 'instruction',
-            assembler: `CALL\t${this.readableCondition()}, ${labelOrAddress}`,
-            opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
-            size: this.size
-        }
     }
 
     process(state, pcMem) {
@@ -81,15 +64,6 @@ class ConditionalReturn extends ConditionalInstruction {
         super(opcode, 'RET', flag, condition, [])
         this.flag = flag
         this.condition = condition
-    }
-
-    createAssembler() {
-        return {
-            type: 'instruction',
-            assembler: `RET\t${this.readableCondition()}`,
-            opcodes: () => this.opcodes,
-            size: this.size
-        }
     }
 
     process(state) {

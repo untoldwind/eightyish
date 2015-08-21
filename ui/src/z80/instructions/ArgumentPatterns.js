@@ -1,14 +1,29 @@
 export function RegisterPattern(register) {
     return {
         matches: (value) => value.toUpperCase() === register,
-        extractValue: () => register
+        extractValue: () => null,
+        formatValue: () => register,
+        extraOpcodes: () => []
     }
 }
 
 export function RegisterPointerPattern(register) {
     return {
         matches: (value) => value.toUpperCase() === `(${register})`,
-        extractValue: () => `(${register})`
+        extractValue: () => null,
+        formatValue: () => `(${register})`,
+        extraOpcodes: () => []
+    }
+}
+
+export function ConditionPattern(flag, condition) {
+    const formatted = (condition ? '' : 'N') + flag
+
+    return {
+        matches: (value) => value.toUpperCase() === formatted,
+        extractValue: () => null,
+        formatValue: () => formatted,
+        extraOpcodes: () => []
     }
 }
 
@@ -18,16 +33,9 @@ export const ByteValuePattern = {
 
         return typeof b === 'number' && b >= 0 && b <= 255
     },
-    extractValue: (value) => parseInt(value)
-}
-
-export const WordValuePattern = {
-    matches: (value) => {
-        const w = parseInt(value)
-
-        return typeof w === 'number' && w >= 0 && w <= 65355
-    },
-    extractValue: (value) => parseInt(value)
+    extractValue: (value) => parseInt(value),
+    formatValue: (value) => value.toString(10),
+    extraOpcodes: (value) => [value & 0xff]
 }
 
 export const PointerPattern = {
@@ -50,7 +58,14 @@ export const PointerPattern = {
             return parseInt(value.substring(1, value.length - 1))
         }
         return 0
-    }
+    },
+    formatValue: (value) => {
+        if (typeof value === 'number') {
+            return `(0x${value.toString(16)})`
+        }
+        return `(${value})`
+    },
+    extraOpcodes: (value, labels) => labels.getAddress(value)
 }
 
 export const AddressOrLabelPattern = {
@@ -62,14 +77,29 @@ export const AddressOrLabelPattern = {
 
         return typeof w === 'number' && w >= 0 && w <= 65355
     },
-    extractValue: (value) => value
+    extractValue: (value) => value,
+    formatValue: (value) => {
+        if (typeof value === 'number') {
+            return `0x${value.toString(16)}`
+        }
+        return value
+    },
+    extraOpcodes: (value, labels) => labels.getAddress(value)
 }
+
 
 export function IndexPointerPattern(indexRegister) {
     const pattern = new RegExp(`\\(${indexRegister}([\\-\\+]\\d+)\\)`, 'i')
 
     return {
         matches: (value) => value.match(pattern),
-        extractValue: (value) => value.match(pattern)[1]
+        extractValue: (value) => parseInt(value.match(pattern)[1], 10),
+        formatValue: (value) => {
+            if (value < 0) {
+                return `(${indexRegister}${value.toString(10)})`
+            }
+            return `(${indexRegister}+${value.toString(10)})`
+        },
+        extraOpcodes: (value) => [value & 0xff]
     }
 }

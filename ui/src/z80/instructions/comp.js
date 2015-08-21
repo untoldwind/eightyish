@@ -1,22 +1,13 @@
-import Instruction from './Instruction'
+import GenericInstruction from './GenericInstruction'
 import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
-class CompWithRegister extends Instruction {
+class CompWithRegister extends GenericInstruction {
     constructor(opcode, to, from) {
         super(opcode, 'COMP', [args.RegisterPattern(to), args.RegisterPattern(from)])
         this.to = to
         this.from = from
-    }
-
-    createAssembler() {
-        return {
-            type: 'instruction',
-            assembler: `COMP\t${this.to}, ${this.from}`,
-            opcodes: () => this.opcodes,
-            size: this.size
-        }
     }
 
     process(state) {
@@ -26,20 +17,11 @@ class CompWithRegister extends Instruction {
     }
 }
 
-class CompWithPointer extends Instruction {
+class CompWithPointer extends GenericInstruction {
     constructor(opcode, to, from) {
         super(opcode, 'COMP', [args.RegisterPattern(to), args.RegisterPointerPattern(from)])
         this.to = to
         this.from = from
-    }
-
-    createAssembler() {
-        return {
-            type: 'instruction',
-            assembler: `${this.name}\t${this.to}, (${this.from})`,
-            opcodes: () => this.opcodes,
-            size: this.size
-        }
     }
 
     process(state) {
@@ -49,21 +31,11 @@ class CompWithPointer extends Instruction {
     }
 }
 
-class CompWithIndexPointer extends Instruction {
+class CompWithIndexPointer extends GenericInstruction {
     constructor(opcode, to, from) {
         super(opcode, 'COMP', [args.RegisterPattern(to), args.IndexPointerPattern(from)], 1)
         this.to = to
         this.from = from
-    }
-
-    createAssembler(to, from) {
-        const offset = this.argumentPattern[1].extractValue(from)
-        return {
-            type: 'instruction',
-            assembler: `${this.name}\t${this.to}, (${this.from}${offset})`,
-            opcodes: () => this.opcodes.concat(parseInt(offset) & 0xff),
-            size: this.size
-        }
     }
 
     process(state, pcMem) {
@@ -75,20 +47,10 @@ class CompWithIndexPointer extends Instruction {
     }
 }
 
-class CompWithValue extends Instruction {
+class CompWithValue extends GenericInstruction {
     constructor(opcode, to) {
         super(opcode, 'COMP', [args.RegisterPattern(to), args.ByteValuePattern], 1)
         this.to = to
-    }
-
-    createAssembler(to, num) {
-        const value = this.argumentPattern[1].extractValue(num)
-        return {
-            type: 'instruction',
-            assembler: `COMP\t${to}, ${value}`,
-            opcodes: () => this.opcodes.concat([value]),
-            size: this.size
-        }
     }
 
     process(state, pcMem) {

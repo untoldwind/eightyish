@@ -4,26 +4,16 @@ import RegisterToRegisterInstruction from './RegisterToRegisterInstruction'
 import PointerToRegisterInstruction from './PointerToRegisterInstruction'
 import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
 
-import Instruction from './Instruction'
+import TransferInstruction from './TransferInstruction'
 import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
-class LoadMemoryToRegister extends Instruction {
+class LoadMemoryToRegister extends TransferInstruction {
     constructor(opcode, to) {
         super(opcode, 'LOAD', [args.RegisterPattern(to), args.PointerPattern], 2)
         this.to = to
         this.byte = to.length === 1
-    }
-
-    createAssembler(to, from) {
-        const labelOrAddress = this.argumentPattern[1].extractValue(from)
-        return {
-            type: 'instruction',
-            assembler: `LOAD\t${this.to} <- (${labelOrAddress})`,
-            opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
-            size: this.size
-        }
     }
 
     process(state, pcMem) {
@@ -39,21 +29,11 @@ class LoadMemoryToRegister extends Instruction {
     }
 }
 
-class LoadRegisterToMemory extends Instruction {
+class LoadRegisterToMemory extends TransferInstruction {
     constructor(opcode, from) {
         super(opcode, 'LOAD', [args.PointerPattern, args.RegisterPattern(from)], 2)
         this.from = from
         this.byte = from.length === 1
-    }
-
-    createAssembler(to) {
-        const labelOrAddress = this.argumentPattern[0].extractValue(to)
-        return {
-            type: 'instruction',
-            assembler: `LOAD\t(${labelOrAddress}) <- ${this.from}`,
-            opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
-            size: this.size
-        }
     }
 
     process(state, pcMem) {

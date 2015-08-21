@@ -1,23 +1,14 @@
-import Instruction from './Instruction'
+import TransferInstruction from './TransferInstruction'
 import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
-export default class PointerToRegisterInstruction extends Instruction {
+export default class PointerToRegisterInstruction extends TransferInstruction {
     constructor(opcode, name, to, from, operation) {
         super(opcode, name, [args.RegisterPattern(to), args.RegisterPointerPattern(from)])
         this.to = to
         this.from = from
         this.operation = operation
-    }
-
-    createAssembler() {
-        return {
-            type: 'instruction',
-            assembler: `${this.name}\t${this.to} <- (${this.from})`,
-            opcodes: () => this.opcodes,
-            size: this.size
-        }
     }
 
     process(state) {

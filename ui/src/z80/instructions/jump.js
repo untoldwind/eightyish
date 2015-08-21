@@ -1,21 +1,12 @@
-import Instruction from './Instruction'
+import GenericInstruction from './GenericInstruction'
 import ConditionalInstruction from './ConditionalInstruction'
 import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
-class Jump extends Instruction {
+class Jump extends GenericInstruction {
     constructor() {
-        super(0xc3, 'JUMP', [args.AddressOrLabelPattern])
-    }
-
-    createAssembler(labelOrAddress) {
-        return {
-            type: 'instruction',
-            assembler: `JUMP\t${labelOrAddress}`,
-            opcodes: (labels) => [this.opcode].concat(labels.getAddress(labelOrAddress)),
-            size: 3
-        }
+        super(0xc3, 'JUMP', [args.AddressOrLabelPattern], 2)
     }
 
     process(state, pcMem) {
@@ -29,15 +20,6 @@ class ConditionalJump extends ConditionalInstruction {
         super(opcode, 'JUMP', flag, condition, [args.AddressOrLabelPattern], 2)
         this.flag = flag
         this.condition = condition
-    }
-
-    createAssembler(condition, labelOrAddress) {
-        return {
-            type: 'instruction',
-            assembler: `JUMP\t${this.readableCondition()}, ${labelOrAddress}`,
-            opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
-            size: this.size
-        }
     }
 
     process(state, pcMem) {

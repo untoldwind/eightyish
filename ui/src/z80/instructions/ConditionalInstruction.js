@@ -1,18 +1,12 @@
-import Instruction from './Instruction'
+import GenericInstruction from './GenericInstruction'
 
-function formatCondition(flag, condition) {
-    return (condition ? '' : 'N') + flag
-}
+import * as args from './ArgumentPatterns'
 
-export default class ConditionalInstruction extends Instruction {
+export default class ConditionalInstruction extends GenericInstruction {
     constructor(opcode, name, flag, condition, argumentPattern, extra = 0) {
-        super(opcode, name, [formatCondition(flag, condition)].concat(argumentPattern), extra)
+        super(opcode, name, [args.ConditionPattern(flag, condition)].concat(argumentPattern), extra)
         this.flag = flag
         this.condition = condition
-    }
-
-    readableCondition() {
-        return formatCondition(this.flag, this.condition)
     }
 
     isConditionSatisfied(state) {
