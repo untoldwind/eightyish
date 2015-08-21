@@ -7,6 +7,7 @@ import DecInstructions from './instructions/dec';
 import IncInstructions from './instructions/inc';
 import JumpInstructions from './instructions/jump';
 import LoadInstructions from './instructions/load';
+import OrInstructions from './instructions/or';
 import SubInstructions from './instructions/sub';
 import StackInstructions from './instructions/stack';
 
@@ -22,6 +23,7 @@ export const INSTRUCTIONS = [].concat(
     IncInstructions,
     JumpInstructions,
     LoadInstructions,
+    OrInstructions,
     SubInstructions,
     StackInstructions);
 

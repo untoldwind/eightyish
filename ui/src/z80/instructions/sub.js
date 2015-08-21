@@ -1,31 +1,19 @@
-import Instruction from './Instruction';
+import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction';
+import RegisterToRegisterInstruction from './RegisterToRegisterInstruction';
+import PointerToRegisterInstruction from './PointerToRegisterInstruction';
+import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction';
 
-class SubRegisterToRegister extends Instruction {
-    constructor(opcode, to, from) {
-        super(opcode, 'SUB', [to, from]);
-        this.to = to;
-        this.from = from;
-    }
-
-    createAssembler(to, from) {
-        return {
-            type: 'instruction',
-            assembler: `SUB\t$(to} <- ${from}`,
-            opcodes: () => this.opcodes,
-            size: this.size
-        };
-    }
-
-    process(state) {
-        return new Transition().
-            withWordRegister('PC', state.registers.PC + this.size).
-            withByteRegisterAndFlags(this.to, state.registers[this.to] - state.registers[this.from]);
-    }
+function operation(target, source) {
+    return target - source;
 }
 
 export default [
-    new SubRegisterToRegister(0x90, 'A', 'B'),
-    new SubRegisterToRegister(0x91, 'A', 'C'),
-    new SubRegisterToRegister(0x92, 'A', 'D'),
-    new SubRegisterToRegister(0x93, 'A', 'E')
+    new RegisterToRegisterInstruction(0x90, 'SUB', 'A', 'B', operation),
+    new RegisterToRegisterInstruction(0x91, 'SUB', 'A', 'C', operation),
+    new RegisterToRegisterInstruction(0x92, 'SUB', 'A', 'D', operation),
+    new RegisterToRegisterInstruction(0x93, 'SUB', 'A', 'E', operation),
+    new PointerToRegisterInstruction(0x96, 'SUB', 'A', 'HL', operation),
+    new IndexPointerToRegisterInstruction(0xdd96, 'SUB', 'A', 'IX', operation),
+    new IndexPointerToRegisterInstruction(0xfd96, 'SUB', 'A', 'IY', operation),
+    new ByteValueToRegisterInstruction(0xd6, 'SUB', 'A', operation)
 ];
