@@ -10,7 +10,7 @@ describe('SourceLabels', () => {
 
         labels.setAddress('.aLabel', 0x1234)
         expect(labels.getAddress('.aLabel')).toEqual([0x12, 0x34])
-        expect(labels.getAddress('.something')).toBe(0)
+        expect(labels.getAddress('.something')).toEqual([0, 0])
     })
 
     it('should return direct addresses', () => {

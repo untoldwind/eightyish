@@ -25,9 +25,9 @@ export default class SourceLabels {
                     return [(address >> 8) & 0xff, address & 0xff]
                 }
             }
-            return 0
+            return [0, 0]
         default:
-            return 0
+            return [0, 0]
         }
     }
 }

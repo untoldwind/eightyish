@@ -20,23 +20,32 @@ export default class EditorAssembler extends React.Component {
     }
 
     getSelectedLine() {
-        let selectedLine = -1
-        if (window.getSelection) {
-            const parent = React.findDOMNode(this)
-            const selection = getSelection()
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0)
-                let selectedNode = range.startContainer
-                if (selectedNode.nodeType !== Node.ELEMENT_NODE) {
-                    selectedNode = selectedNode.parentNode
-                }
-                if (selectedNode.parentNode === parent) {
-                    selectedLine = 0
-                    while ((selectedNode = selectedNode.previousSibling) !== null) {
-                        selectedLine++
-                    }
-                }
-            }
+        if (!window.getSelection) {
+            return -1
+        }
+
+        const selection = getSelection()
+
+        if (selection.rangeCount <= 0) {
+            return -1
+        }
+
+        const range = selection.getRangeAt(0)
+        let selectedNode = range.startContainer
+
+        if (selectedNode.nodeType !== Node.ELEMENT_NODE) {
+            selectedNode = selectedNode.parentNode
+        }
+
+        const parent = React.findDOMNode(this)
+
+        if (selectedNode.parentNode !== parent) {
+            return -1
+        }
+
+        let selectedLine = 0
+        while ((selectedNode = selectedNode.previousSibling) !== null) {
+            selectedLine++
         }
         return selectedLine
     }

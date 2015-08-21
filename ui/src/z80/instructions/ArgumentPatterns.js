@@ -13,27 +13,25 @@ export function RegisterPointerPattern(register) {
 }
 
 export const ByteValuePattern = {
-    matches(value) {
+    matches: (value) => {
         const b = parseInt(value)
 
         return typeof b === 'number' && b >= 0 && b <= 255
     },
-
-    extractValue(value) {
-        return parseInt(value)
-    }
+    extractValue: (value) => parseInt(value)
 }
 
 export const WordValuePattern = {
-    matches(value) {
+    matches: (value) => {
         const w = parseInt(value)
 
         return typeof w === 'number' && w >= 0 && w <= 65355
-    }
+    },
+    extractValue: (value) => parseInt(value)
 }
 
 export const PointerPattern = {
-    matches(value) {
+    matches: (value) => {
         if (value.startsWith('(.') && value.endsWith(')')) {
             return true
         }
@@ -44,8 +42,7 @@ export const PointerPattern = {
         }
         return false
     },
-
-    extractValue(value) {
+    extractValue: (value) => {
         if (value.startsWith('(.') && value.endsWith(')')) {
             return value.substring(1, value.length - 1)
         }
@@ -57,14 +54,15 @@ export const PointerPattern = {
 }
 
 export const AddressOrLabelPattern = {
-    matches(value) {
+    matches: (value) => {
         if (value.startsWith('.')) {
             return true
         }
         const w = parseInt(value)
 
         return typeof w === 'number' && w >= 0 && w <= 65355
-    }
+    },
+    extractValue: (value) => value
 }
 
 export function IndexPointerPattern(indexRegister) {
