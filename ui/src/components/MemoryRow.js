@@ -1,51 +1,59 @@
-import React from 'react';
+import React from 'react'
 
-import EditableCell from './EditableCell';
+import EditableCell from './EditableCell'
 
-import * as MachineActions from '../actions/MachineActions';
+import * as MachineActions from '../actions/MachineActions'
 
-import * as formats from './formats';
+import * as formats from './formats'
+
+function mapCount(count, callback) {
+    const result = []
+    for (let i = 0; i < count; i++) {
+        result.push(callback(i))
+    }
+    return result
+}
 
 export default class MemoryRow extends React.Component {
     render() {
         return (
             <tr>
                 <td>{formats.word2hex(this.props.segmentOffset + this.props.offset)}</td>
-                {Array.from(new Array(this.props.columns).keys()).map(i =>
+                {mapCount(this.props.columns, i =>
                         <EditableCell activeClassName="form-control input-sm"
                                       className={this.mark(this.props.segmentOffset + this.props.offset + i)}
                                       key={i}
                                       valueLink={this.memoryValueLink(i)}/>
                 )}
             </tr>
-        );
+        )
     }
 
     memoryValueLink(i) {
         return {
             value: formats.byte2hex(this.props.memory[i + this.props.offset]),
             requestChange: str => {
-                const newValue = parseInt(str, 16);
+                const newValue = parseInt(str, 16)
                 if (typeof newValue === 'number' && newValue >= 0 && newValue <= 255) {
-                    MachineActions.transition({}, this.props.segmentOffset + this.props.offset + i, [newValue]);
+                    MachineActions.transition({}, this.props.segmentOffset + this.props.offset + i, [newValue])
                 }
             }
-        };
+        }
     }
 
     mark(address) {
         if (address === this.props.registers.PC) {
-            return 'bg-primary';
+            return 'bg-primary'
         } else if (address === this.props.registers.SP) {
-            return 'bg-danger';
+            return 'bg-danger'
         } else if (address === this.props.registers.HL) {
-            return 'bg-success';
+            return 'bg-success'
         } else if (address === this.props.registers.IX) {
-            return 'bg-info';
+            return 'bg-info'
         } else if (address === this.props.registers.IY) {
-            return 'bg-warning';
+            return 'bg-warning'
         }
-        return '';
+        return ''
     }
 }
 
@@ -55,4 +63,4 @@ MemoryRow.propTypes = {
     columns: React.PropTypes.number.isRequired,
     memory: React.PropTypes.array.isRequired,
     registers: React.PropTypes.object.isRequired
-};
+}

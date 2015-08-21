@@ -1,63 +1,63 @@
-import * as InstructionSet from './InstructionSet';
+import * as InstructionSet from './InstructionSet'
 
-import * as formats from '../components/formats';
+import * as formats from '../components/formats'
 
-import SourceLabels from './SourceLabels';
+import SourceLabels from './SourceLabels'
 
 export default class SourceCode {
     constructor() {
         this.instructions = [
             InstructionSet.createInstruction(['HALT'])
-        ];
-        this.labels = new SourceLabels();
+        ]
+        this.labels = new SourceLabels()
     }
 
     compile(lines) {
-        this.instructions = [];
-        this.labels = new SourceLabels();
+        this.instructions = []
+        this.labels = new SourceLabels()
 
         if (!lines) {
-            return;
+            return
         }
-        lines.forEach(line => this.instructions.push(InstructionSet.parseLine(line)));
-        let offset = 0;
+        lines.forEach(line => this.instructions.push(InstructionSet.parseLine(line)))
+        let offset = 0
         for (let instruction of this.instructions) {
             if (instruction.updateLabel) {
-                instruction.updateLabel(offset, this.labels);
+                instruction.updateLabel(offset, this.labels)
             }
-            offset += instruction.size;
+            offset += instruction.size
         }
     }
 
     get memory() {
-        let offset = 0;
-        const memory = [];
+        let offset = 0
+        const memory = []
 
         for (let instruction of this.instructions) {
-            const opcodes = instruction.opcodes(this.labels);
+            const opcodes = instruction.opcodes(this.labels)
 
-            memory.push(... opcodes);
-            offset += opcodes.length;
+            memory.push(... opcodes)
+            offset += opcodes.length
         }
 
-        return memory;
+        return memory
     }
 
     get memoryDump() {
-        let offset = 0;
-        const lines = [];
+        let offset = 0
+        const lines = []
 
         for (let instruction of this.instructions) {
-            const opcodes = instruction.opcodes(this.labels);
+            const opcodes = instruction.opcodes(this.labels)
 
-            lines.push({offset: offset, dump: opcodes.map(formats.byte2hex).join(' ')});
-            offset += opcodes.length;
+            lines.push({offset: offset, dump: opcodes.map(formats.byte2hex).join(' ')})
+            offset += opcodes.length
         }
 
-        return lines;
+        return lines
     }
 
     get assembler() {
-        return this.instructions.map(instruction => instruction.assembler);
+        return this.instructions.map(instruction => instruction.assembler)
     }
 }

@@ -1,10 +1,10 @@
-import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction';
-import RegisterToRegisterInstruction from './RegisterToRegisterInstruction';
-import PointerToRegisterInstruction from './PointerToRegisterInstruction';
-import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction';
+import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction'
+import RegisterToRegisterInstruction from './RegisterToRegisterInstruction'
+import PointerToRegisterInstruction from './PointerToRegisterInstruction'
+import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
 
 function operation(target, source) {
-    return target - source;
+    return target - source
 }
 
 export default [
@@ -16,4 +16,4 @@ export default [
     new IndexPointerToRegisterInstruction(0xdd96, 'SUB', 'A', 'IX', operation),
     new IndexPointerToRegisterInstruction(0xfd96, 'SUB', 'A', 'IY', operation),
     new ByteValueToRegisterInstruction(0xd6, 'SUB', 'A', operation)
-];
+]

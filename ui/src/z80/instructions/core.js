@@ -1,10 +1,10 @@
-import Instruction from './Instruction';
+import Instruction from './Instruction'
 
-import Transition from '../Transition';
+import Transition from '../Transition'
 
 class Halt extends Instruction {
     constructor() {
-        super(0x76, 'HALT', []);
+        super(0x76, 'HALT', [])
     }
 
     createAssembler() {
@@ -13,17 +13,17 @@ class Halt extends Instruction {
             assembler: 'HALT',
             opcodes: () => [this.opcode],
             size: 1
-        };
+        }
     }
 
     process() {
-        return null;
+        return null
     }
 }
 
 class Nop extends Instruction {
     constructor() {
-        super(0x00, 'NOP', []);
+        super(0x00, 'NOP', [])
     }
 
     createAssembler() {
@@ -32,15 +32,15 @@ class Nop extends Instruction {
             assembler: 'NOP',
             opcodes: () => [this.opcode],
             size: 1
-        };
+        }
     }
 
     process(state) {
-        return new Transition({PC: state.registers.PC + 1});
+        return new Transition({PC: state.registers.PC + 1})
     }
 }
 
 export default [
     new Nop(),
     new Halt()
-];
+]

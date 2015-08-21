@@ -1,76 +1,76 @@
-import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction';
-import WordValueToRegisterInstruction from './WordValueToRegisterInstruction';
-import RegisterToRegisterInstruction from './RegisterToRegisterInstruction';
-import PointerToRegisterInstruction from './PointerToRegisterInstruction';
-import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction';
+import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction'
+import WordValueToRegisterInstruction from './WordValueToRegisterInstruction'
+import RegisterToRegisterInstruction from './RegisterToRegisterInstruction'
+import PointerToRegisterInstruction from './PointerToRegisterInstruction'
+import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
 
-import Instruction from './Instruction';
-import Transition from '../Transition';
+import Instruction from './Instruction'
+import Transition from '../Transition'
 
-import * as args from './ArgumentPatterns';
+import * as args from './ArgumentPatterns'
 
 class LoadMemoryToRegister extends Instruction {
     constructor(opcode, to) {
-        super(opcode, 'LOAD', [args.RegisterPattern(to), args.PointerPattern], 2);
-        this.to = to;
-        this.byte = to.length === 1;
+        super(opcode, 'LOAD', [args.RegisterPattern(to), args.PointerPattern], 2)
+        this.to = to
+        this.byte = to.length === 1
     }
 
     createAssembler(to, from) {
-        const labelOrAddress = this.argumentPattern[1].extractValue(from);
+        const labelOrAddress = this.argumentPattern[1].extractValue(from)
         return {
             type: 'instruction',
             assembler: `LOAD\t${this.to} <- (${labelOrAddress})`,
             opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
             size: this.size
-        };
+        }
     }
 
     process(state, pcMem) {
-        const offset = this.opcodes.length;
+        const offset = this.opcodes.length
         if (this.byte) {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
-                withByteRegisterAndFlags(this.to, state.getMemoryByte((pcMem[offset] << 8) | pcMem[offset + 1]));
+                withByteRegisterAndFlags(this.to, state.getMemoryByte((pcMem[offset] << 8) | pcMem[offset + 1]))
         }
         return new Transition().
             withWordRegister('PC', state.registers.PC + this.size).
-            withWordRegister(this.to, state.getMemoryWord((pcMem[offset] << 8) | pcMem[offset + 1]));
+            withWordRegister(this.to, state.getMemoryWord((pcMem[offset] << 8) | pcMem[offset + 1]))
     }
 }
 
 class LoadRegisterToMemory extends Instruction {
     constructor(opcode, from) {
-        super(opcode, 'LOAD', [args.PointerPattern, args.RegisterPattern(from)], 2);
-        this.from = from;
-        this.byte = from.length === 1;
+        super(opcode, 'LOAD', [args.PointerPattern, args.RegisterPattern(from)], 2)
+        this.from = from
+        this.byte = from.length === 1
     }
 
     createAssembler(to) {
-        const labelOrAddress = this.argumentPattern[0].extractValue(to);
+        const labelOrAddress = this.argumentPattern[0].extractValue(to)
         return {
             type: 'instruction',
             assembler: `LOAD\t(${labelOrAddress}) <- ${this.from}`,
             opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
             size: this.size
-        };
+        }
     }
 
     process(state, pcMem) {
-        const offset = this.opcodes.length;
+        const offset = this.opcodes.length
         if (this.byte) {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
-                withByteAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from]);
+                withByteAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from])
         }
         return new Transition().
             withWordRegister('PC', state.registers.PC + this.size).
-            withWordAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from]);
+            withWordAt((pcMem[offset] << 8) | pcMem[offset + 1], state.registers[this.from])
     }
 }
 
 function operation(target, source) {
-    return source;
+    return source
 }
 
 export default [
@@ -142,4 +142,4 @@ export default [
     new WordValueToRegisterInstruction(0xdd21, 'LOAD', 'IX', operation),
     new WordValueToRegisterInstruction(0xfd21, 'LOAD', 'IY', operation),
     new WordValueToRegisterInstruction(0x31, 'LOAD', 'SP', operation)
-];
+]

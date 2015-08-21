@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-import MachineView from './components/MachineView';
+import MachineView from './components/MachineView'
 
 export default class App extends React.Component {
     render() {
@@ -8,6 +8,6 @@ export default class App extends React.Component {
             <div className="container">
                 <MachineView />
             </div>
-        );
+        )
     }
 }

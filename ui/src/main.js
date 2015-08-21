@@ -1,15 +1,15 @@
 
-import './app.less';
-import './index.html';
-import './index-dev.html';
+import './app.less'
+import './index.html'
+import './index-dev.html'
 
-import 'babel/polyfill';
+import 'babel/polyfill'
 
-import React from 'react';
+import React from 'react'
 
-import App from './app';
+import App from './app'
 
 React.render(
     <App />,
     document.getElementById('app')
-);
+)

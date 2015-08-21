@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-import EditorMemory from './EditorMemory';
-import EditorAssembler from './EditorAssembler';
+import EditorMemory from './EditorMemory'
+import EditorAssembler from './EditorAssembler'
 
 export default class Editor extends React.Component {
     render() {
@@ -14,11 +14,11 @@ export default class Editor extends React.Component {
                     <EditorAssembler sourceCode={this.props.sourceCode}/>
                 </div>
             </div>
-        );
+        )
     }
 }
 
 Editor.propTypes = {
     pc: React.PropTypes.number.isRequired,
     sourceCode: React.PropTypes.object.isRequired
-};
+}

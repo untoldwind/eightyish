@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-import EditableCell from './EditableCell';
+import EditableCell from './EditableCell'
 
-import * as MachineActions from '../actions/MachineActions';
-import * as formats from './formats';
+import * as MachineActions from '../actions/MachineActions'
+import * as formats from './formats'
 
 export default class RegistersView extends React.Component {
     render() {
@@ -35,22 +35,22 @@ export default class RegistersView extends React.Component {
                 {this.renderWordRegister('PC', 'bg-primary', 'flagC', 'Carry')}
                 </tbody>
             </table>
-        );
+        )
     }
 
     renderByteRegisters(highRegister, lowRegister) {
         const highValueLink = {
             value: this.props.registers[highRegister],
             requestChange: value => MachineActions.transition({[highRegister]: value})
-        };
+        }
         const lowValueLink = {
             value: this.props.registers[lowRegister],
             requestChange: value => MachineActions.transition({[lowRegister]: value})
-        };
+        }
         const valueLink = {
             value: this.props.registers[highRegister + lowRegister],
             requestChange: value => MachineActions.transition({[highRegister + lowRegister]: value})
-        };
+        }
         return [
             <tr key="high">
                 <td>{highRegister}</td>
@@ -75,15 +75,15 @@ export default class RegistersView extends React.Component {
                 <EditableCell activeClassName="form-control input-sm"
                               valueLink={formats.byteValueLink(2, lowValueLink)}/>
             </tr>
-        ];
+        ]
     }
 
     renderWordRegister(register, className, flagName, flagDescription) {
         const valueLink = {
             value: this.props.registers[register],
             requestChange: value => MachineActions.transition({[register]: value})
-        };
-        let flag;
+        }
+        let flag
         if (flagName) {
             flag = (
                 <td colSpan="4">
@@ -92,9 +92,9 @@ export default class RegistersView extends React.Component {
                 </span>
                     {flagDescription.substring(1)}
                 </td>
-            );
+            )
         } else {
-            flag = <td colSpan="4">Flags</td>;
+            flag = <td colSpan="4">Flags</td>
         }
         return (
             <tr>
@@ -105,10 +105,10 @@ export default class RegistersView extends React.Component {
                 <EditableCell activeClassName="form-control input-sm" className={className}
                               valueLink={formats.wordValueLink(16, valueLink)}/>
             </tr>
-        );
+        )
     }
 }
 
 RegistersView.propTypes = {
     registers: React.PropTypes.object.isRequired
-};
+}

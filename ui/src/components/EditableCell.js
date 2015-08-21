@@ -1,56 +1,56 @@
-import React from 'react';
+import React from 'react'
 
 export default class EditableCell extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             editing: false
-        };
+        }
     }
 
     startEditing() {
-        this.setState({editing: true, text: this.props.valueLink.value});
+        this.setState({editing: true, text: this.props.valueLink.value})
     }
 
     finishEditing() {
         if (this.props.valueLink.value !== this.state.text) {
-            this.commitEditing();
+            this.commitEditing()
         } else if (this.props.valueLink.value === this.state.text) {
-            this.cancelEditing();
+            this.cancelEditing()
         }
     }
 
     commitEditing() {
-        this.props.valueLink.requestChange(this.state.text);
-        this.setState({editing: false});
+        this.props.valueLink.requestChange(this.state.text)
+        this.setState({editing: false})
     }
 
     cancelEditing() {
-        this.setState({editing: false});
+        this.setState({editing: false})
     }
 
     textChanged(event) {
         this.setState({
             text: event.target.value.trim()
-        });
+        })
     }
 
     keyDown(event) {
         if (event.keyCode === 13) {
-            this.finishEditing();
+            this.finishEditing()
         } else if (event.keyCode === 27) {
-            this.cancelEditing();
+            this.cancelEditing()
         }
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const inputElem = React.findDOMNode(this.refs.input);
+        const inputElem = React.findDOMNode(this.refs.input)
         if (this.state.editing && !prevState.editing) {
-            inputElem.focus();
-            inputElem.setSelectionRange(0, inputElem.value.length);
+            inputElem.focus()
+            inputElem.setSelectionRange(0, inputElem.value.length)
         } else if (this.state.editing && prevProps.valueLink.value !== this.props.valueLink.value) {
-            this.finishEditing();
+            this.finishEditing()
         }
     }
 
@@ -63,7 +63,7 @@ export default class EditableCell extends React.Component {
                     style={this.props.style}>
                     {this.props.valueLink.value}
                 </td>
-            );
+            )
         }
         return (
             <td className={this.props.className}
@@ -79,7 +79,7 @@ export default class EditableCell extends React.Component {
                        ref="input"
                        size={this.props.valueLink.value.length}/>
             </td>
-        );
+        )
     }
 }
 
@@ -92,4 +92,4 @@ EditableCell.propTypes = {
     }).isRequired,
     rowSpan: React.PropTypes.number,
     style: React.PropTypes.object
-};
+}

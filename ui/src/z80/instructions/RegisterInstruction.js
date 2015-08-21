@@ -1,14 +1,14 @@
-import Instruction from './Instruction';
-import Transition from '../Transition';
+import Instruction from './Instruction'
+import Transition from '../Transition'
 
-import * as args from './ArgumentPatterns';
+import * as args from './ArgumentPatterns'
 
 export default class RegisterInstruction extends Instruction {
     constructor(opcode, name, register, operation) {
-        super(opcode, name, [args.RegisterPattern(register)]);
-        this.register = register;
-        this.byte = register.length === 1;
-        this.operation = operation;
+        super(opcode, name, [args.RegisterPattern(register)])
+        this.register = register
+        this.byte = register.length === 1
+        this.operation = operation
     }
 
     createAssembler() {
@@ -17,18 +17,18 @@ export default class RegisterInstruction extends Instruction {
             assembler: `${this.name}\t${this.register}`,
             opcodes: () => this.opcodes,
             size: this.size
-        };
+        }
     }
 
     process(state) {
-        const result = this.operation(state.registers[this.register], state);
+        const result = this.operation(state.registers[this.register], state)
         if (this.byte) {
             return new Transition().
                 withWordRegister('PC', state.registers.PC + this.size).
-                withByteRegisterAndFlags(this.register, result);
+                withByteRegisterAndFlags(this.register, result)
         }
         return new Transition().
             withWordRegister('PC', state.registers.PC + this.size).
-            withWordRegister(this.register, result);
+            withWordRegister(this.register, result)
     }
 }

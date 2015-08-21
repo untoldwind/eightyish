@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
-import MemoryRow from './MemoryRow';
+import MemoryRow from './MemoryRow'
 
-import * as formats from './formats';
+import * as formats from './formats'
 
 export default class MemoryGrid extends React.Component {
     render() {
@@ -27,7 +27,7 @@ export default class MemoryGrid extends React.Component {
                 )}
                 </tbody>
             </table>
-        );
+        )
     }
 }
 
@@ -36,4 +36,4 @@ MemoryGrid.propTypes = {
     columns: React.PropTypes.number.isRequired,
     memory: React.PropTypes.array.isRequired,
     registers: React.PropTypes.object.isRequired
-};
+}

@@ -1,36 +1,36 @@
-import React from 'react';
+import React from 'react'
 
 export default class Switch extends React.Component {
     componentDidMount() {
-        this.updateWidths();
+        this.updateWidths()
     }
 
     componentDidUpdate() {
-        this.updateWidths();
+        this.updateWidths()
     }
 
     updateWidths() {
-        const width = React.findDOMNode(this.refs.label).offsetWidth;
+        const width = React.findDOMNode(this.refs.label).offsetWidth
 
-        React.findDOMNode(this.refs.label).style.width = width + 'px';
-        React.findDOMNode(this.refs.on).style.width = width + 'px';
-        React.findDOMNode(this.refs.off).style.width = width + 'px';
-        React.findDOMNode(this.refs.wrapper).style.width = (2 * width) + 'px';
-        React.findDOMNode(this.refs.container).style.width = (3 * width) + 'px';
+        React.findDOMNode(this.refs.label).style.width = width + 'px'
+        React.findDOMNode(this.refs.on).style.width = width + 'px'
+        React.findDOMNode(this.refs.off).style.width = width + 'px'
+        React.findDOMNode(this.refs.wrapper).style.width = (2 * width) + 'px'
+        React.findDOMNode(this.refs.container).style.width = (3 * width) + 'px'
 
         if (this.props.valueLink.value) {
-            React.findDOMNode(this.refs.container).style.marginLeft = '0px';
+            React.findDOMNode(this.refs.container).style.marginLeft = '0px'
         } else {
-            React.findDOMNode(this.refs.container).style.marginLeft = (-width) + 'px';
+            React.findDOMNode(this.refs.container).style.marginLeft = (-width) + 'px'
         }
     }
 
     render() {
-        let className = 'bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate ';
+        let className = 'bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate '
         if (this.props.valueLink.value) {
-            className += 'bootstrap-switch-on';
+            className += 'bootstrap-switch-on'
         } else {
-            className += 'bootstrap-switch-off';
+            className += 'bootstrap-switch-off'
         }
         return (
             <div className={className} onClick={this.toggle.bind(this)} ref="wrapper">
@@ -46,11 +46,11 @@ export default class Switch extends React.Component {
                     </span>
                 </div>
             </div>
-        );
+        )
     }
 
     toggle() {
-        this.props.valueLink.requestChange(!this.props.valueLink.value);
+        this.props.valueLink.requestChange(!this.props.valueLink.value)
     }
 }
 
@@ -62,10 +62,10 @@ Switch.propTypes = {
         value: React.PropTypes.bool.isRequired,
         requestChange: React.PropTypes.func.isRequired
     }).isRequired
-};
+}
 
 Switch.defaultProps = {
     onText: 'ON',
     offText: 'OFF',
     label: '\u00a0'
-};
+}

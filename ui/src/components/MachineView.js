@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 
-import MachineControl from './MachineControl';
-import MemoryGrid from './MemoryGrid';
-import RegistersView from './RegistersView';
-import Editor from './Editor';
-import VideoDisplay from './VideoDisplay';
+import MachineControl from './MachineControl'
+import MemoryGrid from './MemoryGrid'
+import RegistersView from './RegistersView'
+import Editor from './Editor'
+import VideoDisplay from './VideoDisplay'
 
-import machineState from '../z80/MachineState';
+import machineState from '../z80/MachineState'
 
 function getCurrentState() {
     return {
@@ -18,25 +18,25 @@ function getCurrentState() {
         videoHeight: machineState.videoHeight,
         videoMemory: machineState.videoMemory,
         sourceCode: machineState.sourceCode
-    };
+    }
 }
 
 export default class MachineView extends React.Component {
     constructor(props) {
-        super(props);
-        this.state = getCurrentState();
+        super(props)
+        this.state = getCurrentState()
     }
 
     componentDidMount() {
-        machineState.addChangeListener(this.onChange.bind(this));
+        machineState.addChangeListener(this.onChange.bind(this))
     }
 
     componentWillUnmount() {
-        machineState.removeChangeListener(this.onChange.bind(this));
+        machineState.removeChangeListener(this.onChange.bind(this))
     }
 
     onChange() {
-        this.setState(getCurrentState());
+        this.setState(getCurrentState())
     }
 
     render() {
@@ -59,7 +59,7 @@ export default class MachineView extends React.Component {
                 {this.renderMemory()}
                 {this.renderVideoMemory()}
             </div>
-        );
+        )
     }
 
     renderVideo() {
@@ -69,7 +69,7 @@ export default class MachineView extends React.Component {
                               memory={this.state.videoMemory}
                               scale={4}
                               width={this.state.videoWidth}/>
-            );
+            )
         }
     }
 
@@ -84,7 +84,7 @@ export default class MachineView extends React.Component {
                                 segmentOffset={0} />
                 </div>
             </div>
-        );
+        )
     }
 
     renderVideoMemory() {
@@ -99,7 +99,7 @@ export default class MachineView extends React.Component {
                                     segmentOffset={this.state.videoOffset}/>
                     </div>
                 </div>
-            );
+            )
         }
     }
 }

@@ -1,7 +1,7 @@
-import RegisterInstruction from './RegisterInstruction';
+import RegisterInstruction from './RegisterInstruction'
 
 function operation(register) {
-    return register - 1;
+    return register - 1
 }
 
 export default [
@@ -16,4 +16,4 @@ export default [
     new RegisterInstruction(0xdd2b, 'DEC', 'IX', operation),
     new RegisterInstruction(0xfd2b, 'DEC', 'IY', operation),
     new RegisterInstruction(0x3b, 'DEC', 'SP', operation)
-];
+]

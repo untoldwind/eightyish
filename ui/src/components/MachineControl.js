@@ -1,20 +1,20 @@
-import React from 'react';
+import React from 'react'
 
-import Switch from './Switch';
+import Switch from './Switch'
 
-import * as MachineActions from '../actions/MachineActions';
+import * as MachineActions from '../actions/MachineActions'
 
 export default class MachineControl extends React.Component {
     constructor(props) {
-        super(props);
-        this.state = {toggle: false};
+        super(props)
+        this.state = {toggle: false}
     }
 
     render() {
         const hasVideoLink = {
             value: this.props.hasVideo,
             requestChange: (value) => MachineActions.toggleVideo(value)
-        };
+        }
         return (
             <div className="row">
                 <div className="col-md-2">
@@ -38,10 +38,10 @@ export default class MachineControl extends React.Component {
                     </button>
                 </div>
             </div>
-        );
+        )
     }
 }
 
 MachineControl.propTypes = {
     hasVideo: React.PropTypes.bool.isRequired
-};
+}

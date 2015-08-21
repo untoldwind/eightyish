@@ -1,89 +1,89 @@
-jest.autoMockOff();
+jest.autoMockOff()
 
-const CallInstructions = require('../call');
-const byOpcode = new Map(CallInstructions.map(i => [i.opcode, i]));
+const CallInstructions = require('../call')
+const byOpcode = new Map(CallInstructions.map(i => [i.opcode, i]))
 
 describe('Call Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(CallInstructions.length);
-    });
+        expect(byOpcode.size).toBe(CallInstructions.length)
+    })
 
     it('should support CALL address', () => {
-        const callAddress = byOpcode.get(0xcd);
+        const callAddress = byOpcode.get(0xcd)
 
-        expect(callAddress).toBeDefined();
+        expect(callAddress).toBeDefined()
 
         const state = {
             registers: {
                 PC: 0x1234,
                 SP: 0x2345
             }
-        };
-        const transition = callAddress.process(state, [0xcd, 0xab, 0xcd]);
+        }
+        const transition = callAddress.process(state, [0xcd, 0xab, 0xcd])
 
-        expect(transition).toBeDefined();
-        expect(transition.newRegisters.PC).toBe(0xabcd);
-        expect(transition.newRegisters.SP).toBe(0x2343);
-        expect(transition.memoryOffset).toBe(0x2343);
-        expect(transition.newMemoryData).toEqual([0x12, 0x37]);
+        expect(transition).toBeDefined()
+        expect(transition.newRegisters.PC).toBe(0xabcd)
+        expect(transition.newRegisters.SP).toBe(0x2343)
+        expect(transition.memoryOffset).toBe(0x2343)
+        expect(transition.newMemoryData).toEqual([0x12, 0x37])
 
-        const assembler = callAddress.createAssembler('.label');
+        const assembler = callAddress.createAssembler('.label')
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
-        };
+        }
 
-        expect(assembler).toBeDefined();
-        expect(assembler.type).toBe('instruction');
-        expect(assembler.assembler).toBe('CALL\t.label');
-        expect(assembler.opcodes(labels)).toEqual([0xcd, 0x12, 0x34]);
-        expect(assembler.size).toBe(3);
-        expect(labels.getAddress).toBeCalledWith('.label');
-    });
+        expect(assembler).toBeDefined()
+        expect(assembler.type).toBe('instruction')
+        expect(assembler.assembler).toBe('CALL\t.label')
+        expect(assembler.opcodes(labels)).toEqual([0xcd, 0x12, 0x34])
+        expect(assembler.size).toBe(3)
+        expect(labels.getAddress).toBeCalledWith('.label')
+    })
 
     it('should support CALL NZ, address', () => {
-        const callAddress = byOpcode.get(0xc4);
+        const callAddress = byOpcode.get(0xc4)
 
-        expect(callAddress).toBeDefined();
+        expect(callAddress).toBeDefined()
         const state = {
             registers: {
                 PC: 0x1234,
                 SP: 0x2345,
                 flagZ: true
             }
-        };
-        const zeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd]);
+        }
+        const zeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd])
 
-        expect(zeroTransition).toBeDefined();
-        expect(zeroTransition.newRegisters.PC).toBe(0x1237);
-        expect(zeroTransition.newRegisters.SP).toBeUndefined();
-        expect(zeroTransition.memoryOffset).toBeUndefined();
+        expect(zeroTransition).toBeDefined()
+        expect(zeroTransition.newRegisters.PC).toBe(0x1237)
+        expect(zeroTransition.newRegisters.SP).toBeUndefined()
+        expect(zeroTransition.memoryOffset).toBeUndefined()
 
-        state.registers.flagZ = false;
-        const nonZeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd]);
+        state.registers.flagZ = false
+        const nonZeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd])
 
-        expect(nonZeroTransition).toBeDefined();
-        expect(nonZeroTransition.newRegisters.PC).toBe(0xabcd);
-        expect(nonZeroTransition.newRegisters.SP).toBe(0x2343);
-        expect(nonZeroTransition.memoryOffset).toBe(0x2343);
-        expect(nonZeroTransition.newMemoryData).toEqual([0x12, 0x37]);
+        expect(nonZeroTransition).toBeDefined()
+        expect(nonZeroTransition.newRegisters.PC).toBe(0xabcd)
+        expect(nonZeroTransition.newRegisters.SP).toBe(0x2343)
+        expect(nonZeroTransition.memoryOffset).toBe(0x2343)
+        expect(nonZeroTransition.newMemoryData).toEqual([0x12, 0x37])
 
-        const assembler = callAddress.createAssembler(null, '.label');
+        const assembler = callAddress.createAssembler(null, '.label')
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
-        };
+        }
 
-        expect(assembler).toBeDefined();
-        expect(assembler.type).toBe('instruction');
-        expect(assembler.assembler).toBe('CALL\tNZ, .label');
-        expect(assembler.opcodes(labels)).toEqual([0xc4, 0x12, 0x34]);
-        expect(assembler.size).toBe(3);
-        expect(labels.getAddress).toBeCalledWith('.label');
-    });
+        expect(assembler).toBeDefined()
+        expect(assembler.type).toBe('instruction')
+        expect(assembler.assembler).toBe('CALL\tNZ, .label')
+        expect(assembler.opcodes(labels)).toEqual([0xc4, 0x12, 0x34])
+        expect(assembler.size).toBe(3)
+        expect(labels.getAddress).toBeCalledWith('.label')
+    })
 
     it('should support RET', () => {
-        const ret = byOpcode.get(0xc9);
+        const ret = byOpcode.get(0xc9)
 
-        expect(ret).toBeDefined();
+        expect(ret).toBeDefined()
 
         const state = {
             registers: {
@@ -91,25 +91,25 @@ describe('Call Instruction', () => {
                 SP: 0x2345
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(0x1234)
-        };
-        const transition = ret.process(state, [0xc9]);
-        expect(transition).toBeDefined();
-        expect(transition.newRegisters.PC).toBe(0x1234);
-        expect(transition.newRegisters.SP).toBe(0x2347);
+        }
+        const transition = ret.process(state, [0xc9])
+        expect(transition).toBeDefined()
+        expect(transition.newRegisters.PC).toBe(0x1234)
+        expect(transition.newRegisters.SP).toBe(0x2347)
 
-        const assembler = ret.createAssembler();
+        const assembler = ret.createAssembler()
 
-        expect(assembler).toBeDefined();
-        expect(assembler.type).toBe('instruction');
-        expect(assembler.assembler).toBe('RET');
-        expect(assembler.opcodes(null)).toEqual([0xc9]);
-        expect(assembler.size).toBe(1);
-    });
+        expect(assembler).toBeDefined()
+        expect(assembler.type).toBe('instruction')
+        expect(assembler.assembler).toBe('RET')
+        expect(assembler.opcodes(null)).toEqual([0xc9])
+        expect(assembler.size).toBe(1)
+    })
 
     it('should support RET NZ', () => {
-        const ret = byOpcode.get(0xc0);
+        const ret = byOpcode.get(0xc0)
 
-        expect(ret).toBeDefined();
+        expect(ret).toBeDefined()
 
         const state = {
             registers: {
@@ -118,24 +118,24 @@ describe('Call Instruction', () => {
                 flagZ: true
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(0x1234)
-        };
-        const zeroTransition = ret.process(state, [0xc0]);
-        expect(zeroTransition).toBeDefined();
-        expect(zeroTransition.newRegisters.PC).toBe(0xabce);
-        expect(zeroTransition.newRegisters.SP).toBeUndefined();
+        }
+        const zeroTransition = ret.process(state, [0xc0])
+        expect(zeroTransition).toBeDefined()
+        expect(zeroTransition.newRegisters.PC).toBe(0xabce)
+        expect(zeroTransition.newRegisters.SP).toBeUndefined()
 
-        state.registers.flagZ = false;
-        const nonZerotransition = ret.process(state, [0xc0]);
-        expect(nonZerotransition).toBeDefined();
-        expect(nonZerotransition.newRegisters.PC).toBe(0x1234);
-        expect(nonZerotransition.newRegisters.SP).toBe(0x2347);
+        state.registers.flagZ = false
+        const nonZerotransition = ret.process(state, [0xc0])
+        expect(nonZerotransition).toBeDefined()
+        expect(nonZerotransition.newRegisters.PC).toBe(0x1234)
+        expect(nonZerotransition.newRegisters.SP).toBe(0x2347)
 
-        const assembler = ret.createAssembler();
+        const assembler = ret.createAssembler()
 
-        expect(assembler).toBeDefined();
-        expect(assembler.type).toBe('instruction');
-        expect(assembler.assembler).toBe('RET\tNZ');
-        expect(assembler.opcodes(null)).toEqual([0xc0]);
-        expect(assembler.size).toBe(1);
-    });
-});
+        expect(assembler).toBeDefined()
+        expect(assembler.type).toBe('instruction')
+        expect(assembler.assembler).toBe('RET\tNZ')
+        expect(assembler.opcodes(null)).toEqual([0xc0])
+        expect(assembler.size).toBe(1)
+    })
+})

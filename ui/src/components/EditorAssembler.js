@@ -1,59 +1,59 @@
-import React from 'react';
+import React from 'react'
 
-import * as MachineActions from '../actions/MachineActions';
+import * as MachineActions from '../actions/MachineActions'
 
 export default class EditorAssembler extends React.Component {
 
     componentDidMount() {
-        this.updateContent();
+        this.updateContent()
     }
 
     componentDidUpdate() {
-        this.updateContent();
+        this.updateContent()
     }
 
     updateContent() {
-        const selectedLine = this.getSelectedLine();
+        const selectedLine = this.getSelectedLine()
         React.findDOMNode(this).innerHTML = this.props.sourceCode.instructions.map(instruction =>
-            `<li class="${instruction.type}">${instruction.assembler}</li>`).join('');
-        this.setSelectedLine(selectedLine);
+            `<li class="${instruction.type}">${instruction.assembler}</li>`).join('')
+        this.setSelectedLine(selectedLine)
     }
 
     getSelectedLine() {
-        let selectedLine = -1;
+        let selectedLine = -1
         if (window.getSelection) {
-            const parent = React.findDOMNode(this);
-            const selection = getSelection();
+            const parent = React.findDOMNode(this)
+            const selection = getSelection()
             if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                let selectedNode = range.startContainer;
+                const range = selection.getRangeAt(0)
+                let selectedNode = range.startContainer
                 if (selectedNode.nodeType !== Node.ELEMENT_NODE) {
-                    selectedNode = selectedNode.parentNode;
+                    selectedNode = selectedNode.parentNode
                 }
                 if (selectedNode.parentNode === parent) {
-                    selectedLine = 0;
+                    selectedLine = 0
                     while ((selectedNode = selectedNode.previousSibling) !== null) {
-                        selectedLine++;
+                        selectedLine++
                     }
                 }
             }
         }
-        return selectedLine;
+        return selectedLine
     }
 
     setSelectedLine(line) {
         if (line < 0) {
-            return;
+            return
         }
         if (window.getSelection && document.createRange) {
-            const selection = getSelection();
-            selection.removeAllRanges();
-            const children = React.findDOMNode(this).children;
+            const selection = getSelection()
+            selection.removeAllRanges()
+            const children = React.findDOMNode(this).children
             if (line < children.length) {
-                const range = document.createRange();
-                range.setStart(children[line], 1);
-                range.setEnd(children[line], 1);
-                selection.addRange(range);
+                const range = document.createRange()
+                range.setStart(children[line], 1)
+                range.setEnd(children[line], 1)
+                selection.addRange(range)
             }
         }
     }
@@ -64,28 +64,28 @@ export default class EditorAssembler extends React.Component {
                 contentEditable="true"
                 onBlur={this.handleBlur.bind(this)}
                 onInput={this.handleInput.bind(this)}/>
-        );
+        )
     }
 
     handleBlur() {
-        this.emitChange(true);
+        this.emitChange(true)
     }
 
     handleInput() {
-        this.emitChange(false);
+        this.emitChange(false)
     }
 
     emitChange(force) {
-        const lines = [];
+        const lines = []
         for (let child of React.findDOMNode(this).children) {
-            lines.push(child.textContent);
+            lines.push(child.textContent)
         }
         if (force || lines.length !== this.props.sourceCode.instructions.length) {
-            MachineActions.compile(lines);
+            MachineActions.compile(lines)
         }
     }
 }
 
 EditorAssembler.propTypes = {
     sourceCode: React.PropTypes.object.isRequired
-};
+}
