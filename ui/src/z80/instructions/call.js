@@ -1,5 +1,4 @@
 import Instruction from './Instruction'
-import GenericInstruction from './GenericInstruction'
 import ConditionalInstruction from './ConditionalInstruction'
 import Transition from '../Transition'
 
@@ -10,15 +9,6 @@ class Call extends Instruction {
         super(0xcd, 'CALL', [args.AddressOrLabelPattern])
     }
 
-    createAssembler(labelOrAddress) {
-        return {
-            type: 'instruction',
-            assembler: `CALL\t${labelOrAddress}`,
-            opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
-            size: this.size
-        }
-    }
-
     process(state, pcMem) {
         return new Transition().
             withWordRegister('PC', (pcMem[1] << 8) | pcMem[2]).
@@ -27,7 +17,7 @@ class Call extends Instruction {
     }
 }
 
-class Return extends GenericInstruction {
+class Return extends Instruction {
     constructor() {
         super(0xc9, 'RET', [])
     }

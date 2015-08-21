@@ -1,8 +1,7 @@
-import GenericInstruction from './GenericInstruction'
-
+import Instruction from './Instruction'
 import Transition from '../Transition'
 
-class Halt extends GenericInstruction {
+class Halt extends Instruction {
     constructor() {
         super(0x76, 'HALT', [])
     }
@@ -12,7 +11,7 @@ class Halt extends GenericInstruction {
     }
 }
 
-class Nop extends GenericInstruction {
+class Nop extends Instruction {
     constructor() {
         super(0x00, 'NOP', [])
     }

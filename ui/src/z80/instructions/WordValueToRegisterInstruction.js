@@ -5,18 +5,9 @@ import * as args from './ArgumentPatterns'
 
 export default class WordValueToRegisterInstruction extends Instruction {
     constructor(opcode, name, to, operation) {
-        super(opcode, name, [args.RegisterPattern(to), args.AddressOrLabelPattern])
+        super(opcode, name, [args.RegisterPattern(to), args.AddressOrLabelPattern], ' <- ')
         this.to = to
         this.operation = operation
-    }
-
-    createAssembler(to, labelOrAddress) {
-        return {
-            type: 'instruction',
-            assembler: `${this.name}\t${this.to} <- ${labelOrAddress}`,
-            opcodes: (labels) => this.opcodes.concat(labels.getAddress(labelOrAddress)),
-            size: this.size
-        }
     }
 
     process(state, pcMem) {

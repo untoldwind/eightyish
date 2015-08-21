@@ -1,11 +1,11 @@
-import TransferInstruction from './TransferInstruction'
+import Instruction from './Instruction'
 import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
-export default class ByteValueToRegisterInstruction extends TransferInstruction {
+export default class ByteValueToRegisterInstruction extends Instruction {
     constructor(opcode, name, to, operation) {
-        super(opcode, name, [args.RegisterPattern(to), args.ByteValuePattern])
+        super(opcode, name, [args.RegisterPattern(to), args.ByteValuePattern], ' <- ')
         this.to = to
         this.operation = operation
     }

@@ -1,10 +1,10 @@
-import GenericInstruction from './GenericInstruction'
+import Instruction from './Instruction'
 import ConditionalInstruction from './ConditionalInstruction'
 import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
-class Jump extends GenericInstruction {
+class Jump extends Instruction {
     constructor() {
         super(0xc3, 'JUMP', [args.AddressOrLabelPattern])
     }

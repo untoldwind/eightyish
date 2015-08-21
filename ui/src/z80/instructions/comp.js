@@ -1,9 +1,9 @@
-import GenericInstruction from './GenericInstruction'
+import Instruction from './Instruction'
 import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
-class CompWithRegister extends GenericInstruction {
+class CompWithRegister extends Instruction {
     constructor(opcode, to, from) {
         super(opcode, 'COMP', [args.RegisterPattern(to), args.RegisterPattern(from)])
         this.to = to
@@ -17,7 +17,7 @@ class CompWithRegister extends GenericInstruction {
     }
 }
 
-class CompWithPointer extends GenericInstruction {
+class CompWithPointer extends Instruction {
     constructor(opcode, to, from) {
         super(opcode, 'COMP', [args.RegisterPattern(to), args.RegisterPointerPattern(from)])
         this.to = to
@@ -31,7 +31,7 @@ class CompWithPointer extends GenericInstruction {
     }
 }
 
-class CompWithIndexPointer extends GenericInstruction {
+class CompWithIndexPointer extends Instruction {
     constructor(opcode, to, from) {
         super(opcode, 'COMP', [args.RegisterPattern(to), args.IndexPointerPattern(from)])
         this.to = to
@@ -47,7 +47,7 @@ class CompWithIndexPointer extends GenericInstruction {
     }
 }
 
-class CompWithValue extends GenericInstruction {
+class CompWithValue extends Instruction {
     constructor(opcode, to) {
         super(opcode, 'COMP', [args.RegisterPattern(to), args.ByteValuePattern])
         this.to = to

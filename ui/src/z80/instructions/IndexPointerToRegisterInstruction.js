@@ -1,11 +1,11 @@
-import TransferInstruction from './TransferInstruction'
+import Instruction from './Instruction'
 import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
-export default class IndexPointerToRegisterInstruction extends TransferInstruction {
+export default class IndexPointerToRegisterInstruction extends Instruction {
     constructor(opcode, name, to, from, operation) {
-        super(opcode, name, [args.RegisterPattern(to), args.IndexPointerPattern(from)])
+        super(opcode, name, [args.RegisterPattern(to), args.IndexPointerPattern(from)], ' <- ')
         this.to = to
         this.from = from
         this.operation = operation

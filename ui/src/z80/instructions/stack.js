@@ -1,9 +1,9 @@
-import GenericInstruction from './GenericInstruction'
+import Instruction from './Instruction'
 import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
-class Push extends GenericInstruction {
+class Push extends Instruction {
     constructor(opcode, register) {
         super(opcode, 'PUSH', [args.RegisterPattern(register)])
         this.register = register
@@ -17,7 +17,7 @@ class Push extends GenericInstruction {
     }
 }
 
-class Pop extends GenericInstruction {
+class Pop extends Instruction {
     constructor(opcode, register) {
         super(opcode, 'POP', [args.RegisterPattern(register)])
         this.register = register
