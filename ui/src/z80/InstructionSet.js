@@ -115,18 +115,9 @@ export function createInstruction(elements) {
 
     for (let variant of variants) {
         const argumentPattern = variant.argumentPattern;
-        if (argumentPattern.length === elements.length - 1) {
-            let i;
-            for (i = 0; i < argumentPattern.length; i++) {
-                if (argumentPattern[i] instanceof ArgumentPattern && !argumentPattern[i].matches(elements[i + 1])) {
-                    break;
-                } else if (typeof argumentPattern[i] === 'string' && argumentPattern[i] !== elements[i + 1].toUpperCase()) {
-                    break;
-                }
-            }
-            if (i === argumentPattern.length) {
-                return variant.createAssembler(... elements.slice(1));
-            }
+        if (argumentPattern.length === elements.length - 1 &&
+            argumentPattern.every((pattern, index) => pattern.matches(elements[index + 1]))) {
+            return variant.createAssembler(... elements.slice(1));
         }
     }
     return null;

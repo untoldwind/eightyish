@@ -1,9 +1,11 @@
 import Instruction from './Instruction';
 import Transition from '../Transition';
 
+import * as args from './ArgumentPatterns';
+
 export default class RegisterInstruction extends Instruction {
     constructor(opcode, name, register, operation) {
-        super(opcode, name, [register]);
+        super(opcode, name, [args.RegisterPattern(register)]);
         this.register = register;
         this.byte = register.length === 1;
         this.operation = operation;

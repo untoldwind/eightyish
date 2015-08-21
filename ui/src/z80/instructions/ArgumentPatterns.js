@@ -4,6 +4,20 @@ export class ArgumentPattern {
     }
 }
 
+export function RegisterPattern(register) {
+    return {
+        matches: (value) => value.toUpperCase() === register,
+        extractValue: () => register
+    }
+}
+
+export function RegisterPointerPattern(register) {
+    return {
+        matches: (value) => value.toUpperCase() === `(${register})`,
+        extractValue: () => `(${register})`
+    }
+}
+
 export const ByteValuePattern = {
     __proto__: ArgumentPattern.prototype,
 
@@ -67,17 +81,11 @@ export const AddressOrLabelPattern = {
     }
 };
 
-export class IndexPointerPattern extends ArgumentPattern {
-    constructor(indexRegister) {
-        super();
-        this.pattern = new RegExp(`\\(${indexRegister}([\\-\\+]\\d+)\\)`, 'i');
-    }
+export function IndexPointerPattern(indexRegister) {
+    const pattern = new RegExp(`\\(${indexRegister}([\\-\\+]\\d+)\\)`, 'i');
 
-    matches(value) {
-        return value.match(this.pattern);
-    }
-
-    extractValue(value) {
-        return value.match(this.pattern)[1];
-    }
+    return {
+        matches: (value) => value.match(pattern),
+        extractValue: (value) => value.match(pattern)[1]
+    };
 }

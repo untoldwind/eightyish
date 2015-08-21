@@ -5,7 +5,7 @@ import * as args from './ArgumentPatterns';
 
 class CompWithRegister extends Instruction {
     constructor(opcode, to, from) {
-        super(opcode, 'COMP', [to, from]);
+        super(opcode, 'COMP', [args.RegisterPattern(to), args.RegisterPattern(from)]);
         this.to = to;
         this.from = from;
     }
@@ -28,7 +28,7 @@ class CompWithRegister extends Instruction {
 
 class CompWithPointer extends Instruction {
     constructor(opcode, to, from) {
-        super(opcode, 'COMP', [to, `(${from})`]);
+        super(opcode, 'COMP', [args.RegisterPattern(to), args.RegisterPointerPattern(from)]);
         this.to = to;
         this.from = from;
     }
@@ -51,7 +51,7 @@ class CompWithPointer extends Instruction {
 
 class CompWithIndexPointer extends Instruction {
     constructor(opcode, to, from) {
-        super(opcode, 'COMP', [to, new args.IndexPointerPattern(from)], 1);
+        super(opcode, 'COMP', [args.RegisterPattern(to), args.IndexPointerPattern(from)], 1);
         this.to = to;
         this.from = from;
     }
@@ -77,7 +77,7 @@ class CompWithIndexPointer extends Instruction {
 
 class CompWithValue extends Instruction {
     constructor(opcode, to) {
-        super(opcode, 'COMP', [to, args.ByteValuePattern], 1);
+        super(opcode, 'COMP', [args.RegisterPattern(to), args.ByteValuePattern], 1);
         this.to = to;
     }
 
