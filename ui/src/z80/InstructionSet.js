@@ -11,8 +11,6 @@ import OrInstructions from './instructions/or';
 import SubInstructions from './instructions/sub';
 import StackInstructions from './instructions/stack';
 
-import {ArgumentPattern} from './instructions/ArgumentPatterns';
-
 export const INSTRUCTIONS = [].concat(
     AddInstructions,
     AndInstructions,
@@ -95,7 +93,7 @@ export function createError(line) {
 
 export function createLabel(label) {
     return {
-        type: 'jumplabel',
+        type: 'sourcelabel',
         assembler: `${label}:`,
         opcodes: () => [],
         updateLabel: (offset, labels) => labels[label] = offset,
@@ -113,12 +111,14 @@ export function createInstruction(elements) {
         return null;
     }
 
-    for (let variant of variants) {
+    const matchingVariant = variants.find((variant) => {
         const argumentPattern = variant.argumentPattern;
-        if (argumentPattern.length === elements.length - 1 &&
-            argumentPattern.every((pattern, index) => pattern.matches(elements[index + 1]))) {
-            return variant.createAssembler(... elements.slice(1));
-        }
+        return argumentPattern.length === elements.length - 1 &&
+            argumentPattern.every((pattern, index) => pattern.matches(elements[index + 1]));
+    });
+
+    if (matchingVariant) {
+        return matchingVariant.createAssembler(... elements.slice(1));
     }
     return null;
 }

@@ -1,6 +1,8 @@
 import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction';
 import WordValueToRegisterInstruction from './WordValueToRegisterInstruction';
 import RegisterToRegisterInstruction from './RegisterToRegisterInstruction';
+import PointerToRegisterInstruction from './PointerToRegisterInstruction';
+import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction';
 
 import Instruction from './Instruction';
 import Transition from '../Transition';
@@ -100,6 +102,21 @@ export default [
     new RegisterToRegisterInstruction(0xf9, 'LOAD', 'SP', 'HL', operation),
     new RegisterToRegisterInstruction(0xddf9, 'LOAD', 'SP', 'IX', operation),
     new RegisterToRegisterInstruction(0xfdf9, 'LOAD', 'SP', 'IY', operation),
+    new PointerToRegisterInstruction(0x7e, 'LOAD', 'A', 'HL', operation),
+    new IndexPointerToRegisterInstruction(0xdd7e, 'LOAD', 'A', 'IX', operation),
+    new IndexPointerToRegisterInstruction(0xfd7e, 'LOAD', 'A', 'IY', operation),
+    new PointerToRegisterInstruction(0x46, 'LOAD', 'B', 'HL', operation),
+    new IndexPointerToRegisterInstruction(0xdd46, 'LOAD', 'B', 'IX', operation),
+    new IndexPointerToRegisterInstruction(0xfd46, 'LOAD', 'B', 'IY', operation),
+    new PointerToRegisterInstruction(0x4e, 'LOAD', 'C', 'HL', operation),
+    new IndexPointerToRegisterInstruction(0xdd4e, 'LOAD', 'C', 'IX', operation),
+    new IndexPointerToRegisterInstruction(0xfd4e, 'LOAD', 'C', 'IY', operation),
+    new PointerToRegisterInstruction(0x56, 'LOAD', 'D', 'HL', operation),
+    new IndexPointerToRegisterInstruction(0xdd56, 'LOAD', 'D', 'IX', operation),
+    new IndexPointerToRegisterInstruction(0xfd56, 'LOAD', 'D', 'IY', operation),
+    new PointerToRegisterInstruction(0x5e, 'LOAD', 'E', 'HL', operation),
+    new IndexPointerToRegisterInstruction(0xdd5e, 'LOAD', 'E', 'IX', operation),
+    new IndexPointerToRegisterInstruction(0xfd5e, 'LOAD', 'E', 'IY', operation),
     new LoadRegisterToMemory(0x32, 'A'),
     new LoadRegisterToMemory(0xed43, 'BC'),
     new LoadRegisterToMemory(0xed53, 'DE'),

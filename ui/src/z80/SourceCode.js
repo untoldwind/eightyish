@@ -2,43 +2,19 @@ import * as InstructionSet from './InstructionSet';
 
 import * as formats from '../components/formats';
 
-class Labels {
-    getAddress(labelOfAddress) {
-        switch (typeof labelOfAddress) {
-        case 'number':
-            return [(labelOfAddress >> 8) & 0xff, labelOfAddress & 0xff];
-        case 'string':
-            if (labelOfAddress.startsWith('.')) {
-                const address = this[labelOfAddress];
-
-                if (address) {
-                    return [(address >> 8) & 0xff, address & 0xff];
-                }
-            } else {
-                const address = parseInt(labelOfAddress, 16);
-
-                if (address) {
-                    return [(address >> 8) & 0xff, address & 0xff];
-                }
-            }
-            return 0;
-        default:
-            return 0;
-        }
-    }
-}
+import SourceLabels from './SourceLabels';
 
 export default class SourceCode {
     constructor() {
         this.instructions = [
             InstructionSet.createInstruction(['HALT'])
         ];
-        this.labels = new Labels();
+        this.labels = new SourceLabels();
     }
 
     compile(lines) {
         this.instructions = [];
-        this.label = new Labels();
+        this.label = new SourceLabels();
 
         if (!lines) {
             return;
