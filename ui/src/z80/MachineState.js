@@ -106,7 +106,7 @@ class MachineState extends EventEmitter {
     }
 
     toggleVideo(videoEnabled) {
-        if (videoEnabled && !this.videoMemory) {
+        if (videoEnabled && !(this.videoMemory instanceof Array)) {
             this.videoMemory = Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0);
             this.emitChange();
         } else if (!videoEnabled) {
@@ -159,7 +159,7 @@ class MachineState extends EventEmitter {
     }
 
     get hasVideo() {
-        return this.videoMemory;
+        return this.videoMemory instanceof Array;
     }
 
     emitChange() {

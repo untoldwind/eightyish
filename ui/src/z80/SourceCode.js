@@ -14,7 +14,7 @@ export default class SourceCode {
 
     compile(lines) {
         this.instructions = [];
-        this.label = new SourceLabels();
+        this.labels = new SourceLabels();
 
         if (!lines) {
             return;

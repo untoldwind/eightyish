@@ -96,7 +96,7 @@ export function createLabel(label) {
         type: 'sourcelabel',
         assembler: `${label}:`,
         opcodes: () => [],
-        updateLabel: (offset, labels) => labels[label] = offset,
+        updateLabel: (offset, labels) => labels.setAddress(label, offset),
         size: 0
     };
 }
