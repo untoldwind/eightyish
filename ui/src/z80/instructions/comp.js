@@ -5,9 +5,11 @@ import * as args from './ArgumentPatterns'
 
 import { createFromRegisterInstructions } from './factory'
 
+import { COMP, HL, IX, IY } from './constants'
+
 class CompWithRegister extends Instruction {
     constructor(opcode, to, from) {
-        super(opcode, 'COMP', [args.RegisterPattern(to), args.RegisterPattern(from)])
+        super(opcode, COMP, [args.RegisterPattern(to), args.RegisterPattern(from)])
         this.to = to
         this.from = from
     }
@@ -21,7 +23,7 @@ class CompWithRegister extends Instruction {
 
 class CompWithPointer extends Instruction {
     constructor(opcode, to, from) {
-        super(opcode, 'COMP', [args.RegisterPattern(to), args.RegisterPointerPattern(from)])
+        super(opcode, COMP, [args.RegisterPattern(to), args.RegisterPointerPattern(from)])
         this.to = to
         this.from = from
     }
@@ -35,7 +37,7 @@ class CompWithPointer extends Instruction {
 
 class CompWithIndexPointer extends Instruction {
     constructor(opcode, to, from) {
-        super(opcode, 'COMP', [args.RegisterPattern(to), args.IndexPointerPattern(from)])
+        super(opcode, COMP, [args.RegisterPattern(to), args.IndexPointerPattern(from)])
         this.to = to
         this.from = from
     }
@@ -51,7 +53,7 @@ class CompWithIndexPointer extends Instruction {
 
 class CompWithValue extends Instruction {
     constructor(opcode, to) {
-        super(opcode, 'COMP', [args.RegisterPattern(to), args.ByteValuePattern])
+        super(opcode, COMP, [args.RegisterPattern(to), args.ByteValuePattern])
         this.to = to
     }
 
@@ -65,8 +67,8 @@ class CompWithValue extends Instruction {
 
 export default [
     new CompWithValue(0xfe, 'A'),
-    new CompWithPointer(0xbe, 'A', 'HL'),
-    new CompWithIndexPointer(0xddbe, 'A', 'IX'),
-    new CompWithIndexPointer(0xfdbe, 'A', 'IY')
+    new CompWithPointer(0xbe, 'A', HL),
+    new CompWithIndexPointer(0xddbe, 'A', IX),
+    new CompWithIndexPointer(0xfdbe, 'A', IY)
 ].concat(createFromRegisterInstructions(0xb8, (opcode, register) =>
         new CompWithRegister(opcode, 'A', register)))

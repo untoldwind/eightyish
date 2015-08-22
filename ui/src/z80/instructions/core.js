@@ -1,9 +1,11 @@
 import Instruction from './Instruction'
 import Transition from '../Transition'
 
+import { HALT, NOP } from './constants'
+
 class Halt extends Instruction {
     constructor() {
-        super(0x76, 'HALT', [])
+        super(0x76, HALT, [])
     }
 
     process() {
@@ -13,7 +15,7 @@ class Halt extends Instruction {
 
 class Nop extends Instruction {
     constructor() {
-        super(0x00, 'NOP', [])
+        super(0x00, NOP, [])
     }
 
     process(state) {

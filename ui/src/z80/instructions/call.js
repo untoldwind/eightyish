@@ -4,35 +4,37 @@ import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
+import { CALL, RET, PC, SP } from './constants'
+
 class Call extends Instruction {
     constructor() {
-        super(0xcd, 'CALL', [args.AddressOrLabelPattern])
+        super(0xcd, CALL, [args.AddressOrLabelPattern])
     }
 
     process(state, pcMem) {
         return new Transition().
-            withWordRegister('PC', (pcMem[1] << 8) | pcMem[2]).
-            withWordRegister('SP', state.registers.SP - 2).
+            withWordRegister(PC, (pcMem[1] << 8) | pcMem[2]).
+            withWordRegister(SP, state.registers.SP - 2).
             withWordAt(state.registers.SP - 2, state.registers.PC + this.size)
     }
 }
 
 class Return extends Instruction {
     constructor() {
-        super(0xc9, 'RET', [])
+        super(0xc9, RET, [])
     }
 
     process(state) {
         const returnAddress = state.getMemoryWord(state.registers.SP)
         return new Transition().
-            withWordRegister('PC', returnAddress).
-            withWordRegister('SP', state.registers.SP + 2)
+            withWordRegister(PC, returnAddress).
+            withWordRegister(SP, state.registers.SP + 2)
     }
 }
 
 class ConditionalCall extends ConditionalInstruction {
     constructor(opcode, flag, condition) {
-        super(opcode, 'CALL', flag, condition, [args.AddressOrLabelPattern])
+        super(opcode, CALL, flag, condition, [args.AddressOrLabelPattern])
         this.flag = flag
         this.condition = condition
     }
@@ -40,18 +42,18 @@ class ConditionalCall extends ConditionalInstruction {
     process(state, pcMem) {
         if (this.isConditionSatisfied(state)) {
             return new Transition().
-                withWordRegister('PC', (pcMem[1] << 8) | pcMem[2]).
-                withWordRegister('SP', state.registers.SP - 2).
+                withWordRegister(PC, (pcMem[1] << 8) | pcMem[2]).
+                withWordRegister(SP, state.registers.SP - 2).
                 withWordAt(state.registers.SP - 2, state.registers.PC + this.size)
         }
         return new Transition().
-            withWordRegister('PC', state.registers.PC + this.size)
+            withWordRegister(PC, state.registers.PC + this.size)
     }
 }
 
 class ConditionalReturn extends ConditionalInstruction {
     constructor(opcode, flag, condition) {
-        super(opcode, 'RET', flag, condition, [])
+        super(opcode, RET, flag, condition, [])
         this.flag = flag
         this.condition = condition
     }
@@ -60,11 +62,11 @@ class ConditionalReturn extends ConditionalInstruction {
         if (this.isConditionSatisfied(state)) {
             const returnAddress = state.getMemoryWord(state.registers.SP)
             return new Transition().
-                withWordRegister('PC', returnAddress).
-                withWordRegister('SP', state.registers.SP + 2)
+                withWordRegister(PC, returnAddress).
+                withWordRegister(SP, state.registers.SP + 2)
         }
         return new Transition().
-            withWordRegister('PC', state.registers.PC + this.size)
+            withWordRegister(PC, state.registers.PC + this.size)
     }
 }
 
