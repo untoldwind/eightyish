@@ -85,9 +85,9 @@ export default class EditorAssembler extends React.Component {
     }
 
     emitChange(force) {
-        const lines = []
+        let lines = []
         for (let child of React.findDOMNode(this).children) {
-            lines.push(child.textContent)
+            lines = lines.concat(child.textContent.split('\n'))
         }
         if (force || lines.length !== this.props.sourceCode.instructions.length) {
             MachineActions.compile(lines)
