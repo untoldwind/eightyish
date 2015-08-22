@@ -5,11 +5,5 @@ import './index-dev.html'
 
 import 'babel/polyfill'
 
-import React from 'react'
+import './app'
 
-import App from './app'
-
-React.render(
-    <App />,
-    document.getElementById('app')
-)

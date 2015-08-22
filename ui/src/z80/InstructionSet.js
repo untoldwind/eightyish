@@ -28,17 +28,17 @@ export const INSTRUCTIONS = [].concat(
     XorInstructions
 )
 
-const parseTree = {}
+export const INSTRUCTIONS_BY_NAME = new Map()
 
 const opcodes = []
 
 INSTRUCTIONS.forEach(instruction => {
     const name = instruction.name
-    let variants = parseTree[name]
+    let variants = INSTRUCTIONS_BY_NAME.get(name)
 
     if (!variants) {
         variants = []
-        parseTree[name] = variants
+        INSTRUCTIONS_BY_NAME.set(name, variants)
     }
     variants.push(instruction)
 
@@ -108,7 +108,7 @@ export function createInstruction(elements) {
     if (!elements instanceof Array || elements.length === 0) {
         return null
     }
-    const variants = parseTree[elements[0].toUpperCase()]
+    const variants = INSTRUCTIONS_BY_NAME.get(elements[0].toUpperCase())
 
     if (!variants) {
         return null

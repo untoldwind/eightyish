@@ -114,6 +114,6 @@ export function IndexPointerPattern(indexRegister) {
         },
         extraOpcodes: (value) => [value & 0xff],
         extraSize: 1,
-        example: `(${indexRegister}+num})`
+        example: `(${indexRegister}+num)`
     }
 }
