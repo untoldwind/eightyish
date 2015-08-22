@@ -3,6 +3,8 @@ import RegisterToRegisterInstruction from './RegisterToRegisterInstruction'
 import PointerToRegisterInstruction from './PointerToRegisterInstruction'
 import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
 
+import { createFromRegisterInstructions } from './factory'
+
 function operation(target, source) {
     return target + source
 }
@@ -20,12 +22,9 @@ export default [
     new RegisterToRegisterInstruction(0xfd19, 'ADD', 'IY', 'DE', operation),
     new RegisterToRegisterInstruction(0xfd29, 'ADD', 'IY', 'IX', operation),
     new RegisterToRegisterInstruction(0xfd39, 'ADD', 'IY', 'SP', operation),
-    new RegisterToRegisterInstruction(0x80, 'ADD', 'A', 'B', operation),
-    new RegisterToRegisterInstruction(0x81, 'ADD', 'A', 'C', operation),
-    new RegisterToRegisterInstruction(0x82, 'ADD', 'A', 'D', operation),
-    new RegisterToRegisterInstruction(0x83, 'ADD', 'A', 'E', operation),
     new PointerToRegisterInstruction(0x86, 'ADD', 'A', 'HL', operation),
     new IndexPointerToRegisterInstruction(0xdd86, 'ADD', 'A', 'IX', operation),
     new IndexPointerToRegisterInstruction(0xfd86, 'ADD', 'A', 'IY', operation),
     new ByteValueToRegisterInstruction(0xc6, 'ADD', 'A', operation)
-]
+].concat(createFromRegisterInstructions(0x80, (opcode, register) =>
+        new RegisterToRegisterInstruction(opcode, 'ADD', 'A', register, operation)))

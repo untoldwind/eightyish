@@ -10,6 +10,7 @@ import LoadInstructions from './instructions/load'
 import OrInstructions from './instructions/or'
 import SubInstructions from './instructions/sub'
 import StackInstructions from './instructions/stack'
+import XorInstructions from './instructions/xor'
 
 export const INSTRUCTIONS = [].concat(
     AddInstructions,
@@ -23,7 +24,9 @@ export const INSTRUCTIONS = [].concat(
     LoadInstructions,
     OrInstructions,
     SubInstructions,
-    StackInstructions)
+    StackInstructions,
+    XorInstructions
+)
 
 const parseTree = {}
 

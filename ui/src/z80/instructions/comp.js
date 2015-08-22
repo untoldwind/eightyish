@@ -3,6 +3,8 @@ import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
+import { createFromRegisterInstructions } from './factory'
+
 class CompWithRegister extends Instruction {
     constructor(opcode, to, from) {
         super(opcode, 'COMP', [args.RegisterPattern(to), args.RegisterPattern(from)])
@@ -62,12 +64,9 @@ class CompWithValue extends Instruction {
 }
 
 export default [
-    new CompWithRegister(0xb8, 'A', 'B'),
-    new CompWithRegister(0xb9, 'A', 'C'),
-    new CompWithRegister(0xba, 'A', 'D'),
-    new CompWithRegister(0xbb, 'A', 'E'),
     new CompWithValue(0xfe, 'A'),
     new CompWithPointer(0xbe, 'A', 'HL'),
     new CompWithIndexPointer(0xddbe, 'A', 'IX'),
     new CompWithIndexPointer(0xfdbe, 'A', 'IY')
-]
+].concat(createFromRegisterInstructions(0xb8, (opcode, register) =>
+        new CompWithRegister(opcode, 'A', register)))

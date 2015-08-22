@@ -4,16 +4,13 @@ function operation(register) {
     return register - 1
 }
 
+import { createToRegisterInstructions } from './factory'
+
 export default [
-    new RegisterInstruction(0x3d, 'DEC', 'A', operation),
-    new RegisterInstruction(0x0b, 'DEC', 'BC', operation),
-    new RegisterInstruction(0x05, 'DEC', 'B', operation),
-    new RegisterInstruction(0x1b, 'DEC', 'DE', operation),
-    new RegisterInstruction(0x0d, 'DEC', 'C', operation),
-    new RegisterInstruction(0x15, 'DEC', 'D', operation),
-    new RegisterInstruction(0x1d, 'DEC', 'E', operation),
-    new RegisterInstruction(0x2b, 'DEC', 'HL', operation),
     new RegisterInstruction(0xdd2b, 'DEC', 'IX', operation),
-    new RegisterInstruction(0xfd2b, 'DEC', 'IY', operation),
-    new RegisterInstruction(0x3b, 'DEC', 'SP', operation)
-]
+    new RegisterInstruction(0xfd2b, 'DEC', 'IY', operation)
+].
+    concat(createToRegisterInstructions(0x05, (opcode, register) =>
+        new RegisterInstruction(opcode, 'DEC', register, operation))).
+    concat(['BC', 'DE', 'HL', 'SP'].map((register, i) =>
+        new RegisterInstruction(0x0b + (i << 4), 'DEC', register, operation)))

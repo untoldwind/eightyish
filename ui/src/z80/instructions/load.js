@@ -9,6 +9,8 @@ import Transition from '../Transition'
 
 import * as args from './ArgumentPatterns'
 
+import { createFromRegisterInstructions } from './factory'
+
 class LoadMemoryToRegister extends Instruction {
     constructor(opcode, to) {
         super(opcode, 'LOAD', [args.RegisterPattern(to), args.PointerPattern], ' <- ')
@@ -54,31 +56,6 @@ function operation(target, source) {
 }
 
 export default [
-    new RegisterToRegisterInstruction(0x7f, 'LOAD', 'A', 'A', operation),
-    new RegisterToRegisterInstruction(0x78, 'LOAD', 'A', 'B', operation),
-    new RegisterToRegisterInstruction(0x79, 'LOAD', 'A', 'C', operation),
-    new RegisterToRegisterInstruction(0x7a, 'LOAD', 'A', 'D', operation),
-    new RegisterToRegisterInstruction(0x7b, 'LOAD', 'A', 'E', operation),
-    new RegisterToRegisterInstruction(0x47, 'LOAD', 'B', 'A', operation),
-    new RegisterToRegisterInstruction(0x40, 'LOAD', 'B', 'B', operation),
-    new RegisterToRegisterInstruction(0x41, 'LOAD', 'B', 'C', operation),
-    new RegisterToRegisterInstruction(0x42, 'LOAD', 'B', 'D', operation),
-    new RegisterToRegisterInstruction(0x43, 'LOAD', 'B', 'E', operation),
-    new RegisterToRegisterInstruction(0x4f, 'LOAD', 'C', 'A', operation),
-    new RegisterToRegisterInstruction(0x48, 'LOAD', 'C', 'B', operation),
-    new RegisterToRegisterInstruction(0x49, 'LOAD', 'C', 'C', operation),
-    new RegisterToRegisterInstruction(0x4a, 'LOAD', 'C', 'D', operation),
-    new RegisterToRegisterInstruction(0x4b, 'LOAD', 'C', 'E', operation),
-    new RegisterToRegisterInstruction(0x57, 'LOAD', 'D', 'A', operation),
-    new RegisterToRegisterInstruction(0x50, 'LOAD', 'D', 'B', operation),
-    new RegisterToRegisterInstruction(0x51, 'LOAD', 'D', 'C', operation),
-    new RegisterToRegisterInstruction(0x52, 'LOAD', 'D', 'D', operation),
-    new RegisterToRegisterInstruction(0x53, 'LOAD', 'D', 'E', operation),
-    new RegisterToRegisterInstruction(0x5f, 'LOAD', 'E', 'A', operation),
-    new RegisterToRegisterInstruction(0x58, 'LOAD', 'E', 'B', operation),
-    new RegisterToRegisterInstruction(0x59, 'LOAD', 'E', 'C', operation),
-    new RegisterToRegisterInstruction(0x5a, 'LOAD', 'E', 'D', operation),
-    new RegisterToRegisterInstruction(0x5b, 'LOAD', 'E', 'E', operation),
     new RegisterToRegisterInstruction(0xf9, 'LOAD', 'SP', 'HL', operation),
     new RegisterToRegisterInstruction(0xddf9, 'LOAD', 'SP', 'IX', operation),
     new RegisterToRegisterInstruction(0xfdf9, 'LOAD', 'SP', 'IY', operation),
@@ -122,4 +99,14 @@ export default [
     new WordValueToRegisterInstruction(0xdd21, 'LOAD', 'IX', operation),
     new WordValueToRegisterInstruction(0xfd21, 'LOAD', 'IY', operation),
     new WordValueToRegisterInstruction(0x31, 'LOAD', 'SP', operation)
-]
+].
+    concat(createFromRegisterInstructions(0x78, (opcode, register) =>
+        new RegisterToRegisterInstruction(opcode, 'LOAD', 'A', register, operation))).
+    concat(createFromRegisterInstructions(0x40, (opcode, register) =>
+        new RegisterToRegisterInstruction(opcode, 'LOAD', 'B', register, operation))).
+    concat(createFromRegisterInstructions(0x48, (opcode, register) =>
+        new RegisterToRegisterInstruction(opcode, 'LOAD', 'C', register, operation))).
+    concat(createFromRegisterInstructions(0x50, (opcode, register) =>
+        new RegisterToRegisterInstruction(opcode, 'LOAD', 'D', register, operation))).
+    concat(createFromRegisterInstructions(0x58, (opcode, register) =>
+        new RegisterToRegisterInstruction(opcode, 'LOAD', 'E', register, operation)))
