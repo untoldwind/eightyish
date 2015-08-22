@@ -1,16 +1,18 @@
-import AddInstructions from './instructions/add'
-import AndInstructions from './instructions/and'
-import CoreInstructions from './instructions/core'
-import CompInstructions from './instructions/comp'
-import CallInstructions from './instructions/call'
-import DecInstructions from './instructions/dec'
-import IncInstructions from './instructions/inc'
-import JumpInstructions from './instructions/jump'
-import LoadInstructions from './instructions/load'
-import OrInstructions from './instructions/or'
-import SubInstructions from './instructions/sub'
-import StackInstructions from './instructions/stack'
-import XorInstructions from './instructions/xor'
+import AddInstructions from './instructions/AddInstructions'
+import AndInstructions from './instructions/AndInstructions'
+import CoreInstructions from './instructions/CoreInstructions'
+import CompInstructions from './instructions/CompInstructions'
+import CallInstructions from './instructions/CallInstructions'
+import DecInstructions from './instructions/DecInstructions'
+import IncInstructions from './instructions/IncInstructions'
+import JumpInstructions from './instructions/JumpInstructions'
+import LoadInstructions from './instructions/LoadInstructions'
+import OrInstructions from './instructions/OrInstructions'
+import ShiftLeftInstructions from './instructions/ShiftLeftInstructions'
+import ShiftRightInstructions from './instructions/ShiftRightInstructions'
+import SubInstructions from './instructions/SubInstructions'
+import StackInstructions from './instructions/StackInstructions'
+import XorInstructions from './instructions/XorInstructions'
 
 export const INSTRUCTIONS = [].concat(
     AddInstructions,
@@ -23,6 +25,8 @@ export const INSTRUCTIONS = [].concat(
     JumpInstructions,
     LoadInstructions,
     OrInstructions,
+    ShiftLeftInstructions,
+    ShiftRightInstructions,
     SubInstructions,
     StackInstructions,
     XorInstructions

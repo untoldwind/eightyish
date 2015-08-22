@@ -1,6 +1,6 @@
 jest.autoMockOff()
 
-const JumpInstructions = require('../jump')
+const JumpInstructions = require('../JumpInstructions')
 const byOpcode = new Map(JumpInstructions.map(i => [i.opcode, i]))
 
 describe('Call Instruction', () => {

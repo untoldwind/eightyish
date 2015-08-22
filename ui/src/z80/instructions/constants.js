@@ -21,6 +21,8 @@ export const OR = 'OR'
 export const POP = 'POP'
 export const PUSH = 'PUSH'
 export const RET = 'RET'
+export const SHL = 'SHL'
+export const SHR = 'SHR'
 export const SUB = 'SUB'
 export const XOR = 'XOR'
 

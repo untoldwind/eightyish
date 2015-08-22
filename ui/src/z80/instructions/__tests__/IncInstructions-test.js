@@ -1,6 +1,6 @@
 jest.autoMockOff()
 
-const IncInstructions = require('../inc')
+const IncInstructions = require('../IncInstructions')
 const byOpcode = new Map(IncInstructions.map(i => [i.opcode, i]))
 
 describe('Inc Instruction', () => {

@@ -1,6 +1,6 @@
 jest.autoMockOff()
 
-const LoadInstructions = require('../load')
+const LoadInstructions = require('../LoadInstructions')
 const byOpcode = new Map(LoadInstructions.map(i => [i.opcode, i]))
 
 describe('Load Instruction', () => {
