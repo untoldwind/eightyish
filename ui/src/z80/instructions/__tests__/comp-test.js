@@ -29,7 +29,7 @@ describe('Compate Instruction', () => {
         expect(transition.newRegisters.flagP).toBe(false)
         expect(transition.newRegisters.flagZ).toBe(true)
 
-        const assembler = andAB.createAssembler()
+        const assembler = andAB.createAssembler([null, null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -58,7 +58,7 @@ describe('Compate Instruction', () => {
         expect(transition.newRegisters.flagP).toBe(false)
         expect(transition.newRegisters.flagZ).toBe(false)
 
-        const assembler = andA.createAssembler('A', '135')
+        const assembler = andA.createAssembler([null, 135])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -90,7 +90,7 @@ describe('Compate Instruction', () => {
         expect(transition.newRegisters.flagZ).toBe(false)
         expect(state.getMemoryByte).toBeCalledWith(1234)
 
-        const assembler = andAHL.createAssembler()
+        const assembler = andAHL.createAssembler([null, null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -122,7 +122,7 @@ describe('Compate Instruction', () => {
         expect(transition.newRegisters.flagZ).toBe(false)
         expect(state.getMemoryByte).toBeCalledWith(1244)
 
-        const assembler = andAIX.createAssembler('A', '(IX+10)')
+        const assembler = andAIX.createAssembler([null, 10])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')

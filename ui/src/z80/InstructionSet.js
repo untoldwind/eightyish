@@ -118,7 +118,8 @@ export function createInstruction(elements) {
     })
 
     if (matchingVariant) {
-        return matchingVariant.createAssembler(... elements.slice(1))
+        const params = matchingVariant.argumentPattern.map((pattern, i) => pattern.extractValue(elements[i + 1]))
+        return matchingVariant.createAssembler(params)
     }
     return null
 }

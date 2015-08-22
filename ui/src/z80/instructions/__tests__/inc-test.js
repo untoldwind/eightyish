@@ -29,7 +29,7 @@ describe('Inc Instruction', () => {
         expect(transition.newRegisters.flagP).toBe(false)
         expect(transition.newRegisters.flagZ).toBe(false)
 
-        const assembler = incA.createAssembler()
+        const assembler = incA.createAssembler([])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -59,7 +59,7 @@ describe('Inc Instruction', () => {
         expect(transition.newRegisters.flagP).toBeUndefined()
         expect(transition.newRegisters.flagZ).toBeUndefined()
 
-        const assembler = incBC.createAssembler()
+        const assembler = incBC.createAssembler([])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')

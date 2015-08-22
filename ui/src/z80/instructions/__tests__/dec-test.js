@@ -29,7 +29,7 @@ describe('Dec Instruction', () => {
         expect(transition.newRegisters.flagP).toBe(true)
         expect(transition.newRegisters.flagZ).toBe(false)
 
-        const assembler = decA.createAssembler()
+        const assembler = decA.createAssembler([])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -59,7 +59,7 @@ describe('Dec Instruction', () => {
         expect(transition.newRegisters.flagP).toBeUndefined()
         expect(transition.newRegisters.flagZ).toBeUndefined()
 
-        const assembler = decBC.createAssembler()
+        const assembler = decBC.createAssembler([])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')

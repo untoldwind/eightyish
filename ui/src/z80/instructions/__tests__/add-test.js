@@ -30,7 +30,7 @@ describe('Add Instruction', () => {
         expect(transition.newRegisters.flagP).toBe(false)
         expect(transition.newRegisters.flagZ).toBe(false)
 
-        const assembler = addAB.createAssembler()
+        const assembler = addAB.createAssembler([null, null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -60,7 +60,7 @@ describe('Add Instruction', () => {
         expect(transition.newRegisters.flagP).toBe(false)
         expect(transition.newRegisters.flagZ).toBe(false)
 
-        const assembler = addA.createAssembler('A', '10')
+        const assembler = addA.createAssembler([null, 10])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -93,7 +93,7 @@ describe('Add Instruction', () => {
         expect(transition.newRegisters.flagZ).toBe(false)
         expect(state.getMemoryByte).toBeCalledWith(1234)
 
-        const assembler = addAHL.createAssembler()
+        const assembler = addAHL.createAssembler([null, null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -126,7 +126,7 @@ describe('Add Instruction', () => {
         expect(transition.newRegisters.flagZ).toBe(false)
         expect(state.getMemoryByte).toBeCalledWith(1244)
 
-        const assembler = addAIX.createAssembler('A', '(IX+10)')
+        const assembler = addAIX.createAssembler([null, 10])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -157,7 +157,7 @@ describe('Add Instruction', () => {
         expect(transition.newRegisters.flagP).toBeUndefined()
         expect(transition.newRegisters.flagZ).toBeUndefined()
 
-        const assembler = addHLBC.createAssembler('HL', 'BC')
+        const assembler = addHLBC.createAssembler([null, null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
