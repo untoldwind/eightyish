@@ -4,7 +4,8 @@ export function RegisterPattern(register) {
         extractValue: () => null,
         formatValue: () => register,
         extraOpcodes: () => [],
-        extraSize: 0
+        extraSize: 0,
+        example: register
     }
 }
 
@@ -14,7 +15,8 @@ export function RegisterPointerPattern(register) {
         extractValue: () => null,
         formatValue: () => `(${register})`,
         extraOpcodes: () => [],
-        extraSize: 0
+        extraSize: 0,
+        example: `(${register})`
     }
 }
 
@@ -26,7 +28,8 @@ export function ConditionPattern(flag, condition) {
         extractValue: () => null,
         formatValue: () => formatted,
         extraOpcodes: () => [],
-        extraSize: 0
+        extraSize: 0,
+        example: formatted
     }
 }
 
@@ -39,7 +42,8 @@ export const ByteValuePattern = {
     extractValue: (value) => parseInt(value),
     formatValue: (value) => value.toString(10),
     extraOpcodes: (value) => [value & 0xff],
-    extraSize: 1
+    extraSize: 1,
+    example: 'num'
 }
 
 export const PointerPattern = {
@@ -70,7 +74,8 @@ export const PointerPattern = {
         return `(${value})`
     },
     extraOpcodes: (value, labels) => labels.getAddress(value),
-    extraSize: 2
+    extraSize: 2,
+    example: '(address)'
 }
 
 export const AddressOrLabelPattern = {
@@ -90,7 +95,8 @@ export const AddressOrLabelPattern = {
         return value
     },
     extraOpcodes: (value, labels) => labels.getAddress(value),
-    extraSize: 2
+    extraSize: 2,
+    example: 'address'
 }
 
 
@@ -107,6 +113,7 @@ export function IndexPointerPattern(indexRegister) {
             return `(${indexRegister}+${value.toString(10)})`
         },
         extraOpcodes: (value) => [value & 0xff],
-        extraSize: 1
+        extraSize: 1,
+        example: `(${indexRegister}+num})`
     }
 }

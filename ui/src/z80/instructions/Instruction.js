@@ -25,4 +25,10 @@ export default class Instruction {
             size: this.size
         }
     }
+
+    get example() {
+        const params = this.argumentPattern.map((pattern, i) => pattern.example)
+
+        return params.length === 0 ? this.name : `${this.name}\t${params.join(this.delim)}`
+    }
 }
