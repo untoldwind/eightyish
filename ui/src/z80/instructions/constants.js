@@ -1,3 +1,7 @@
+import {RegisterArgument, RegisterBytePointerArgument, IndexRegisterBytePointerPattern} from './Arguments'
+
+export const POINTER_DELIM = ' <- '
+
 export const AF = 'AF'
 export const BC = 'BC'
 export const DE = 'DE'
@@ -26,3 +30,13 @@ export const SHR = 'SHR'
 export const SUB = 'SUB'
 export const XOR = 'XOR'
 
+export const REG_A = RegisterArgument('A')
+export const REG_SP = RegisterArgument(SP)
+export const REG_BC = RegisterArgument(BC)
+export const REG_DE = RegisterArgument(DE)
+export const REG_HL = RegisterArgument(HL)
+export const REG_IX = RegisterArgument(IX)
+export const REG_IY = RegisterArgument(IY)
+export const POINTER_HL = RegisterBytePointerArgument(HL)
+export const POINTER_IX = IndexRegisterBytePointerPattern(IX)
+export const POINTER_IY = IndexRegisterBytePointerPattern(IY)

@@ -1,18 +1,26 @@
-import RegisterInstruction from './RegisterInstruction'
+import GenericInstruction from './GenericInstruction'
 
-import { createToRegisterInstructions } from './factory'
+import { createToRegisterInstructions2 } from './factory'
 
-import { INC, IX, IY, BC, DE, HL, SP } from './constants'
+import { REG_BC, REG_DE, REG_HL, REG_IX, REG_IY, REG_SP, INC } from './constants'
 
-function operation(register) {
-    return register + 1
+function byteOperation(storer, first) {
+    const result = first + 1
+
+    return storer(result).withFlags(result)
+}
+
+function wordOperation(storer, first) {
+    const result = first + 1
+
+    return storer(result)
 }
 
 export default [
-    new RegisterInstruction(0xdd23, INC, IX, operation),
-    new RegisterInstruction(0xfd23, INC, IY, operation)
+    new GenericInstruction(0xdd23, INC, [REG_IX], wordOperation),
+    new GenericInstruction(0xfd23, INC, [REG_IY], wordOperation)
 ].
-    concat(createToRegisterInstructions(0x04, (opcode, register) =>
-        new RegisterInstruction(opcode, INC, register, operation))).
-    concat([BC, DE, HL, SP].map((register, i) =>
-        new RegisterInstruction(0x03 + (i << 4), INC, register, operation)))
+    concat(createToRegisterInstructions2(0x04, (opcode, register) =>
+        new GenericInstruction(opcode, INC, [register], byteOperation))).
+    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) =>
+        new GenericInstruction(0x03 + (i << 4), INC, [register], wordOperation)))

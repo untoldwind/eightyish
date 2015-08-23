@@ -1,32 +1,40 @@
-import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction'
-import RegisterToRegisterInstruction from './RegisterToRegisterInstruction'
-import PointerToRegisterInstruction from './PointerToRegisterInstruction'
-import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
+import GenericInstruction from './GenericInstruction'
 
-import { createFromRegisterInstructions } from './factory'
+import { createFromRegisterInstructions2 } from './factory'
 
-import { ADD, HL, IX, IY, SP } from './constants'
+import { ByteValueArgument } from './Arguments'
 
-function operation(target, source) {
-    return target + source
+import { REG_A, REG_BC, REG_DE, REG_HL, REG_IX, REG_IY, REG_SP,
+    POINTER_HL, POINTER_IX, POINTER_IY, POINTER_DELIM, ADD} from './constants'
+
+function byteOperation(storer, first, second) {
+    const result = first + second
+
+    return storer(result).withFlags(result)
+}
+
+function wordOperation(storer, first, second) {
+    const result = first + second
+
+    return storer(result)
 }
 
 export default [
-    new RegisterToRegisterInstruction(0x09, ADD, HL, 'BC', operation),
-    new RegisterToRegisterInstruction(0x19, ADD, HL, 'DE', operation),
-    new RegisterToRegisterInstruction(0x29, ADD, HL, HL, operation),
-    new RegisterToRegisterInstruction(0x39, ADD, HL, SP, operation),
-    new RegisterToRegisterInstruction(0xdd09, ADD, IX, 'BC', operation),
-    new RegisterToRegisterInstruction(0xdd19, ADD, IX, 'DE', operation),
-    new RegisterToRegisterInstruction(0xdd29, ADD, IX, IX, operation),
-    new RegisterToRegisterInstruction(0xdd39, ADD, IX, SP, operation),
-    new RegisterToRegisterInstruction(0xfd09, ADD, IY, 'BC', operation),
-    new RegisterToRegisterInstruction(0xfd19, ADD, IY, 'DE', operation),
-    new RegisterToRegisterInstruction(0xfd29, ADD, IY, IX, operation),
-    new RegisterToRegisterInstruction(0xfd39, ADD, IY, SP, operation),
-    new PointerToRegisterInstruction(0x86, ADD, 'A', HL, operation),
-    new IndexPointerToRegisterInstruction(0xdd86, ADD, 'A', IX, operation),
-    new IndexPointerToRegisterInstruction(0xfd86, ADD, 'A', IY, operation),
-    new ByteValueToRegisterInstruction(0xc6, ADD, 'A', operation)
-].concat(createFromRegisterInstructions(0x80, (opcode, register) =>
-        new RegisterToRegisterInstruction(opcode, ADD, 'A', register, operation)))
+    new GenericInstruction(0x09, ADD, [REG_HL, REG_BC], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0x19, ADD, [REG_HL, REG_DE], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0x29, ADD, [REG_HL, REG_HL], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0x39, ADD, [REG_HL, REG_SP], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0xdd09, ADD, [REG_IX, REG_BC], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0xdd19, ADD, [REG_IX, REG_DE], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0xdd29, ADD, [REG_IX, REG_IX], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0xdd39, ADD, [REG_IX, REG_SP], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0xfd09, ADD, [REG_IY, REG_BC], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0xfd19, ADD, [REG_IY, REG_DE], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0xfd29, ADD, [REG_IY, REG_IX], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0xfd39, ADD, [REG_IY, REG_SP], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0x86, ADD, [REG_A, POINTER_HL], byteOperation, POINTER_DELIM),
+    new GenericInstruction(0xdd86, ADD, [REG_A, POINTER_IX], byteOperation, POINTER_DELIM),
+    new GenericInstruction(0xfd86, ADD, [REG_A, POINTER_IY], byteOperation, POINTER_DELIM),
+    new GenericInstruction(0xc6, ADD, [REG_A, ByteValueArgument], byteOperation, POINTER_DELIM)
+].concat(createFromRegisterInstructions2(0x80, (opcode, register) =>
+        new GenericInstruction(opcode, ADD, [REG_A, register], byteOperation, POINTER_DELIM)))

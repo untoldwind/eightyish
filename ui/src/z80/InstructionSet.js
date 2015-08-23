@@ -119,13 +119,13 @@ export function createInstruction(elements) {
     }
 
     const matchingVariant = variants.find((variant) => {
-        const argumentPattern = variant.argumentPattern
-        return argumentPattern.length === elements.length - 1 &&
-            argumentPattern.every((pattern, index) => pattern.matches(elements[index + 1]))
+        const args = variant.args
+        return args.length === elements.length - 1 &&
+            args.every((pattern, index) => pattern.matches(elements[index + 1]))
     })
 
     if (matchingVariant) {
-        const params = matchingVariant.argumentPattern.map((pattern, i) => pattern.extractValue(elements[i + 1]))
+        const params = matchingVariant.args.map((pattern, i) => pattern.extractValue(elements[i + 1]))
         return matchingVariant.createAssembler(params)
     }
     return null

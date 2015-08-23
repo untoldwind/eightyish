@@ -1,7 +1,7 @@
 jest.autoMockOff()
 
 const Instruction = require('../Instruction')
-const args = require('../ArgumentPatterns')
+const args = require('../Arguments')
 
 describe('Instruction', () => {
     it('should create single byte opcode for simple instructions', () => {

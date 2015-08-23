@@ -2,13 +2,13 @@ import Instruction from './Instruction'
 import ConditionalInstruction from './ConditionalInstruction'
 import Transition from '../Transition'
 
-import * as args from './ArgumentPatterns'
+import * as args from './Arguments'
 
 import { CALL, RET, PC, SP } from './constants'
 
 class Call extends Instruction {
     constructor() {
-        super(0xcd, CALL, [args.AddressOrLabelPattern])
+        super(0xcd, CALL, [args.AddressOrLabelArgument])
     }
 
     process(state, pcMem) {
@@ -34,7 +34,7 @@ class Return extends Instruction {
 
 class ConditionalCall extends ConditionalInstruction {
     constructor(opcode, flag, condition) {
-        super(opcode, CALL, flag, condition, [args.AddressOrLabelPattern])
+        super(opcode, CALL, flag, condition, [args.AddressOrLabelArgument])
         this.flag = flag
         this.condition = condition
     }

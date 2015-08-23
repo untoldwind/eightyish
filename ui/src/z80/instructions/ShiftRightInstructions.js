@@ -1,13 +1,15 @@
-import RegisterInstruction from './RegisterInstruction'
+import GenericInstruction from './GenericInstruction'
 
-import { createFromRegisterInstructions } from './factory'
+import { createFromRegisterInstructions2 } from './factory'
 
 import { SHR } from './constants'
 
-function operation(register) {
-    return register >> 1
+function operation(storer, first) {
+    const result = first >> 1
+
+    return storer(result).withFlags(result).withFlag('C', (first & 0x1) !== 0)
 }
 
 export default [].
-    concat(createFromRegisterInstructions(0xcb38, (opcode, register) =>
-        new RegisterInstruction(opcode, SHR, register, operation)))
+    concat(createFromRegisterInstructions2(0xcb38, (opcode, register) =>
+        new GenericInstruction(opcode, SHR, [register], operation)))

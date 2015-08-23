@@ -18,6 +18,12 @@ export default class Transition {
         return this
     }
 
+    withFlag(flag, value) {
+        this.newRegisters[`flag${flag}`] = value
+
+        return this
+    }
+
     withFlags(value) {
         this.newRegisters.flagP = byteParity(value) !== 0
         this.newRegisters.flagC = (value & 0x100) !== 0

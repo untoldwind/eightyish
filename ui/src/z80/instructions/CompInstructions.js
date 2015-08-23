@@ -1,7 +1,7 @@
 import Instruction from './Instruction'
 import Transition from '../Transition'
 
-import * as args from './ArgumentPatterns'
+import * as args from './Arguments'
 
 import { createFromRegisterInstructions } from './factory'
 
@@ -9,7 +9,7 @@ import { COMP, HL, IX, IY } from './constants'
 
 class CompWithRegister extends Instruction {
     constructor(opcode, to, from) {
-        super(opcode, COMP, [args.RegisterPattern(to), args.RegisterPattern(from)])
+        super(opcode, COMP, [args.RegisterArgument(to), args.RegisterArgument(from)])
         this.to = to
         this.from = from
     }
@@ -23,7 +23,7 @@ class CompWithRegister extends Instruction {
 
 class CompWithPointer extends Instruction {
     constructor(opcode, to, from) {
-        super(opcode, COMP, [args.RegisterPattern(to), args.RegisterPointerPattern(from)])
+        super(opcode, COMP, [args.RegisterArgument(to), args.RegisterBytePointerArgument(from)])
         this.to = to
         this.from = from
     }
@@ -37,7 +37,7 @@ class CompWithPointer extends Instruction {
 
 class CompWithIndexPointer extends Instruction {
     constructor(opcode, to, from) {
-        super(opcode, COMP, [args.RegisterPattern(to), args.IndexPointerPattern(from)])
+        super(opcode, COMP, [args.RegisterArgument(to), args.IndexRegisterBytePointerPattern(from)])
         this.to = to
         this.from = from
     }
@@ -53,7 +53,7 @@ class CompWithIndexPointer extends Instruction {
 
 class CompWithValue extends Instruction {
     constructor(opcode, to) {
-        super(opcode, COMP, [args.RegisterPattern(to), args.ByteValuePattern])
+        super(opcode, COMP, [args.RegisterArgument(to), args.ByteValueArgument])
         this.to = to
     }
 

@@ -1,25 +1,25 @@
 
 export default class Instruction {
-    constructor(opcode, name, argumentPattern, delim = ', ') {
+    constructor(opcode, name, args, delim = ', ') {
         this.opcode = opcode
         this.name = name
-        this.argumentPattern = argumentPattern
+        this.args = args
         if (opcode < 256) {
             this.opcodes = [opcode]
         } else {
             this.opcodes = [(opcode >> 8) & 0xff, opcode & 0xff]
         }
-        this.size = this.opcodes.length + this.argumentPattern.reduce((prev, pattern) => prev + pattern.extraSize, 0)
+        this.size = this.opcodes.length + this.args.reduce((prev, pattern) => prev + pattern.extraSize, 0)
         this.delim = delim
     }
 
     createAssembler(params) {
-        const formattedParams = this.argumentPattern.map((pattern, i) => pattern.formatValue(params[i]))
+        const formattedParams = this.args.map((pattern, i) => pattern.formatValue(params[i]))
         return {
             type: 'instruction',
             assembler: formattedParams.length === 0 ? this.name : `${this.name}\t${formattedParams.join(this.delim)}`,
             opcodes: (labels) => {
-                const extraOpcodes = this.argumentPattern.map((pattern, i) => pattern.extraOpcodes(params[i], labels))
+                const extraOpcodes = this.args.map((pattern, i) => pattern.extraOpcodes(params[i], labels))
                 return this.opcodes.concat(...extraOpcodes)
             },
             size: this.size
@@ -27,7 +27,7 @@ export default class Instruction {
     }
 
     get example() {
-        const params = this.argumentPattern.map((pattern, i) => pattern.example)
+        const params = this.args.map((pattern) => pattern.example)
 
         return params.length === 0 ? this.name : `${this.name}\t${params.join(this.delim)}`
     }

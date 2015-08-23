@@ -1,20 +1,21 @@
-import ByteValueToRegisterInstruction from './ByteValueToRegisterInstruction'
-import RegisterToRegisterInstruction from './RegisterToRegisterInstruction'
-import PointerToRegisterInstruction from './PointerToRegisterInstruction'
-import IndexPointerToRegisterInstruction from './IndexPointerToRegisterInstruction'
+import GenericInstruction from './GenericInstruction'
 
-import { createFromRegisterInstructions } from './factory'
+import { createFromRegisterInstructions2 } from './factory'
 
-import { SUB, HL, IX, IY } from './constants'
+import { ByteValueArgument } from './Arguments'
 
-function operation(target, source) {
-    return target - source
+import { REG_A, POINTER_HL, POINTER_IX, POINTER_IY, POINTER_DELIM, SUB } from './constants'
+
+function operation(storer, first, second) {
+    const result = first - second
+
+    return storer(result).withFlags(result)
 }
 
 export default [
-    new PointerToRegisterInstruction(0x96, SUB, 'A', HL, operation),
-    new IndexPointerToRegisterInstruction(0xdd96, SUB, 'A', IX, operation),
-    new IndexPointerToRegisterInstruction(0xfd96, SUB, 'A', IY, operation),
-    new ByteValueToRegisterInstruction(0xd6, SUB, 'A', operation)
-].concat(createFromRegisterInstructions(0x90, (opcode, register) =>
-        new RegisterToRegisterInstruction(opcode, SUB, 'A', register, operation)))
+    new GenericInstruction(0x96, SUB, [REG_A, POINTER_HL], operation, POINTER_DELIM),
+    new GenericInstruction(0xdd96, SUB, [REG_A, POINTER_IX], operation, POINTER_DELIM),
+    new GenericInstruction(0xfd96, SUB, [REG_A, POINTER_IY], operation, POINTER_DELIM),
+    new GenericInstruction(0xd6, SUB, [REG_A, ByteValueArgument], operation, POINTER_DELIM)
+].concat(createFromRegisterInstructions2(0x90, (opcode, register) =>
+        new GenericInstruction(opcode, SUB, [REG_A, register], operation, POINTER_DELIM)))

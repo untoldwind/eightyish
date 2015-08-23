@@ -1,13 +1,13 @@
 import Instruction from './Instruction'
 import Transition from '../Transition'
 
-import * as args from './ArgumentPatterns'
+import * as args from './Arguments'
 
 import { PUSH, POP, IX, IY, BC, DE, HL, AF, SP, PC} from './constants'
 
 class Push extends Instruction {
     constructor(opcode, register) {
-        super(opcode, PUSH, [args.RegisterPattern(register)])
+        super(opcode, PUSH, [args.RegisterArgument(register)])
         this.register = register
     }
 
@@ -21,7 +21,7 @@ class Push extends Instruction {
 
 class Pop extends Instruction {
     constructor(opcode, register) {
-        super(opcode, POP, [args.RegisterPattern(register)])
+        super(opcode, POP, [args.RegisterArgument(register)])
         this.register = register
     }
 
