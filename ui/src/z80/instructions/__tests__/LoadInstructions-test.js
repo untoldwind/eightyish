@@ -107,7 +107,8 @@ describe('Load Instruction', () => {
             registers: {
                 PC: 1234,
                 A: 10
-            }
+            },
+            getMemoryByte: jest.genMockFunction().mockReturnValue(5)
         }
         const transition = loadAMem.process(state, [0x32, 0xab, 0xcd])
 
@@ -167,7 +168,8 @@ describe('Load Instruction', () => {
             registers: {
                 PC: 1234,
                 BC: 0x2345
-            }
+            },
+            getMemoryWord: jest.genMockFunction().mockReturnValue(2345)
         }
         const transition = loadAMem.process(state, [0xed, 0x43, 0xab, 0xcd])
 

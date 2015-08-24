@@ -167,7 +167,7 @@ class MachineState extends EventEmitter {
     }
 
     getMemoryByte(address) {
-        if (offset < this.memory.length) {
+        if (address < this.memory.length) {
             return this.memory[address]
         }
         if (this.hasVideo && address >= this.videoOffset && address - this.videoOffset < this.videoMemory.length) {

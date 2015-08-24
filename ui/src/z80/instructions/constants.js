@@ -1,7 +1,9 @@
 import RegisterArgument from '../arguments/RegisterArgument'
 import RegisterPointerArgument from '../arguments/RegisterPointerArgument'
 import IndexRegisterPointerArgument from '../arguments/IndexRegisterPointerArgument'
+import BytePointerArgument from '../arguments/BytePointerArgument'
 import ByteValueArgument from '../arguments/ByteValueArgument'
+import WordPointerArgument from '../arguments/WordPointerArgument'
 import WordValueArgument from '../arguments/WordValueArgument'
 
 export const POINTER_DELIM = ' <- '
@@ -35,7 +37,9 @@ export const SUB = 'SUB'
 export const XOR = 'XOR'
 
 export const BYTE_VAL = ByteValueArgument
+export const BYTE_POINTER = BytePointerArgument
 export const WORD_VAL = WordValueArgument
+export const WORD_POINTER = WordPointerArgument
 export const REG_A = RegisterArgument('A')
 export const REG_SP = RegisterArgument(SP)
 export const REG_BC = RegisterArgument(BC)
