@@ -43,7 +43,7 @@ export default class MachineView extends React.Component {
     render() {
         return (
             <div className="container">
-                <MachineControl hasVideo={this.state.hasVideo}/>
+                <MachineControl hasVideo={this.state.hasVideo} totalCycles={this.state.totalCycles}/>
 
                 <div className="row">
                     <div className="col-md-4">

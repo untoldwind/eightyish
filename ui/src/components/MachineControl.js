@@ -37,11 +37,15 @@ export default class MachineControl extends React.Component {
                         <span className="glyphicon glyphicon-play"/>
                     </button>
                 </div>
+                <div className="col-md-2">
+                    <div className="well well-sm">Clock: {this.props.totalCycles}</div>
+                </div>
             </div>
         )
     }
 }
 
 MachineControl.propTypes = {
-    hasVideo: React.PropTypes.bool.isRequired
+    hasVideo: React.PropTypes.bool.isRequired,
+    totalCycles: React.PropTypes.number.isRequired
 }
