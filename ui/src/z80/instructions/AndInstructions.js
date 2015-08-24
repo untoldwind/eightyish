@@ -1,6 +1,6 @@
 import GenericInstruction from './GenericInstruction'
 
-import { createFromRegisterInstructions2 } from './factory'
+import { createFromRegisterInstructions } from './factory'
 
 import { ByteValueArgument } from './Arguments'
 
@@ -17,5 +17,5 @@ export default [
     new GenericInstruction(0xdda6, AND, [REG_A, POINTER_IX], operation, POINTER_DELIM),
     new GenericInstruction(0xfda6, AND, [REG_A, POINTER_IY], operation, POINTER_DELIM),
     new GenericInstruction(0xe6, AND, [REG_A, ByteValueArgument], operation, POINTER_DELIM)
-].concat(createFromRegisterInstructions2(0xa0, (opcode, register) =>
+].concat(createFromRegisterInstructions(0xa0, (opcode, register) =>
         new GenericInstruction(opcode, AND, [REG_A, register], operation, POINTER_DELIM)))

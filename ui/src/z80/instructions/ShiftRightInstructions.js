@@ -1,6 +1,6 @@
 import GenericInstruction from './GenericInstruction'
 
-import { createFromRegisterInstructions2 } from './factory'
+import { createFromRegisterInstructions } from './factory'
 
 import { SHR } from './constants'
 
@@ -11,5 +11,5 @@ function operation(storer, first) {
 }
 
 export default [].
-    concat(createFromRegisterInstructions2(0xcb38, (opcode, register) =>
+    concat(createFromRegisterInstructions(0xcb38, (opcode, register) =>
         new GenericInstruction(opcode, SHR, [register], operation)))

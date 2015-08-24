@@ -5,7 +5,7 @@ import Transition from '../Transition'
 
 import { RegisterArgument, ByteValueArgument, PointerPattern, AddressOrLabelArgument } from './Arguments'
 
-import { createFromRegisterInstructions2, createToRegisterInstructions2 } from './factory'
+import { createFromRegisterInstructions, createToRegisterInstructions } from './factory'
 
 import { LOAD, HL, IX, IY, SP, PC, BC, DE, POINTER_DELIM, REG_BC, REG_DE,
     REG_SP, REG_HL, REG_IX, REG_IY, POINTER_HL, POINTER_IX, POINTER_IY } from './constants'
@@ -83,14 +83,14 @@ export default [
     new GenericInstruction(0xfd21, LOAD, [REG_IY, AddressOrLabelArgument], wordOperation, POINTER_DELIM),
     new GenericInstruction(0x31, LOAD, [REG_SP, AddressOrLabelArgument], wordOperation, POINTER_DELIM)
 ].
-    concat(... createToRegisterInstructions2(0x40, (base, toRegister) =>
-        createFromRegisterInstructions2(base, (opcode, fromRegister) =>
+    concat(... createToRegisterInstructions(0x40, (base, toRegister) =>
+        createFromRegisterInstructions(base, (opcode, fromRegister) =>
             new GenericInstruction(opcode, LOAD, [toRegister, fromRegister], byteOperation, POINTER_DELIM)))).
-    concat(createToRegisterInstructions2(0x06, (opcode, register) =>
+    concat(createToRegisterInstructions(0x06, (opcode, register) =>
         new GenericInstruction(opcode, LOAD, [register, ByteValueArgument], byteOperation, POINTER_DELIM))).
-    concat(createToRegisterInstructions2(0x46, (opcode, register) =>
+    concat(createToRegisterInstructions(0x46, (opcode, register) =>
         new GenericInstruction(opcode, LOAD, [register, POINTER_HL], byteOperation, POINTER_DELIM))).
-    concat(createToRegisterInstructions2(0xdd46, (opcode, register) =>
+    concat(createToRegisterInstructions(0xdd46, (opcode, register) =>
         new GenericInstruction(opcode, LOAD, [register, POINTER_IX], byteOperation, POINTER_DELIM))).
-    concat(createToRegisterInstructions2(0xfd46, (opcode, register) =>
+    concat(createToRegisterInstructions(0xfd46, (opcode, register) =>
         new GenericInstruction(opcode, LOAD, [register, POINTER_IY], byteOperation, POINTER_DELIM)))
