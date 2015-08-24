@@ -1,10 +1,10 @@
 import Instruction from './Instruction'
 
-import * as args from './Arguments'
+import ConditionArgument from '../arguments/ConditionArgument'
 
 export default class ConditionalInstruction extends Instruction {
     constructor(opcode, name, flag, condition, additionalArgs) {
-        super(opcode, name, [args.ConditionArgument(flag, condition)].concat(additionalArgs))
+        super(opcode, name, [ConditionArgument(flag, condition)].concat(additionalArgs))
         this.flag = flag
         this.condition = condition
     }

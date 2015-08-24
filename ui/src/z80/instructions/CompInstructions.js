@@ -3,9 +3,7 @@ import Transition from '../Transition'
 
 import { createFromRegisterInstructions } from './factory'
 
-import { ByteValueArgument } from './Arguments'
-
-import { REG_A, POINTER_HL, POINTER_IX, POINTER_IY, COMP } from './constants'
+import { BYTE_VAL, REG_A, POINTER_HL, POINTER_IX, POINTER_IY, COMP } from './constants'
 
 function operation(storer, first, second) {
     const result = first - second
@@ -14,7 +12,7 @@ function operation(storer, first, second) {
 }
 
 export default [
-    new GenericInstruction(0xfe, COMP, [REG_A, ByteValueArgument], operation),
+    new GenericInstruction(0xfe, COMP, [REG_A, BYTE_VAL], operation),
     new GenericInstruction(0xbe, COMP, [REG_A, POINTER_HL], operation),
     new GenericInstruction(0xddbe, COMP, [REG_A, POINTER_IX], operation),
     new GenericInstruction(0xfdbe, COMP, [REG_A, POINTER_IY], operation)

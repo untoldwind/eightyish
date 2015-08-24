@@ -2,13 +2,11 @@ import Instruction from './Instruction'
 import ConditionalInstruction from './ConditionalInstruction'
 import Transition from '../Transition'
 
-import * as args from './Arguments'
-
-import { JUMP, PC } from './constants'
+import { JUMP, PC, WORD_VAL } from './constants'
 
 class Jump extends Instruction {
     constructor() {
-        super(0xc3, JUMP, [args.AddressOrLabelArgument])
+        super(0xc3, JUMP, [WORD_VAL])
     }
 
     process(state, pcMem) {
@@ -19,7 +17,7 @@ class Jump extends Instruction {
 
 class ConditionalJump extends ConditionalInstruction {
     constructor(opcode, flag, condition) {
-        super(opcode, JUMP, flag, condition, [args.AddressOrLabelArgument])
+        super(opcode, JUMP, flag, condition, [WORD_VAL])
         this.flag = flag
         this.condition = condition
     }

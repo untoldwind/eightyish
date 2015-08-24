@@ -1,4 +1,4 @@
-import {RegisterArgument} from './Arguments'
+import RegisterArgument from '../arguments/RegisterArgument'
 
 export function createFromRegisterInstructions(base, callback) {
     const result = []

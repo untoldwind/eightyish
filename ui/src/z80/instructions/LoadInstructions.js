@@ -3,16 +3,17 @@ import GenericInstruction from './GenericInstruction'
 import Instruction from './Instruction'
 import Transition from '../Transition'
 
-import { RegisterArgument, ByteValueArgument, PointerPattern, AddressOrLabelArgument } from './Arguments'
+import RegisterArgument from '../arguments/RegisterArgument'
+import BytePointerArgument from '../arguments/BytePointerArgument'
 
 import { createFromRegisterInstructions, createToRegisterInstructions } from './factory'
 
-import { LOAD, HL, IX, IY, SP, PC, BC, DE, POINTER_DELIM, REG_BC, REG_DE,
+import { BYTE_VAL, WORD_VAL, LOAD, HL, IX, IY, SP, PC, BC, DE, POINTER_DELIM, REG_BC, REG_DE,
     REG_SP, REG_HL, REG_IX, REG_IY, POINTER_HL, POINTER_IX, POINTER_IY } from './constants'
 
 class LoadMemoryToRegister extends Instruction {
     constructor(opcode, to) {
-        super(opcode, LOAD, [RegisterArgument(to), PointerPattern], POINTER_DELIM)
+        super(opcode, LOAD, [RegisterArgument(to), BytePointerArgument], POINTER_DELIM)
         this.to = to
         this.byte = to.length === 1
     }
@@ -32,7 +33,7 @@ class LoadMemoryToRegister extends Instruction {
 
 class LoadRegisterToMemory extends Instruction {
     constructor(opcode, from) {
-        super(opcode, LOAD, [PointerPattern, RegisterArgument(from)], POINTER_DELIM)
+        super(opcode, LOAD, [BytePointerArgument, RegisterArgument(from)], POINTER_DELIM)
         this.from = from
         this.byte = from.length === 1
     }
@@ -76,18 +77,18 @@ export default [
     new LoadMemoryToRegister(0xdd2a, IX),
     new LoadMemoryToRegister(0xfd2a, IY),
     new LoadMemoryToRegister(0xed7b, SP),
-    new GenericInstruction(0x01, LOAD, [REG_BC, AddressOrLabelArgument], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0x11, LOAD, [REG_DE, AddressOrLabelArgument], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0x21, LOAD, [REG_HL, AddressOrLabelArgument], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0xdd21, LOAD, [REG_IX, AddressOrLabelArgument], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0xfd21, LOAD, [REG_IY, AddressOrLabelArgument], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0x31, LOAD, [REG_SP, AddressOrLabelArgument], wordOperation, POINTER_DELIM)
+    new GenericInstruction(0x01, LOAD, [REG_BC, WORD_VAL], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0x11, LOAD, [REG_DE, WORD_VAL], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0x21, LOAD, [REG_HL, WORD_VAL], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0xdd21, LOAD, [REG_IX, WORD_VAL], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0xfd21, LOAD, [REG_IY, WORD_VAL], wordOperation, POINTER_DELIM),
+    new GenericInstruction(0x31, LOAD, [REG_SP, WORD_VAL], wordOperation, POINTER_DELIM)
 ].
     concat(... createToRegisterInstructions(0x40, (base, toRegister) =>
         createFromRegisterInstructions(base, (opcode, fromRegister) =>
             new GenericInstruction(opcode, LOAD, [toRegister, fromRegister], byteOperation, POINTER_DELIM)))).
     concat(createToRegisterInstructions(0x06, (opcode, register) =>
-        new GenericInstruction(opcode, LOAD, [register, ByteValueArgument], byteOperation, POINTER_DELIM))).
+        new GenericInstruction(opcode, LOAD, [register, BYTE_VAL], byteOperation, POINTER_DELIM))).
     concat(createToRegisterInstructions(0x46, (opcode, register) =>
         new GenericInstruction(opcode, LOAD, [register, POINTER_HL], byteOperation, POINTER_DELIM))).
     concat(createToRegisterInstructions(0xdd46, (opcode, register) =>
