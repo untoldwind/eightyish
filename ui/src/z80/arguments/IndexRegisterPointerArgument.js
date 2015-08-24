@@ -4,7 +4,7 @@ function signedByte(value) {
     return value < 0x80 ? value : value - 0x100
 }
 
-export default function(indexRegister) {
+export default function (indexRegister) {
     const pattern = new RegExp(`\\(${indexRegister}([\\-\\+]\\d+)\\)`, 'i')
 
     return {

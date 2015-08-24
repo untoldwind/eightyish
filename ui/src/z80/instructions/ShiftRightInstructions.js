@@ -12,4 +12,4 @@ function operation(storer, first) {
 
 export default [].
     concat(createFromRegisterInstructions(0xcb38, (opcode, register) =>
-        new GenericInstruction(opcode, SHR, [register], operation)))
+        new GenericInstruction(opcode, 8, SHR, [register], operation)))

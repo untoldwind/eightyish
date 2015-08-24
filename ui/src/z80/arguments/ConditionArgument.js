@@ -1,6 +1,6 @@
 import Transition from '../Transition'
 
-export default function(flag, condition) {
+export default function (flag, condition) {
     const formatted = (condition ? '' : 'N') + flag
 
     return {

@@ -6,7 +6,7 @@ import { JUMP, PC, WORD_VAL } from './constants'
 
 class Jump extends Instruction {
     constructor() {
-        super(0xc3, JUMP, [WORD_VAL])
+        super(0xc3, 10, JUMP, [WORD_VAL])
     }
 
     process(state, pcMem) {
@@ -17,7 +17,7 @@ class Jump extends Instruction {
 
 class ConditionalJump extends ConditionalInstruction {
     constructor(opcode, flag, condition) {
-        super(opcode, JUMP, flag, condition, [WORD_VAL])
+        super(opcode, 10, JUMP, flag, condition, [WORD_VAL])
         this.flag = flag
         this.condition = condition
     }

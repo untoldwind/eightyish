@@ -1,7 +1,8 @@
 
 export default class Instruction {
-    constructor(opcode, name, args, delim = ', ') {
+    constructor(opcode, cycles, name, args, delim = ', ') {
         this.opcode = opcode
+        this.cycles = cycles
         this.name = name
         this.args = args
         if (opcode < 256) {

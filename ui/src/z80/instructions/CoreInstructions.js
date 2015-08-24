@@ -5,7 +5,7 @@ import { HALT, NOP } from './constants'
 
 class Halt extends Instruction {
     constructor() {
-        super(0x76, HALT, [])
+        super(0x76, 4, HALT, [])
     }
 
     process() {
@@ -15,7 +15,7 @@ class Halt extends Instruction {
 
 class Nop extends Instruction {
     constructor() {
-        super(0x00, NOP, [])
+        super(0x00, 4, NOP, [])
     }
 
     process(state) {

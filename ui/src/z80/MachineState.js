@@ -22,6 +22,7 @@ class MachineState extends EventEmitter {
         this.videoMemory = null
         this.sourceCode = new SourceCode()
         this.transitions = []
+        this.totalCycles = 0
 
         appDispatcher.register(this.handleAction.bind(this))
 
@@ -67,6 +68,7 @@ class MachineState extends EventEmitter {
 
     reset() {
         this.transitions = []
+        this.totalCycles = 0
         this.registers = new Registers(this.memSize)
         this.memory = Array.from(new Array(this.memSize), () => 0)
         if (this.videoMemory) {
@@ -78,6 +80,7 @@ class MachineState extends EventEmitter {
 
     moveToBegin() {
         this.transitions = []
+        this.totalCycles = 0
         this.registers = new Registers(this.memSize)
         this.emitChange()
     }

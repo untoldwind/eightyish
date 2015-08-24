@@ -3,8 +3,8 @@ import Instruction from './Instruction'
 import { PC } from './constants'
 
 export default class GenericInstruction extends Instruction {
-    constructor(opcode, name, args, operation, delim = ', ') {
-        super(opcode, name, args, delim)
+    constructor(opcode, cycles, name, args, operation, delim = ', ') {
+        super(opcode, cycles, name, args, delim)
         this.operation = operation
     }
 
@@ -13,6 +13,6 @@ export default class GenericInstruction extends Instruction {
         const transition = this.operation(this.args[0].storer(state, argPcMem),
             ... this.args.map((arg) => arg.loader(state, argPcMem)))
 
-        return transition.withWordRegister(PC, state.registers.PC + this.size)
+        return transition.withWordRegister(PC, state.registers.PC + this.size).withCycles(this.cycles)
     }
 }

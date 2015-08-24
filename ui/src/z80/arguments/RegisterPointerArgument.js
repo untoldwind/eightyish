@@ -1,6 +1,6 @@
 import Transition from '../Transition'
 
-export default function(register) {
+export default function (register) {
     return {
         matches: (value) => value.toUpperCase() === `(${register})`,
         extractValue: () => null,

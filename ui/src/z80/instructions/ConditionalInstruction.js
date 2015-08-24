@@ -3,8 +3,8 @@ import Instruction from './Instruction'
 import ConditionArgument from '../arguments/ConditionArgument'
 
 export default class ConditionalInstruction extends Instruction {
-    constructor(opcode, name, flag, condition, additionalArgs) {
-        super(opcode, name, [ConditionArgument(flag, condition)].concat(additionalArgs))
+    constructor(opcode, cycles, name, flag, condition, additionalArgs) {
+        super(opcode, cycles, name, [ConditionArgument(flag, condition)].concat(additionalArgs))
         this.flag = flag
         this.condition = condition
     }

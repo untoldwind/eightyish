@@ -59,6 +59,12 @@ export default class Transition {
         return this
     }
 
+    withCycles(cycles) {
+        this.cycles = cycles
+
+        return this
+    }
+
     perform(state) {
         this.oldRegisters = state.registers.copy()
         state.registers.assign(this.newRegisters)
@@ -77,6 +83,9 @@ export default class Transition {
                 }
             }
         }
+        if (typeof this.cycles === 'number') {
+            state.totalCycles += this.cycles
+        }
     }
 
     undo(state) {
@@ -91,6 +100,9 @@ export default class Transition {
                     state.videoMemory[this.memoryOffset - state.videoOffset + i] = this.oldMemoryData[i]
                 }
             }
+        }
+        if (typeof this.cycles === 'number') {
+            state.totalCycles -= this.cycles
         }
     }
 }

@@ -10,6 +10,7 @@ import machineState from '../z80/MachineState'
 
 function getCurrentState() {
     return {
+        totalCycles: machineState.totalCycles,
         registers: machineState.registers,
         memory: machineState.memory,
         hasVideo: machineState.hasVideo,

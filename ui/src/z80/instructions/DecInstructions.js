@@ -17,10 +17,10 @@ function wordOperation(storer, first) {
 }
 
 export default [
-    new GenericInstruction(0xdd2b, DEC, [REG_IX], wordOperation),
-    new GenericInstruction(0xfd2b, DEC, [REG_IY], wordOperation)
+    new GenericInstruction(0xdd2b, 10, DEC, [REG_IX], wordOperation),
+    new GenericInstruction(0xfd2b, 10, DEC, [REG_IY], wordOperation)
 ].
     concat(createToRegisterInstructions(0x05, (opcode, register) =>
-        new GenericInstruction(opcode, DEC, [register], byteOperation))).
+        new GenericInstruction(opcode, 4, DEC, [register], byteOperation))).
     concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) =>
-        new GenericInstruction(0x0b + (i << 4), DEC, [register], wordOperation)))
+        new GenericInstruction(0x0b + (i << 4), 6, DEC, [register], wordOperation)))

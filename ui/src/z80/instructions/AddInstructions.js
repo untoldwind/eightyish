@@ -17,21 +17,21 @@ function wordOperation(storer, first, second) {
     return storer(result)
 }
 
-function createByte(opcode, to, from) {
-    return new GenericInstruction(opcode, ADD, [to, from], byteOperation, POINTER_DELIM)
+function createByte(opcode, cycles, to, from) {
+    return new GenericInstruction(opcode, cycles, ADD, [to, from], byteOperation, POINTER_DELIM)
 }
 
-function createWord(opcode, to, from) {
-    return new GenericInstruction(opcode, ADD, [to, from], wordOperation, POINTER_DELIM)
+function createWord(opcode, cycles, to, from) {
+    return new GenericInstruction(opcode, cycles, ADD, [to, from], wordOperation, POINTER_DELIM)
 }
 
 export default [
-    createByte(0x86, REG_A, POINTER_HL),
-    createByte(0xdd86, REG_A, POINTER_IX),
-    createByte(0xfd86, REG_A, POINTER_IY),
-    createByte(0xc6, REG_A, BYTE_VAL)
+    createByte(0x86, 7, REG_A, POINTER_HL, 7),
+    createByte(0xdd86, 19, REG_A, POINTER_IX, 19),
+    createByte(0xfd86, 19, REG_A, POINTER_IY, 19),
+    createByte(0xc6, 7, REG_A, BYTE_VAL, 7)
 ].
-    concat(createFromRegisterInstructions(0x80, (opcode, register) => createByte(opcode, REG_A, register))).
-    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0x09 + (i << 4), REG_HL, register))).
-    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0xdd09 + (i << 4), REG_IX, register))).
-    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0xfd09 + (i << 4), REG_IX, register)))
+    concat(createFromRegisterInstructions(0x80, (opcode, register) => createByte(opcode, 4, REG_A, register))).
+    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0x09 + (i << 4), 11, REG_HL, register))).
+    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0xdd09 + (i << 4), 15, REG_IX, register))).
+    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0xfd09 + (i << 4), 15, REG_IY, register)))
