@@ -102,6 +102,11 @@ class MachineState extends EventEmitter {
             this.transitions.push(transition)
             transition.perform(this)
             this.emitChange()
+            if (this.running) {
+                setTimeout(this.stepForward.bind(this), 10)
+            }
+        } else {
+            this.stop()
         }
     }
 
@@ -114,11 +119,17 @@ class MachineState extends EventEmitter {
     }
 
     start() {
+        clearTimeout(this.timer)
+        this.transitions = []
+        this.totalCycles = 0
         this.running = true
+        this.registers = new Registers(this.memSize)
         this.emitChange()
+        setTimeout(this.stepForward.bind(this), 10)
     }
 
     stop() {
+        clearTimeout(this.timer)
         this.running = false
         this.emitChange()
     }

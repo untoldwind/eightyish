@@ -33,9 +33,7 @@ export default class MachineControl extends React.Component {
                     <button className="btn btn-warning" onClick={MachineActions.stepForward}>
                         <span className="glyphicon glyphicon-step-forward"/>
                     </button>
-                    <button className="btn btn-success" onClick={MachineActions.run}>
-                        <span className="glyphicon glyphicon-play"/>
-                    </button>
+                    {this.renderPlayStop()}
                 </div>
                 <div className="col-md-2">
                     <div className="well well-sm">Clock: {this.props.totalCycles}</div>
@@ -43,9 +41,25 @@ export default class MachineControl extends React.Component {
             </div>
         )
     }
+
+    renderPlayStop() {
+        if (this.props.running) {
+            return (
+                <button className="btn btn-danger" onClick={MachineActions.stop}>
+                    <span className="glyphicon glyphicon-stop"/>
+                </button>
+            )
+        }
+        return (
+            <button className="btn btn-success" onClick={MachineActions.start}>
+                <span className="glyphicon glyphicon-play"/>
+            </button>
+        )
+    }
 }
 
 MachineControl.propTypes = {
     hasVideo: React.PropTypes.bool.isRequired,
+    running: React.PropTypes.bool.isRequired,
     totalCycles: React.PropTypes.number.isRequired
 }

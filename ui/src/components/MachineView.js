@@ -40,15 +40,13 @@ export default class MachineView extends React.Component {
     onChange() {
         this.setState(getCurrentState())
     }
-
-    componentDidUpdate() {
-
-    }
     
     render() {
         return (
             <div className="container">
-                <MachineControl hasVideo={this.state.hasVideo} totalCycles={this.state.totalCycles}/>
+                <MachineControl hasVideo={this.state.hasVideo}
+                                running={this.state.running}
+                                totalCycles={this.state.totalCycles}/>
 
                 <div className="row">
                     <div className="col-md-4">
