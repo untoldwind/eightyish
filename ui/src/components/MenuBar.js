@@ -7,7 +7,7 @@ export default class MenuBar extends React.Component {
             <nav className="navbar navbar-default">
                 <div className="container-fluid">
                     <div className="navbar-header">
-                        <a className="navbar-brand" href="#">Eighty-ish</a>
+                        <a className="navbar-brand" href="#">80-ish</a>
                     </div>
                     <div className="navbar-collapse collapse">
                         <ul className="nav navbar-nav">

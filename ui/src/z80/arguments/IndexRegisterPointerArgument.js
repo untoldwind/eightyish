@@ -8,7 +8,7 @@ export default function(indexRegister) {
     const pattern = new RegExp(`\\(${indexRegister}([\\-\\+]\\d+)\\)`, 'i')
 
     return {
-        matches: (value) => value.match(pattern),
+        matches: (value) => pattern.test(value),
         extractValue: (value) => parseInt(value.match(pattern)[1], 10),
         formatValue: (value) => {
             if (value < 0) {

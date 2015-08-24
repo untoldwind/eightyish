@@ -38,6 +38,6 @@ export default {
     storer: (state, pcMem) => {
         const address = (pcMem[0] << 8) | pcMem[1]
 
-        return () => new Transition().withByteAt(address, result)
+        return (result) => new Transition().withByteAt(address, result)
     }
 }

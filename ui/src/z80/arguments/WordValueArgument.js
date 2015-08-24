@@ -9,7 +9,7 @@ export default {
 
         return typeof w === 'number' && w >= 0 && w <= 65355
     },
-    extractValue: (value) => value,
+    extractValue: (value) => value.startsWith('.') ? value : parseInt(value),
     formatValue: (value) => {
         if (typeof value === 'number') {
             return `0x${value.toString(16)}`
