@@ -24,9 +24,15 @@ export function moveToSBegin() {
     })
 }
 
-export function run() {
+export function start() {
     appDispatcher.dispatch({
-        type: AppConstants.MACHINE_RUN
+        type: AppConstants.MACHINE_START
+    })
+}
+
+export function stop() {
+    appDispatcher.dispatch({
+        type: AppConstants.MACHINE_STOP
     })
 }
 

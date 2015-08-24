@@ -11,6 +11,7 @@ import machineState from '../z80/MachineState'
 function getCurrentState() {
     return {
         totalCycles: machineState.totalCycles,
+        running: machineState.running,
         registers: machineState.registers,
         memory: machineState.memory,
         hasVideo: machineState.hasVideo,
@@ -40,6 +41,10 @@ export default class MachineView extends React.Component {
         this.setState(getCurrentState())
     }
 
+    componentDidUpdate() {
+
+    }
+    
     render() {
         return (
             <div className="container">

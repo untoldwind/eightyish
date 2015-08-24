@@ -37,13 +37,23 @@ describe('Machine actions', () => {
         })
     })
 
-    it('should dispatch message on run', () => {
+    it('should dispatch message on start', () => {
         const appDispatcher = require('../../dispatcher/AppDispatcher')
         const MachineActions = require('../MachineActions')
 
-        MachineActions.run()
+        MachineActions.start()
         expect(appDispatcher.dispatch).toBeCalledWith({
-            type: AppConstants.MACHINE_RUN
+            type: AppConstants.MACHINE_START
+        })
+    })
+
+    it('should dispatch message on stop', () => {
+        const appDispatcher = require('../../dispatcher/AppDispatcher')
+        const MachineActions = require('../MachineActions')
+
+        MachineActions.stop()
+        expect(appDispatcher.dispatch).toBeCalledWith({
+            type: AppConstants.MACHINE_STOP
         })
     })
 

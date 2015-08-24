@@ -23,6 +23,7 @@ class MachineState extends EventEmitter {
         this.sourceCode = new SourceCode()
         this.transitions = []
         this.totalCycles = 0
+        this.running = false
 
         appDispatcher.register(this.handleAction.bind(this))
 
@@ -35,6 +36,14 @@ class MachineState extends EventEmitter {
         switch (action.type) {
         case AppConstants.MACHINE_RESET:
             this.reset()
+            break
+
+        case AppConstants.MACHINE_START:
+            this.start()
+            break
+
+        case AppConstants.MACHINE_STOP:
+            this.stop()
             break
 
         case AppConstants.MACHINE_MOVE_TO_BEGIN:
@@ -69,6 +78,7 @@ class MachineState extends EventEmitter {
     reset() {
         this.transitions = []
         this.totalCycles = 0
+        this.running = false
         this.registers = new Registers(this.memSize)
         this.memory = Array.from(new Array(this.memSize), () => 0)
         if (this.videoMemory) {
@@ -81,6 +91,7 @@ class MachineState extends EventEmitter {
     moveToBegin() {
         this.transitions = []
         this.totalCycles = 0
+        this.running = false
         this.registers = new Registers(this.memSize)
         this.emitChange()
     }
@@ -100,6 +111,16 @@ class MachineState extends EventEmitter {
             transition.undo(this)
             this.emitChange()
         }
+    }
+
+    start() {
+        this.running = true
+        this.emitChange()
+    }
+
+    stop() {
+        this.running = false
+        this.emitChange()
     }
 
     pushTransition(transition) {
