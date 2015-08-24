@@ -7,7 +7,7 @@ import { BYTE_VAL, REG_A, POINTER_HL, POINTER_IX, POINTER_IY, POINTER_DELIM, SUB
 function operation(storer, first, second) {
     const result = first - second
 
-    return storer(result).withFlags(result)
+    return storer(result).withFlags(result).withFlag('C', result < 0)
 }
 
 export default [

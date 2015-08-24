@@ -17,22 +17,21 @@ function wordOperation(storer, first, second) {
     return storer(result)
 }
 
+function createByte(opcode, to, from) {
+    return new GenericInstruction(opcode, ADD, [to, from], byteOperation, POINTER_DELIM)
+}
+
+function createWord(opcode, to, from) {
+    return new GenericInstruction(opcode, ADD, [to, from], wordOperation, POINTER_DELIM)
+}
+
 export default [
-    new GenericInstruction(0x09, ADD, [REG_HL, REG_BC], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0x19, ADD, [REG_HL, REG_DE], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0x29, ADD, [REG_HL, REG_HL], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0x39, ADD, [REG_HL, REG_SP], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0xdd09, ADD, [REG_IX, REG_BC], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0xdd19, ADD, [REG_IX, REG_DE], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0xdd29, ADD, [REG_IX, REG_IX], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0xdd39, ADD, [REG_IX, REG_SP], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0xfd09, ADD, [REG_IY, REG_BC], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0xfd19, ADD, [REG_IY, REG_DE], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0xfd29, ADD, [REG_IY, REG_IX], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0xfd39, ADD, [REG_IY, REG_SP], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0x86, ADD, [REG_A, POINTER_HL], byteOperation, POINTER_DELIM),
-    new GenericInstruction(0xdd86, ADD, [REG_A, POINTER_IX], byteOperation, POINTER_DELIM),
-    new GenericInstruction(0xfd86, ADD, [REG_A, POINTER_IY], byteOperation, POINTER_DELIM),
-    new GenericInstruction(0xc6, ADD, [REG_A, BYTE_VAL], byteOperation, POINTER_DELIM)
-].concat(createFromRegisterInstructions(0x80, (opcode, register) =>
-        new GenericInstruction(opcode, ADD, [REG_A, register], byteOperation, POINTER_DELIM)))
+    createByte(0x86, REG_A, POINTER_HL),
+    createByte(0xdd86, REG_A, POINTER_IX),
+    createByte(0xfd86, REG_A, POINTER_IY),
+    createByte(0xc6, REG_A, BYTE_VAL)
+].
+    concat(createFromRegisterInstructions(0x80, (opcode, register) => createByte(opcode, REG_A, register))).
+    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0x09 + (i << 4), REG_HL, register))).
+    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0xdd09 + (i << 4), REG_IX, register))).
+    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0xfd09 + (i << 4), REG_IX, register)))

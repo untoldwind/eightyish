@@ -11,10 +11,13 @@ function operation(storer, first, second) {
     return new Transition().withFlags(result)
 }
 
+function create(opcode, to, from) {
+    return new GenericInstruction(opcode, COMP, [to, from], operation)
+}
+
 export default [
-    new GenericInstruction(0xfe, COMP, [REG_A, BYTE_VAL], operation),
-    new GenericInstruction(0xbe, COMP, [REG_A, POINTER_HL], operation),
-    new GenericInstruction(0xddbe, COMP, [REG_A, POINTER_IX], operation),
-    new GenericInstruction(0xfdbe, COMP, [REG_A, POINTER_IY], operation)
-].concat(createFromRegisterInstructions(0xb8, (opcode, register) =>
-        new GenericInstruction(opcode, COMP, [REG_A, register], operation)))
+    create(0xfe, REG_A, BYTE_VAL),
+    create(0xbe, REG_A, POINTER_HL),
+    create(0xddbe, REG_A, POINTER_IX),
+    create(0xfdbe, REG_A, POINTER_IY)
+].concat(createFromRegisterInstructions(0xb8, (opcode, register) => create(opcode, REG_A, register)))

@@ -10,10 +10,13 @@ function operation(storer, first, second) {
     return storer(result).withFlags(result)
 }
 
+function create(opcode, to, from) {
+    return new GenericInstruction(opcode, XOR, [to, from], operation, POINTER_DELIM)
+}
+
 export default [
-    new GenericInstruction(0xae, XOR, [REG_A, POINTER_HL], operation, POINTER_DELIM),
-    new GenericInstruction(0xddae, XOR, [REG_A, POINTER_IX], operation, POINTER_DELIM),
-    new GenericInstruction(0xfdae, XOR, [REG_A, POINTER_IY], operation, POINTER_DELIM),
-    new GenericInstruction(0xee, XOR, [REG_A, BYTE_VAL], operation, POINTER_DELIM)
-].concat(createFromRegisterInstructions(0xa8, (opcode, register) =>
-        new GenericInstruction(opcode, XOR, [REG_A, register], operation, POINTER_DELIM)))
+    create(0xae, REG_A, POINTER_HL),
+    create(0xddae, REG_A, POINTER_IX),
+    create(0xfdae, REG_A, POINTER_IY),
+    create(0xee, REG_A, BYTE_VAL)
+].concat(createFromRegisterInstructions(0xa8, (opcode, register) => create(opcode, REG_A, register)))
