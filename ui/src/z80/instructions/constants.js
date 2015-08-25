@@ -3,6 +3,7 @@ import RegisterPointerArgument from '../arguments/RegisterPointerArgument'
 import IndexRegisterPointerArgument from '../arguments/IndexRegisterPointerArgument'
 import BytePointerArgument from '../arguments/BytePointerArgument'
 import ByteValueArgument from '../arguments/ByteValueArgument'
+import ConditionArgument from '../arguments/ConditionArgument'
 import WordPointerArgument from '../arguments/WordPointerArgument'
 import WordValueArgument from '../arguments/WordValueArgument'
 
@@ -50,3 +51,11 @@ export const REG_IY = RegisterArgument(IY)
 export const POINTER_HL = RegisterPointerArgument(HL)
 export const POINTER_IX = IndexRegisterPointerArgument(IX)
 export const POINTER_IY = IndexRegisterPointerArgument(IY)
+export const COND_Z = ConditionArgument('Z', true)
+export const COND_NZ = ConditionArgument('Z', false)
+export const COND_C = ConditionArgument('C', true)
+export const COND_NC = ConditionArgument('C', false)
+export const COND_S = ConditionArgument('S', true)
+export const COND_NS = ConditionArgument('S', false)
+export const COND_P = ConditionArgument('P', true)
+export const COND_NP = ConditionArgument('P', false)

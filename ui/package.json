@@ -1,6 +1,9 @@
 {
   "name": "eightyish",
   "version": "0.0.1",
+  "description": "A CPU-/Computer simulator of the '80s. For educational purposes only",
+  "repository": "https://github.com/untoldwind/eightyish",
+  "license" : "MIT",
   "config": {
     "buildDir": "./dist"
   },

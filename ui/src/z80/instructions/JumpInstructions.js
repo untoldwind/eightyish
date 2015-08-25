@@ -1,8 +1,10 @@
 import Instruction from './Instruction'
-import ConditionalInstruction from './ConditionalInstruction'
 import Transition from '../Transition'
 
-import { JUMP, PC, WORD_VAL } from './constants'
+import ConditionArgument from '../arguments/ConditionArgument'
+
+import { JUMP, PC, WORD_VAL,
+    COND_C, COND_NC, COND_P, COND_NP, COND_S, COND_NS, COND_Z, COND_NZ } from './constants'
 
 class Jump extends Instruction {
     constructor() {
@@ -11,21 +13,20 @@ class Jump extends Instruction {
 
     process(state, pcMem) {
         return new Transition().
-            withWordRegister(PC, (pcMem[1] << 8) | pcMem[2])
+            withWordRegister(PC, this.args[0].loader(state, pcMem.slice(this.opcodes.length)))
     }
 }
 
-class ConditionalJump extends ConditionalInstruction {
-    constructor(opcode, flag, condition) {
-        super(opcode, 10, JUMP, flag, condition, [WORD_VAL])
-        this.flag = flag
-        this.condition = condition
+class ConditionalJump extends Instruction {
+    constructor(opcode, condition) {
+        super(opcode, 10, JUMP, [condition, WORD_VAL])
     }
 
     process(state, pcMem) {
-        if (this.isConditionSatisfied(state)) {
+        const argPcMem = pcMem.slice(this.opcodes.length)
+        if (this.args[0].loader(state, argPcMem)) {
             return new Transition().
-                withWordRegister(PC, (pcMem[1] << 8) | pcMem[2])
+                withWordRegister(PC, this.args[1].loader(state, argPcMem))
         }
         return new Transition().
             withWordRegister(PC, state.registers.PC + this.size)
@@ -34,12 +35,12 @@ class ConditionalJump extends ConditionalInstruction {
 
 export default [
     new Jump(),
-    new ConditionalJump(0xda, 'C', true),
-    new ConditionalJump(0xfa, 'S', true),
-    new ConditionalJump(0xd2, 'C', false),
-    new ConditionalJump(0xc2, 'Z', false),
-    new ConditionalJump(0xf2, 'S', false),
-    new ConditionalJump(0xea, 'P', false),
-    new ConditionalJump(0xe2, 'P', true),
-    new ConditionalJump(0xca, 'Z', true)
+    new ConditionalJump(0xda, COND_C),
+    new ConditionalJump(0xfa, COND_S),
+    new ConditionalJump(0xd2, COND_NC),
+    new ConditionalJump(0xc2, COND_NZ),
+    new ConditionalJump(0xf2, COND_NS),
+    new ConditionalJump(0xea, COND_NP),
+    new ConditionalJump(0xe2, COND_P),
+    new ConditionalJump(0xca, COND_Z)
 ]
