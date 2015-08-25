@@ -1,11 +1,9 @@
 import GenericInstruction from './GenericInstruction'
-import Transition from '../Transition'
-
 
 import { createFromRegisterInstructions, createToRegisterInstructions } from './factory'
 
 import { BYTE_VAL, BYTE_POINTER, WORD_VAL, WORD_POINTER,
-    LOAD, HL, IX, IY, SP, PC, BC, DE, POINTER_DELIM, REG_A, REG_BC, REG_DE,
+    LOAD, POINTER_DELIM, REG_A, REG_BC, REG_DE,
     REG_SP, REG_HL, REG_IX, REG_IY, POINTER_HL, POINTER_IX, POINTER_IY } from './constants'
 
 function byteOperation(storer, first, second) {
@@ -27,7 +25,7 @@ export default [
     new GenericInstruction(0xdd22, 20, LOAD, [WORD_POINTER, REG_IX], wordOperation, POINTER_DELIM),
     new GenericInstruction(0xfd22, 20, LOAD, [WORD_POINTER, REG_IY], wordOperation, POINTER_DELIM),
     new GenericInstruction(0x3d73, 20, LOAD, [WORD_POINTER, REG_SP], wordOperation, POINTER_DELIM),
-    new GenericInstruction(0x3a, 13, LOAD, [REG_A,BYTE_POINTER], byteOperation, POINTER_DELIM),
+    new GenericInstruction(0x3a, 13, LOAD, [REG_A, BYTE_POINTER], byteOperation, POINTER_DELIM),
     new GenericInstruction(0xed4b, 20, LOAD, [REG_BC, WORD_POINTER], wordOperation, POINTER_DELIM),
     new GenericInstruction(0xed5b, 20, LOAD, [REG_DE, WORD_POINTER], wordOperation, POINTER_DELIM),
     new GenericInstruction(0x2a, 20, LOAD, [REG_HL, WORD_POINTER], wordOperation, POINTER_DELIM),

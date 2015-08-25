@@ -40,7 +40,7 @@ export default class MachineView extends React.Component {
     onChange() {
         this.setState(getCurrentState())
     }
-    
+
     render() {
         return (
             <div className="container">
@@ -59,25 +59,36 @@ export default class MachineView extends React.Component {
                                 sourceCode={this.state.sourceCode}/>
                     </div>
                 </div>
-                {this.renderVideo()}
                 {this.renderMemory()}
-                {this.renderVideoMemory()}
             </div>
         )
     }
 
-    renderVideo() {
+    renderMemory() {
         if (this.state.hasVideo) {
             return (
-                <VideoDisplay height={this.state.videoHeight}
-                              memory={this.state.videoMemory}
-                              scale={4}
-                              width={this.state.videoWidth}/>
+                <div className="row">
+                    <div className="col-md-6">
+                        <h4>Video</h4>
+                        <VideoDisplay height={this.state.videoHeight}
+                                      memory={this.state.videoMemory}
+                                      scale={4}
+                                      width={this.state.videoWidth}/>
+                        <MemoryGrid columns={16}
+                                    memory={this.state.videoMemory}
+                                    registers={this.state.registers}
+                                    segmentOffset={this.state.videoOffset}/>
+                    </div>
+                    <div className="col-md-6">
+                        <h4>Main memory</h4>
+                        <MemoryGrid columns={16}
+                                    memory={this.state.memory}
+                                    registers={this.state.registers}
+                                    segmentOffset={0}/>
+                    </div>
+                </div>
             )
         }
-    }
-
-    renderMemory() {
         return (
             <div className="row">
                 <div className="col-md-12">
@@ -85,25 +96,9 @@ export default class MachineView extends React.Component {
                     <MemoryGrid columns={32}
                                 memory={this.state.memory}
                                 registers={this.state.registers}
-                                segmentOffset={0} />
+                                segmentOffset={0}/>
                 </div>
             </div>
         )
-    }
-
-    renderVideoMemory() {
-        if (this.state.hasVideo) {
-            return (
-                <div className="row">
-                    <div className="col-md-12">
-                        <h4>Video memory</h4>
-                        <MemoryGrid columns={32}
-                                    memory={this.state.videoMemory}
-                                    registers={this.state.registers}
-                                    segmentOffset={this.state.videoOffset}/>
-                    </div>
-                </div>
-            )
-        }
     }
 }
