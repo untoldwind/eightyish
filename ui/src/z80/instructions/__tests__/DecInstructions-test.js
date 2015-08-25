@@ -24,10 +24,10 @@ describe('Dec Instruction', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
         expect(transition.newRegisters.A).toBe(8)
-        expect(transition.newRegisters.flagC).toBe(false)
-        expect(transition.newRegisters.flagS).toBe(false)
-        expect(transition.newRegisters.flagP).toBe(true)
-        expect(transition.newRegisters.flagZ).toBe(false)
+        expect(transition.newFlags.C).toBe(false)
+        expect(transition.newFlags.S).toBe(false)
+        expect(transition.newFlags.P).toBe(true)
+        expect(transition.newFlags.Z).toBe(false)
 
         const assembler = decA.createAssembler([])
 
@@ -54,10 +54,10 @@ describe('Dec Instruction', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
         expect(transition.newRegisters.BC).toBe(122)
-        expect(transition.newRegisters.flagC).toBeUndefined()
-        expect(transition.newRegisters.flagS).toBeUndefined()
-        expect(transition.newRegisters.flagP).toBeUndefined()
-        expect(transition.newRegisters.flagZ).toBeUndefined()
+        expect(transition.newFlags.C).toBeUndefined()
+        expect(transition.newFlags.S).toBeUndefined()
+        expect(transition.newFlags.P).toBeUndefined()
+        expect(transition.newFlags.Z).toBeUndefined()
 
         const assembler = decBC.createAssembler([])
 

@@ -24,10 +24,10 @@ describe('Shift left Instruction', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1236)
         expect(transition.newRegisters.A).toBe(18)
-        expect(transition.newRegisters.flagC).toBe(false)
-        expect(transition.newRegisters.flagS).toBe(false)
-        expect(transition.newRegisters.flagP).toBe(false)
-        expect(transition.newRegisters.flagZ).toBe(false)
+        expect(transition.newFlags.C).toBe(false)
+        expect(transition.newFlags.S).toBe(false)
+        expect(transition.newFlags.P).toBe(false)
+        expect(transition.newFlags.Z).toBe(false)
 
         const assembler = decA.createAssembler([null])
 

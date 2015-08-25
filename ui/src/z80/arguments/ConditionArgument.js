@@ -10,7 +10,7 @@ export default function (flag, condition) {
         extraOpcodes: () => [],
         extraSize: 0,
         example: formatted,
-        loader: (state) => state.registers['flag' + flag] === condition,
+        loader: (state) => state.registers.flags[flag] === condition,
         storer: () => () => new Transition()
     }
 }

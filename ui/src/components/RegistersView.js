@@ -29,10 +29,10 @@ export default class RegistersView extends React.Component {
                 {this.renderByteRegisters('B', 'C')}
                 {this.renderByteRegisters('D', 'E')}
                 {this.renderWordRegister('HL', 'bg-success')}
-                {this.renderWordRegister('IX', 'bg-info', 'flagZ', 'Zero')}
-                {this.renderWordRegister('IY', 'bg-warning', 'flagS', 'Sign')}
-                {this.renderWordRegister('SP', 'bg-danger', 'flagP', 'Parity')}
-                {this.renderWordRegister('PC', 'bg-primary', 'flagC', 'Carry')}
+                {this.renderWordRegister('IX', 'bg-info', 'Z', 'Zero')}
+                {this.renderWordRegister('IY', 'bg-warning', 'S', 'Sign')}
+                {this.renderWordRegister('SP', 'bg-danger', 'P', 'Parity')}
+                {this.renderWordRegister('PC', 'bg-primary', 'C', 'Carry')}
                 </tbody>
             </table>
         )
@@ -87,7 +87,7 @@ export default class RegistersView extends React.Component {
         if (flagName) {
             flag = (
                 <td colSpan="4">
-                <span className={this.props.registers[flagName] ? 'label label-success' : 'label label-default'}>
+                <span className={this.props.registers.flags[flagName] ? 'label label-success' : 'label label-default'}>
                     {flagDescription.substring(0, 1)}
                 </span>
                     {flagDescription.substring(1)}

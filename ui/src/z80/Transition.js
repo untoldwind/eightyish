@@ -8,6 +8,7 @@ function byteParity(value) {
 export default class Transition {
     constructor(newRegisters, memoryOffset, newMemoryData) {
         this.newRegisters = newRegisters || {}
+        this.newFlags = {}
         this.memoryOffset = memoryOffset
         this.newMemoryData = newMemoryData
     }
@@ -19,16 +20,16 @@ export default class Transition {
     }
 
     withFlag(flag, value) {
-        this.newRegisters[`flag${flag}`] = value
+        this.newFlags[flag] = value
 
         return this
     }
 
     withFlags(value) {
-        this.newRegisters.flagP = byteParity(value) !== 0
-        this.newRegisters.flagC = (value & 0x100) !== 0
-        this.newRegisters.flagZ = value === 0
-        this.newRegisters.flagS = (value & 0x80) !== 0
+        this.newFlags.P = byteParity(value) !== 0
+        this.newFlags.C = (value & 0x100) !== 0
+        this.newFlags.Z = value === 0
+        this.newFlags.S = (value & 0x80) !== 0
 
         return this
     }
@@ -67,7 +68,7 @@ export default class Transition {
 
     perform(state) {
         this.oldRegisters = state.registers.copy()
-        state.registers.assign(this.newRegisters)
+        state.registers.assign(this.newRegisters, this.newFlags)
         if (typeof this.memoryOffset === 'number') {
             if (this.memoryOffset < state.memory.length) {
                 this.oldMemoryData = state.memory.slice(this.memoryOffset,
@@ -89,7 +90,7 @@ export default class Transition {
     }
 
     undo(state) {
-        state.registers.assign(this.oldRegisters)
+        state.registers.assign(this.oldRegisters, {})
         if (typeof this.memoryOffset === 'number') {
             if (this.memoryOffset < state.memory.length) {
                 for (let i = 0; i < this.oldMemoryData.length; i++) {

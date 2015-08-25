@@ -1,7 +1,6 @@
 export default class Registers {
     constructor(memSize) {
         this.A = 0
-        this.F = 0
         this.B = 0
         this.C = 0
         this.D = 0
@@ -11,12 +10,14 @@ export default class Registers {
         this.SP = memSize
         this.IX = 0
         this.IY = 0
-        this.flagS = false
-        this.flagZ = false
-        this.flagH = false
-        this.flagP = false
-        this.flagN = false
-        this.flagC = false
+        this.flags = {
+            S: false,
+            Z: false,
+            H: false,
+            P: false,
+            N: false,
+            C: false
+        }
     }
 
     get AF() {
@@ -48,29 +49,30 @@ export default class Registers {
 
     get F() {
         let result = 0
-        result |= this.flagC ? 0x1 : 0x0
-        result |= this.flagN ? 0x2 : 0x0
-        result |= this.flagP ? 0x4 : 0x0
-        result |= this.flagN ? 0x10 : 0x0
-        result |= this.flagZ ? 0x40 : 0x0
-        result |= this.flagS ? 0x80 : 0x0
+        result |= this.flags.C ? 0x1 : 0x0
+        result |= this.flags.N ? 0x2 : 0x0
+        result |= this.flags.P ? 0x4 : 0x0
+        result |= this.flags.H ? 0x10 : 0x0
+        result |= this.flags.Z ? 0x40 : 0x0
+        result |= this.flags.S ? 0x80 : 0x0
         return result
     }
 
     set F(f) {
-        this.flagC = (f & 0x1) !== 0
-        this.flagN = (f & 0x2) !== 0
-        this.flagP = (f & 0x4) !== 0
-        this.flagH = (f & 0x10) !== 0
-        this.flagZ = (f & 0x40) !== 0
-        this.flagS = (f & 0x80) !== 0
+        this.flags.C = (f & 0x1) !== 0
+        this.flags.N = (f & 0x2) !== 0
+        this.flags.P = (f & 0x4) !== 0
+        this.flags.H = (f & 0x10) !== 0
+        this.flags.Z = (f & 0x40) !== 0
+        this.flags.S = (f & 0x80) !== 0
     }
 
     copy() {
         return Object.assign({__proto__: Object.getPrototypeOf(this)}, this)
     }
 
-    assign(values) {
+    assign(values, flags) {
         Object.assign(this, values)
+        Object.assign(this.flags, flags)
     }
 }

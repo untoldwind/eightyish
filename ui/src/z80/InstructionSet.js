@@ -8,6 +8,8 @@ import IncInstructions from './instructions/IncInstructions'
 import JumpInstructions from './instructions/JumpInstructions'
 import LoadInstructions from './instructions/LoadInstructions'
 import OrInstructions from './instructions/OrInstructions'
+import RotateLeftCarryInstructions from './instructions/RotateLeftCarryInstruction'
+import RotateRightCarryInstructions from './instructions/RotateRightCarryInstructions'
 import ShiftLeftInstructions from './instructions/ShiftLeftInstructions'
 import ShiftRightInstructions from './instructions/ShiftRightInstructions'
 import SubInstructions from './instructions/SubInstructions'
@@ -25,6 +27,8 @@ export const INSTRUCTIONS = [].concat(
     JumpInstructions,
     LoadInstructions,
     OrInstructions,
+    RotateLeftCarryInstructions,
+    RotateRightCarryInstructions,
     ShiftLeftInstructions,
     ShiftRightInstructions,
     SubInstructions,

@@ -109,11 +109,13 @@ describe('InstructionSet', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters).toEqual({
             A: 13,
-            PC: 0x1235,
-            flagC: false,
-            flagP: true,
-            flagS: false,
-            flagZ: false
+            PC: 0x1235
+        })
+        expect(transition.newFlags).toEqual({
+            C: false,
+            P: true,
+            S: false,
+            Z: false
         })
         expect(state.getMemory).toBeCalledWith(0x1234, 4)
     })

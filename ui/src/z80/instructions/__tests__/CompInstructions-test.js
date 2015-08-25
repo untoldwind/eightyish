@@ -24,10 +24,10 @@ describe('Compate Instruction', () => {
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
-        expect(transition.newRegisters.flagC).toBe(false)
-        expect(transition.newRegisters.flagS).toBe(false)
-        expect(transition.newRegisters.flagP).toBe(false)
-        expect(transition.newRegisters.flagZ).toBe(true)
+        expect(transition.newFlags.C).toBe(false)
+        expect(transition.newFlags.S).toBe(false)
+        expect(transition.newFlags.P).toBe(false)
+        expect(transition.newFlags.Z).toBe(true)
 
         const assembler = andAB.createAssembler([null, null])
 
@@ -53,10 +53,10 @@ describe('Compate Instruction', () => {
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1236)
-        expect(transition.newRegisters.flagC).toBe(true)
-        expect(transition.newRegisters.flagS).toBe(true)
-        expect(transition.newRegisters.flagP).toBe(false)
-        expect(transition.newRegisters.flagZ).toBe(false)
+        expect(transition.newFlags.C).toBe(true)
+        expect(transition.newFlags.S).toBe(true)
+        expect(transition.newFlags.P).toBe(false)
+        expect(transition.newFlags.Z).toBe(false)
 
         const assembler = andA.createAssembler([null, 135])
 
@@ -84,10 +84,10 @@ describe('Compate Instruction', () => {
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
-        expect(transition.newRegisters.flagC).toBe(false)
-        expect(transition.newRegisters.flagS).toBe(false)
-        expect(transition.newRegisters.flagP).toBe(false)
-        expect(transition.newRegisters.flagZ).toBe(false)
+        expect(transition.newFlags.C).toBe(false)
+        expect(transition.newFlags.S).toBe(false)
+        expect(transition.newFlags.P).toBe(false)
+        expect(transition.newFlags.Z).toBe(false)
         expect(state.getMemoryByte).toBeCalledWith(1234)
 
         const assembler = andAHL.createAssembler([null, null])
@@ -116,10 +116,10 @@ describe('Compate Instruction', () => {
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1237)
-        expect(transition.newRegisters.flagC).toBe(false)
-        expect(transition.newRegisters.flagS).toBe(false)
-        expect(transition.newRegisters.flagP).toBe(false)
-        expect(transition.newRegisters.flagZ).toBe(false)
+        expect(transition.newFlags.C).toBe(false)
+        expect(transition.newFlags.S).toBe(false)
+        expect(transition.newFlags.P).toBe(false)
+        expect(transition.newFlags.Z).toBe(false)
         expect(state.getMemoryByte).toBeCalledWith(1244)
 
         const assembler = andAIX.createAssembler([null, 10])

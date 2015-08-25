@@ -10,8 +10,10 @@ export default class GenericInstruction extends Instruction {
 
     process(state, pcMem) {
         const argPcMem = pcMem.slice(this.opcodes.length)
-        const transition = this.operation(this.args[0].storer(state, argPcMem),
-            ... this.args.map((arg) => arg.loader(state, argPcMem)))
+        const transition = this.operation(
+            this.args[0].storer(state, argPcMem),
+            ... this.args.map((arg) => arg.loader(state, argPcMem)),
+            state.registers.flags)
 
         return transition.withWordRegister(PC, state.registers.PC + this.size).withCycles(this.cycles)
     }
