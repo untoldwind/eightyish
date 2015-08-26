@@ -17,7 +17,7 @@ function wordOperation(storer, first) {
 }
 
 function createByte(opcode, cycles, target) {
-    return new GenericInstruction(opcode, cycles, INC, [target], byteOperation);
+    return new GenericInstruction(opcode, cycles, INC, [target], byteOperation)
 }
 
 function createWord(opcode, cycles, target) {

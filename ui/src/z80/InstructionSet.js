@@ -8,7 +8,7 @@ import IncInstructions from './instructions/IncInstructions'
 import JumpInstructions from './instructions/JumpInstructions'
 import LoadInstructions from './instructions/LoadInstructions'
 import OrInstructions from './instructions/OrInstructions'
-import RotateLeftCarryInstructions from './instructions/RotateLeftCarryInstruction'
+import RotateLeftCarryInstructions from './instructions/RotateLeftCarryInstructions'
 import RotateRightCarryInstructions from './instructions/RotateRightCarryInstructions'
 import ShiftLeftInstructions from './instructions/ShiftLeftInstructions'
 import ShiftRightInstructions from './instructions/ShiftRightInstructions'
@@ -51,7 +51,7 @@ INSTRUCTIONS.forEach(instruction => {
     variants.push(instruction)
 
     let opcodes = instructionsByOpcode
-    if(instruction.opcodes.length > 1) {
+    if (instruction.opcodes.length > 1) {
         opcodes = instructionsByOpcode[instruction.opcodes[0]]
         if (!opcodes) {
             opcodes = []
@@ -84,7 +84,6 @@ export function process(state) {
             }
         }
         if (instruction instanceof Array) {
-            console.log("Found one")
             if (pcMem.length > 3) {
                 instruction = instruction[pcMem[3]]
             } else {

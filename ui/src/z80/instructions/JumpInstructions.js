@@ -1,8 +1,6 @@
 import Instruction from './Instruction'
 import Transition from '../Transition'
 
-import ConditionArgument from '../arguments/ConditionArgument'
-
 import { JUMP, PC, WORD_VAL,
     COND_C, COND_NC, COND_P, COND_NP, COND_S, COND_NS, COND_Z, COND_NZ } from './constants'
 
