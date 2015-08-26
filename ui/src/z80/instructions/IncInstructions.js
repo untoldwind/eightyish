@@ -1,8 +1,8 @@
 import GenericInstruction from './GenericInstruction'
 
-import { createToRegisterInstructions } from './factory'
+import { createToWithPointers } from './factory'
 
-import { REG_BC, REG_DE, REG_HL, REG_IX, REG_IY, REG_SP, INC, POINTER_HL, POINTER_IX, POINTER_IY } from './constants'
+import { REG_BC, REG_DE, REG_HL, REG_IX, REG_IY, REG_SP, INC } from './constants'
 
 function byteOperation(storer, first) {
     const result = first + 1
@@ -26,10 +26,7 @@ function createWord(opcode, cycles, target) {
 
 export default [
     createWord(0xdd23, 10, REG_IX),
-    createWord(0xfd23, 10, REG_IY),
-    createByte(0x34, 11, POINTER_HL),
-    createByte(0xdd34, 23, POINTER_IX),
-    createByte(0xfd34, 23, POINTER_IY)
+    createWord(0xfd23, 10, REG_IY)
 ].
-    concat(createToRegisterInstructions(0x04, (opcode, register) => createByte(opcode, 4, register))).
+    concat(createToWithPointers(0x04, (opcode, register) => createByte(opcode, 4, register))).
     concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0x03 + (i << 4), 6, register)))

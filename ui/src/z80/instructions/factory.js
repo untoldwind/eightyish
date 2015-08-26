@@ -38,3 +38,14 @@ export function createToRegisterInstructions(base, callback) {
     }
     return result
 }
+
+export function createToWithPointers(base, callback) {
+    const result = []
+
+    for (let i = 0; i < 8; i++) {
+        result.push(callback(base + (i << 3), registers[i]))
+    }
+    result.push(callback(base + 0xdd06, POINTER_IX))
+    result.push(callback(base + 0xfd06, POINTER_IY))
+    return result
+}
