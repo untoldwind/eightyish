@@ -1,19 +1,40 @@
-import RegisterArgument from '../arguments/RegisterArgument'
+import { REG_A, REG_B, REG_C, REG_D, REG_E, REG_H, REG_L,
+    POINTER_HL, POINTER_IX, POINTER_IY } from './constants'
+
+const registers = [REG_B, REG_C, REG_D, REG_E, REG_H, REG_L, POINTER_HL, REG_A]
 
 export function createFromRegisterInstructions(base, callback) {
     const result = []
 
-    for (let i = 0; i < 5; i++) {
-        result.push(callback(base + ((i - 1) & 0x7), RegisterArgument(String.fromCharCode(65 + i))))
+    for (let i = 0; i < 8; i++) {
+        if (i === 6) {
+            continue
+        }
+        result.push(callback(base + i, registers[i]))
     }
+    return result
+}
+
+
+export function createFromWithPointers(base, callback) {
+    const result = []
+
+    for (let i = 0; i < 8; i++) {
+        result.push(callback(base + i, registers[i]))
+    }
+    result.push(callback(base + 0xdd06, POINTER_IX))
+    result.push(callback(base + 0xfd06, POINTER_IY))
     return result
 }
 
 export function createToRegisterInstructions(base, callback) {
     const result = []
 
-    for (let i = 0; i < 5; i++) {
-        result.push(callback(base + (((i - 1) & 0x7) << 3), RegisterArgument(String.fromCharCode(65 + i))))
+    for (let i = 0; i < 8; i++) {
+        if (i === 6) {
+            continue
+        }
+        result.push(callback(base + (i << 3), registers[i]))
     }
     return result
 }

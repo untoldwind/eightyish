@@ -62,7 +62,7 @@ export default class RegistersView extends React.Component {
                               valueLink={formats.byteValueLink(2, highValueLink)}/>
                 <td className={className}
                     rowSpan="2" style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
-                <EditableCell activeClassName="form-control input-sm"  className={className}
+                <EditableCell activeClassName="form-control input-sm" className={className}
                               rowSpan={2} style={{verticalAlign: 'middle'}}
                               valueLink={formats.wordValueLink(10, valueLink)}/>
                 <EditableCell activeClassName="form-control input-sm" className={className}
