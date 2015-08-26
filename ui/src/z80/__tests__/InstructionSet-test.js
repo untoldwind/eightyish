@@ -166,4 +166,26 @@ describe('InstructionSet', () => {
         expect(transition).toBeNull()
         expect(state.getMemory).toBeCalledWith(0x1234, 4)
     })
+
+    it('should process instructions with postfix', () => {
+        const state = {
+            registers: {
+                PC: 1234,
+                IX: 0xabcd
+            },
+            getMemory: jest.genMockFunction().mockReturnValue([0xdd, 0xcb, 0x2, 0x26]),
+            getMemoryByte: jest.genMockFunction().mockReturnValue(9)
+        }
+        const transition = InstructionSet.process(state)
+
+        expect(transition).toBeDefined()
+        expect(transition.newRegisters.PC).toBe(1238)
+        expect(transition.newFlags.C).toBe(false)
+        expect(transition.newFlags.S).toBe(false)
+        expect(transition.newFlags.P).toBe(false)
+        expect(transition.newFlags.Z).toBe(false)
+        expect(transition.memoryOffset).toBe(0xabcf)
+        expect(transition.newMemoryData).toEqual([18])
+        expect(state.getMemoryByte).toBeCalledWith(0xabcf)
+    })
 })

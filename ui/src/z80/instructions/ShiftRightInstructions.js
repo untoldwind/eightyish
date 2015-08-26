@@ -2,7 +2,7 @@ import GenericInstruction from './GenericInstruction'
 
 import { createFromRegisterInstructions } from './factory'
 
-import { SHR } from './constants'
+import { SHR, POINTER_HL, POINTER_IX, POINTER_IY } from './constants'
 
 function operation(storer, first) {
     const result = first >> 1
@@ -10,6 +10,12 @@ function operation(storer, first) {
     return storer(result).withFlags(result).withFlag('C', (first & 0x1) !== 0)
 }
 
-export default [].
-    concat(createFromRegisterInstructions(0xcb38, (opcode, register) =>
-        new GenericInstruction(opcode, 8, SHR, [register], operation)))
+function create(opcode, cycles, target) {
+    return new GenericInstruction(opcode, cycles, SHR, [target], operation)
+}
+
+export default [
+    create(0xcb3e, 15, POINTER_HL),
+    create(0xddcb3e, 23, POINTER_IX),
+    create(0xfdcb3e, 23, POINTER_IY)
+].concat(createFromRegisterInstructions(0xcb38, (opcode, register) => create(opcode, 8, register)))

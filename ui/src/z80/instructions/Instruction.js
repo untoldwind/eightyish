@@ -5,12 +5,17 @@ export default class Instruction {
         this.cycles = cycles
         this.name = name
         this.args = args
-        if (opcode < 256) {
+        if (opcode <= 0xff) {
             this.opcodes = [opcode]
-        } else {
+        } else if (opcode <= 0xffff) {
             this.opcodes = [(opcode >> 8) & 0xff, opcode & 0xff]
+        } else {
+            this.opcodes = [(opcode >> 16) & 0xff, (opcode >> 8) & 0xff]
+            this.postfix = opcode & 0xff
         }
-        this.size = this.opcodes.length + this.args.reduce((prev, pattern) => prev + pattern.extraSize, 0)
+        this.size = this.opcodes.length +
+            this.args.reduce((prev, pattern) => prev + pattern.extraSize, 0) +
+            (typeof this.postfix === 'number' ? 1 : 0)
         this.delim = delim
     }
 
@@ -21,7 +26,7 @@ export default class Instruction {
             assembler: formattedParams.length === 0 ? this.name : `${this.name}\t${formattedParams.join(this.delim)}`,
             opcodes: (labels) => {
                 const extraOpcodes = this.args.map((pattern, i) => pattern.extraOpcodes(params[i], labels))
-                return this.opcodes.concat(...extraOpcodes)
+                return this.opcodes.concat(...extraOpcodes).concat(this.postfix || [])
             },
             size: this.size
         }

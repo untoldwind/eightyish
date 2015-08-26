@@ -2,7 +2,7 @@ import GenericInstruction from './GenericInstruction'
 
 import { createToRegisterInstructions } from './factory'
 
-import { REG_BC, REG_DE, REG_HL, REG_IX, REG_IY, REG_SP, INC } from './constants'
+import { REG_BC, REG_DE, REG_HL, REG_IX, REG_IY, REG_SP, INC, POINTER_HL, POINTER_IX, POINTER_IY } from './constants'
 
 function byteOperation(storer, first) {
     const result = first + 1
@@ -16,11 +16,20 @@ function wordOperation(storer, first) {
     return storer(result)
 }
 
+function createByte(opcode, cycles, target) {
+    return new GenericInstruction(opcode, cycles, INC, [target], byteOperation);
+}
+
+function createWord(opcode, cycles, target) {
+    return new GenericInstruction(opcode, cycles, INC, [target], wordOperation)
+}
+
 export default [
-    new GenericInstruction(0xdd23, 10, INC, [REG_IX], wordOperation),
-    new GenericInstruction(0xfd23, 10, INC, [REG_IY], wordOperation)
+    createWord(0xdd23, 10, REG_IX),
+    createWord(0xfd23, 10, REG_IY),
+    createByte(0x34, 11, POINTER_HL),
+    createByte(0xdd34, 23, POINTER_IX),
+    createByte(0xfd34, 23, POINTER_IY)
 ].
-    concat(createToRegisterInstructions(0x04, (opcode, register) =>
-        new GenericInstruction(opcode, 4, INC, [register], byteOperation))).
-    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) =>
-        new GenericInstruction(0x03 + (i << 4), 6, INC, [register], wordOperation)))
+    concat(createToRegisterInstructions(0x04, (opcode, register) => createByte(opcode, 4, register))).
+    concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0x03 + (i << 4), 6, register)))

@@ -38,7 +38,7 @@ export const INSTRUCTIONS = [].concat(
 
 export const INSTRUCTIONS_BY_NAME = new Map()
 
-const opcodes = []
+const instructionsByOpcode = []
 
 INSTRUCTIONS.forEach(instruction => {
     const name = instruction.name
@@ -50,16 +50,23 @@ INSTRUCTIONS.forEach(instruction => {
     }
     variants.push(instruction)
 
-    if (instruction.opcode >= 256) {
-        let extended = opcodes[(instruction.opcode >> 8) & 0xff]
-
-        if (!extended) {
-            extended = []
-            opcodes[(instruction.opcode >> 8) & 0xff] = extended
+    let opcodes = instructionsByOpcode
+    if(instruction.opcodes.length > 1) {
+        opcodes = instructionsByOpcode[instruction.opcodes[0]]
+        if (!opcodes) {
+            opcodes = []
+            instructionsByOpcode[instruction.opcodes[0]] = opcodes
         }
-        extended[instruction.opcode & 0xff] = instruction
+    }
+    if (typeof instruction.postfix !== 'number') {
+        opcodes[instruction.opcodes[instruction.opcodes.length - 1]] = instruction
     } else {
-        opcodes[instruction.opcode] = instruction
+        let subOpcodes = opcodes[instruction.opcodes[instruction.opcodes.length - 1]]
+        if (!subOpcodes) {
+            subOpcodes = []
+            opcodes[instruction.opcodes[instruction.opcodes.length - 1]] = subOpcodes
+        }
+        subOpcodes[instruction.postfix] = instruction
     }
 })
 
@@ -67,11 +74,19 @@ export function process(state) {
     const pcMem = state.getMemory(state.registers.PC, 4)
 
     if (pcMem.length > 0) {
-        let instruction = opcodes[pcMem[0]]
+        let instruction = instructionsByOpcode[pcMem[0]]
 
         if (instruction instanceof Array) {
             if (pcMem.length > 1) {
                 instruction = instruction[pcMem[1]]
+            } else {
+                instruction = null
+            }
+        }
+        if (instruction instanceof Array) {
+            console.log("Found one")
+            if (pcMem.length > 3) {
+                instruction = instruction[pcMem[3]]
             } else {
                 instruction = null
             }
