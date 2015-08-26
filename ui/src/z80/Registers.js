@@ -5,7 +5,8 @@ export default class Registers {
         this.C = 0
         this.D = 0
         this.E = 0
-        this.HL = 0
+        this.H = 0
+        this.L = 0
         this.PC = 0
         this.SP = memSize
         this.IX = 0
@@ -45,6 +46,15 @@ export default class Registers {
     set DE(de) {
         this.D = (de >> 8) & 0xff
         this.E = de & 0xff
+    }
+
+    get HL() {
+        return (this.H << 8) | this.L
+    }
+
+    set HL(hl) {
+        this.H = (hl >> 8) & 0xff
+        this.L = hl & 0xff
     }
 
     get F() {

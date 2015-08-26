@@ -28,7 +28,7 @@ export default class RegistersView extends React.Component {
                 {this.renderByteRegisters('A', 'F')}
                 {this.renderByteRegisters('B', 'C')}
                 {this.renderByteRegisters('D', 'E')}
-                {this.renderWordRegister('HL', 'bg-success')}
+                {this.renderByteRegisters('H', 'L', 'bg-success')}
                 {this.renderWordRegister('IX', 'bg-info', 'Z', 'Zero')}
                 {this.renderWordRegister('IY', 'bg-warning', 'S', 'Sign')}
                 {this.renderWordRegister('SP', 'bg-danger', 'P', 'Parity')}
@@ -38,7 +38,7 @@ export default class RegistersView extends React.Component {
         )
     }
 
-    renderByteRegisters(highRegister, lowRegister) {
+    renderByteRegisters(highRegister, lowRegister, className) {
         const highValueLink = {
             value: this.props.registers[highRegister],
             requestChange: value => MachineActions.transition({[highRegister]: value})
@@ -60,10 +60,13 @@ export default class RegistersView extends React.Component {
                               valueLink={formats.byteValueLink(16, highValueLink)}/>
                 <EditableCell activeClassName="form-control input-sm"
                               valueLink={formats.byteValueLink(2, highValueLink)}/>
-                <td rowSpan="2" style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
-                <EditableCell activeClassName="form-control input-sm" rowSpan={2} style={{verticalAlign: 'middle'}}
+                <td className={className}
+                    rowSpan="2" style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
+                <EditableCell activeClassName="form-control input-sm"  className={className}
+                              rowSpan={2} style={{verticalAlign: 'middle'}}
                               valueLink={formats.wordValueLink(10, valueLink)}/>
-                <EditableCell activeClassName="form-control input-sm" rowSpan={2} style={{verticalAlign: 'middle'}}
+                <EditableCell activeClassName="form-control input-sm" className={className}
+                              rowSpan={2} style={{verticalAlign: 'middle'}}
                               valueLink={formats.wordValueLink(16, valueLink)}/>
             </tr>,
             <tr key="low">
