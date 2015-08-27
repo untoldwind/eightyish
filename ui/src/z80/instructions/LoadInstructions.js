@@ -48,7 +48,7 @@ export default [
     createWord(0x31, 10, REG_SP, WORD_VAL)
 ].
     concat(... createToRegisterInstructions(0x40, (base, toRegister) =>
-        createFromWithPointers(base, (opcode, fromRegister) => createByte(opcode, 4, toRegister, fromRegister)))).
+        createFromWithPointers(base, 3, 15, (opcode, fromRegister) => createByte(opcode, 4, toRegister, fromRegister)))).
     concat(createToRegisterInstructions(0x06, (opcode, register) => createByte(opcode, 7, register, BYTE_VAL))).
     concat(createFromRegisterInstructions(0x70, (opcode, register) => createByte(opcode, 7, POINTER_HL, register))).
     concat(createFromRegisterInstructions(0xdd70, (opcode, register) => createByte(opcode, 19, POINTER_IX, register))).

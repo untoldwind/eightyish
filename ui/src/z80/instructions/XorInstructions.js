@@ -16,4 +16,4 @@ function create(opcode, cycles, to, from) {
 
 export default [
     create(0xee, 7, REG_A, BYTE_VAL)
-].concat(createFromWithPointers(0xa8, (opcode, register) => create(opcode, 4, REG_A, register)))
+].concat(createFromWithPointers(0xa8, 3, 15, (opcode, register) => create(opcode, 4, REG_A, register)))

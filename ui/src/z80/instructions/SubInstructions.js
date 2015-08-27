@@ -12,5 +12,5 @@ function operation(storer, first, second) {
 
 export default [
     new GenericInstruction(0xd6, 7, SUB, [REG_A, BYTE_VAL], operation, POINTER_DELIM)
-].concat(createFromWithPointers(0x90, (opcode, register) =>
+].concat(createFromWithPointers(0x90, 3, 15, (opcode, register) =>
         new GenericInstruction(opcode, 4, SUB, [REG_A, register], operation, POINTER_DELIM)))

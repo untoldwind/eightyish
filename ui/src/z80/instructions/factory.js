@@ -16,14 +16,23 @@ export function createFromRegisterInstructions(base, callback) {
 }
 
 
-export function createFromWithPointers(base, callback) {
+export function createFromWithPointers(base, extraCyclesHL, extraCyclesJX, callback) {
     const result = []
 
     for (let i = 0; i < 8; i++) {
-        result.push(callback(base + i, registers[i]))
+        let instruction = callback(base + i, registers[i])
+        if (i === 6) {
+            instruction.cycles += extraCyclesHL
+        }
+        result.push(instruction)
     }
-    result.push(callback(base + 0xdd06, POINTER_IX))
-    result.push(callback(base + 0xfd06, POINTER_IY))
+    let instruction = callback(base + 0xdd06, POINTER_IX)
+    instruction.cycles += extraCyclesJX
+    result.push(instruction)
+    instruction = callback(base + 0xfd06, POINTER_IY)
+    instruction.cycles += extraCyclesJX
+    result.push(instruction)
+
     return result
 }
 
@@ -49,10 +58,10 @@ export function createToWithPointers(base, extraCyclesHL, extraCyclesJX, callbac
         }
         result.push(instruction)
     }
-    let instruction = callback(base + 0xdd06, POINTER_IX)
+    let instruction = callback(base + 0xdd60, POINTER_IX)
     instruction.cycles += extraCyclesJX
     result.push(instruction)
-    instruction = callback(base + 0xfd06, POINTER_IY)
+    instruction = callback(base + 0xfd60, POINTER_IY)
     instruction.cycles += extraCyclesJX
     result.push(instruction)
 
