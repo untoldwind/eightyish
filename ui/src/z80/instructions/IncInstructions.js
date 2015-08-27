@@ -28,5 +28,5 @@ export default [
     createWord(0xdd23, 10, REG_IX),
     createWord(0xfd23, 10, REG_IY)
 ].
-    concat(createToWithPointers(0x04, (opcode, register) => createByte(opcode, 4, register))).
+    concat(createToWithPointers(0x04, 7, 19, (opcode, register) => createByte(opcode, 4, register))).
     concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0x03 + (i << 4), 6, register)))

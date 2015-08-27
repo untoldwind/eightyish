@@ -103,7 +103,7 @@ class MachineState extends EventEmitter {
             transition.perform(this)
             this.emitChange()
             if (this.running) {
-                setTimeout(this.stepForward.bind(this), 10)
+                setTimeout(this.stepForward.bind(this), 5)
             }
         } else {
             this.stop()
@@ -125,7 +125,7 @@ class MachineState extends EventEmitter {
         this.running = true
         this.registers = new Registers(this.memSize)
         this.emitChange()
-        setTimeout(this.stepForward.bind(this), 10)
+        setTimeout(this.stepForward.bind(this), 5)
     }
 
     stop() {

@@ -49,11 +49,11 @@ export default class MachineView extends React.Component {
                                 totalCycles={this.state.totalCycles}/>
 
                 <div className="row">
-                    <div className="col-md-4">
+                    <div className="col-md-5">
                         <h4>Registers</h4>
                         <RegistersView registers={this.state.registers}/>
                     </div>
-                    <div className="col-md-8">
+                    <div className="col-md-7">
                         <h4>Assember</h4>
                         <Editor pc={this.state.registers.PC}
                                 sourceCode={this.state.sourceCode}/>

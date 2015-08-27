@@ -26,7 +26,7 @@ function createWord(opcode, cycles, to, from) {
 }
 
 export default [
-    createByte(0xc6, 7, REG_A, BYTE_VAL, 7)
+    createByte(0xc6, 7, REG_A, BYTE_VAL)
 ].
     concat(createFromWithPointers(0x80, (opcode, register) => createByte(opcode, 4, REG_A, register))).
     concat([REG_BC, REG_DE, REG_HL, REG_SP].map((register, i) => createWord(0x09 + (i << 4), 11, REG_HL, register))).
