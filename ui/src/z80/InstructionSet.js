@@ -103,7 +103,8 @@ export function createBlank() {
         type: 'blank',
         assembler: '  ',
         opcodes: () => [],
-        size: 0
+        size: 0,
+        breakpoint: false
     }
 }
 
@@ -112,7 +113,8 @@ export function createError(line) {
         type: 'error',
         assembler: line,
         opcodes: () => [],
-        size: 0
+        size: 0,
+        breakpoint: false
     }
 }
 
@@ -122,7 +124,8 @@ export function createLabel(label) {
         assembler: `${label}:`,
         opcodes: () => [],
         updateLabel: (offset, labels) => labels.setAddress(label, offset),
-        size: 0
+        size: 0,
+        breakpoint: false
     }
 }
 

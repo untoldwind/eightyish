@@ -21,6 +21,7 @@ class MachineState extends EventEmitter {
         this.videoHeight = videoHeight
         this.videoMemory = null
         this.sourceCode = new SourceCode()
+        this.breakpoints = []
         this.transitions = []
         this.totalCycles = 0
         this.running = false
@@ -70,6 +71,10 @@ class MachineState extends EventEmitter {
             this.compile(action.lines)
             break
 
+        case AppConstants.TOGGLE_BREAKPOINT:
+            this.toggleBreakpoint(action.address)
+            break
+
         default:
             break
         }
@@ -102,7 +107,7 @@ class MachineState extends EventEmitter {
             this.transitions.push(transition)
             transition.perform(this)
             this.emitChange()
-            if (this.running) {
+            if (this.running && this.breakpoints.indexOf(this.registers.PC) < 0) {
                 setTimeout(this.stepForward.bind(this), 5)
             }
         } else {
@@ -156,6 +161,12 @@ class MachineState extends EventEmitter {
         this.emitChange()
     }
 
+    toggleBreakpoint(address) {
+        this.sourceCode.toggleBreakpoint(address)
+        this.transferSourceToMemory()
+        this.emitChange()
+    }
+
     getMemory(offset, length) {
         if (offset < this.memory.length) {
             return this.memory.slice(offset, offset + length)
@@ -187,10 +198,11 @@ class MachineState extends EventEmitter {
     }
 
     transferSourceToMemory() {
-        let sourceMemory = this.sourceCode.memory
+        let [sourceMemory, sourceBreakpoints] = this.sourceCode.memoryAndBreakpoints
         for (let i = 0; i < sourceMemory.length; i++) {
             this.memory[i] = sourceMemory[i]
         }
+        this.breakpoints = sourceBreakpoints
     }
 
     get hasVideo() {

@@ -28,7 +28,8 @@ export default class Instruction {
                 const extraOpcodes = this.args.map((pattern, i) => pattern.extraOpcodes(params[i], labels))
                 return this.opcodes.concat(...extraOpcodes).concat(this.postfix || [])
             },
-            size: this.size
+            size: this.size,
+            breakpoint: false
         }
     }
 

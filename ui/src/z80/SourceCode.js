@@ -21,36 +21,56 @@ export default class SourceCode {
         }
         lines.forEach(line => this.statements.push(InstructionSet.parseLine(line)))
         let offset = 0
-        for (let instruction of this.statements) {
-            if (instruction.updateLabel) {
-                instruction.updateLabel(offset, this.labels)
+        for (let statement of this.statements) {
+            if (statement.updateLabel) {
+                statement.updateLabel(offset, this.labels)
             }
-            offset += instruction.size
+            offset += statement.size
         }
     }
 
-    get memory() {
+    toggleBreakpoint(address) {
+        let offset = 0
+
+        for (let statement of this.statements) {
+            if (offset === address) {
+                statement.breakpoint = !statement.breakpoint
+                return
+            }
+            offset += statement.size
+        }
+    }
+
+    get memoryAndBreakpoints() {
         let offset = 0
         const memory = []
+        const breakpoints = []
 
-        for (let instruction of this.statements) {
-            const opcodes = instruction.opcodes(this.labels)
+        for (let statement of this.statements) {
+            if (statement.breakpoint) {
+                breakpoints.push(offset)
+            }
+            const opcodes = statement.opcodes(this.labels)
 
             memory.push(... opcodes)
             offset += opcodes.length
         }
 
-        return memory
+        return [memory, breakpoints]
     }
 
     get memoryDump() {
         let offset = 0
         const lines = []
 
-        for (let instruction of this.statements) {
-            const opcodes = instruction.opcodes(this.labels)
+        for (let statement of this.statements) {
+            const opcodes = statement.opcodes(this.labels)
 
-            lines.push({offset: offset, dump: opcodes.map(formats.byte2hex).join(' ')})
+            lines.push({
+                breakpoint: statement.breakpoint,
+                offset: offset,
+                dump: opcodes.map(formats.byte2hex).join(' ')
+            })
             offset += opcodes.length
         }
 

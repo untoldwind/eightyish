@@ -60,3 +60,10 @@ export function compile(lines) {
         lines: lines
     })
 }
+
+export function toggleBreakpoint(address) {
+    appDispatcher.dispatch({
+        type: AppConstants.TOGGLE_BREAKPOINT,
+        address: address
+    })
+}
