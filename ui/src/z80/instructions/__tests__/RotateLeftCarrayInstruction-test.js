@@ -32,7 +32,7 @@ describe('Rotate left with carry Instruction', () => {
         expect(transition.newFlags.P).toBe(false)
         expect(transition.newFlags.Z).toBe(false)
 
-        const assembler = decA.createAssembler([null])
+        const assembler = decA.createStatement([null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -68,7 +68,7 @@ describe('Rotate left with carry Instruction', () => {
         expect(transition.newMemoryData).toEqual([0x83])
         expect(state.getMemoryByte).toBeCalledWith(0xabcf)
 
-        const assembler = decA.createAssembler([10])
+        const assembler = decA.createStatement([10])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')

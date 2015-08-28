@@ -14,7 +14,7 @@ export default class EditorAssembler extends React.Component {
 
     updateContent() {
         const selectedLine = this.getSelectedLine()
-        React.findDOMNode(this).innerHTML = this.props.sourceCode.instructions.map(instruction =>
+        React.findDOMNode(this).innerHTML = this.props.sourceCode.statements.map(instruction =>
             `<li class="${instruction.type}">${instruction.assembler}</li>`).join('')
         this.setSelectedLine(selectedLine)
     }
@@ -89,7 +89,7 @@ export default class EditorAssembler extends React.Component {
         for (let child of React.findDOMNode(this).children) {
             lines = lines.concat(child.textContent.split('\n'))
         }
-        if (force || lines.length !== this.props.sourceCode.instructions.length) {
+        if (force || lines.length !== this.props.sourceCode.statements.length) {
             MachineActions.compile(lines)
         }
     }

@@ -50,28 +50,28 @@ describe('InstructionSet', () => {
         const labels = new SourceLabels()
         let assembler
 
-        assembler = InstructionSet.createInstruction([])
+        assembler = InstructionSet.createStatement([])
         expect(assembler).toBeNull()
 
-        assembler = InstructionSet.createInstruction(['something'])
+        assembler = InstructionSet.createStatement(['something'])
         expect(assembler).toBeNull()
 
-        assembler = InstructionSet.createInstruction(['LOAD', 'G', 'I'])
+        assembler = InstructionSet.createStatement(['LOAD', 'G', 'I'])
         expect(assembler).toBeNull()
 
-        assembler = InstructionSet.createInstruction(['LOAD', 'A', 'B'])
+        assembler = InstructionSet.createStatement(['LOAD', 'A', 'B'])
         expect(assembler.opcodes(labels)).toEqual([0x78])
 
-        assembler = InstructionSet.createInstruction(['LOAD', 'BC', '(0xabcd)'])
+        assembler = InstructionSet.createStatement(['LOAD', 'BC', '(0xabcd)'])
         expect(assembler.opcodes(labels)).toEqual([0xed, 0x4b, 0xab, 0xcd])
 
-        assembler = InstructionSet.createInstruction(['ADD', 'A', 'C'])
+        assembler = InstructionSet.createStatement(['ADD', 'A', 'C'])
         expect(assembler.opcodes(labels)).toEqual([0x81])
 
-        assembler = InstructionSet.createInstruction(['SUB', 'A', '(IX+3)'])
+        assembler = InstructionSet.createStatement(['SUB', 'A', '(IX+3)'])
         expect(assembler.opcodes(labels)).toEqual([0xdd, 0x96, 0x03])
 
-        assembler = InstructionSet.createInstruction(['INC', 'C'])
+        assembler = InstructionSet.createStatement(['INC', 'C'])
         expect(assembler.opcodes(labels)).toEqual([0x0c])
     })
 

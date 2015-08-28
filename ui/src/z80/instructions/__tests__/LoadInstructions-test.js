@@ -29,7 +29,7 @@ describe('Load Instruction', () => {
         expect(transition.newFlags.P).toBe(false)
         expect(transition.newFlags.Z).toBe(false)
 
-        const assembler = loadAB.createAssembler([null, null])
+        const assembler = loadAB.createStatement([null, null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -55,7 +55,7 @@ describe('Load Instruction', () => {
         expect(transition.newRegisters.PC).toBe(1235)
         expect(transition.newRegisters.SP).toBe(0xabcd)
 
-        const assembler = loadSPHL.createAssembler([null, null])
+        const assembler = loadSPHL.createStatement([null, null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -86,7 +86,7 @@ describe('Load Instruction', () => {
         expect(transition.newFlags.Z).toBe(false)
         expect(state.getMemoryByte).toBeCalledWith(0xabcd)
 
-        const assembler = loadAMem.createAssembler([null, '.label'])
+        const assembler = loadAMem.createStatement([null, '.label'])
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         }
@@ -117,7 +117,7 @@ describe('Load Instruction', () => {
         expect(transition.memoryOffset).toBe(0xabcd)
         expect(transition.newMemoryData).toEqual([10])
 
-        const assembler = loadAMem.createAssembler(['.label', null])
+        const assembler = loadAMem.createStatement(['.label', null])
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         }
@@ -147,7 +147,7 @@ describe('Load Instruction', () => {
         expect(transition.newRegisters.BC).toBe(2345)
         expect(state.getMemoryWord).toBeCalledWith(0xabcd)
 
-        const assembler = loadAMem.createAssembler([null, '.label'])
+        const assembler = loadAMem.createStatement([null, '.label'])
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         }
@@ -178,7 +178,7 @@ describe('Load Instruction', () => {
         expect(transition.memoryOffset).toBe(0xabcd)
         expect(transition.newMemoryData).toEqual([0x23, 0x45])
 
-        const assembler = loadAMem.createAssembler(['.label', null])
+        const assembler = loadAMem.createStatement(['.label', null])
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         }

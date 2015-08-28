@@ -23,7 +23,7 @@ describe('Core Instruction', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
 
-        const assembler = nop.createAssembler([])
+        const assembler = nop.createStatement([])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -42,7 +42,7 @@ describe('Core Instruction', () => {
 
         expect(transition).toBeNull()
 
-        const assembler = nop.createAssembler([])
+        const assembler = nop.createStatement([])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')

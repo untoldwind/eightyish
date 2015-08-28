@@ -29,7 +29,7 @@ describe('Shift left Instruction', () => {
         expect(transition.newFlags.P).toBe(false)
         expect(transition.newFlags.Z).toBe(false)
 
-        const assembler = decA.createAssembler([null])
+        const assembler = decA.createStatement([null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -62,7 +62,7 @@ describe('Shift left Instruction', () => {
         expect(transition.newMemoryData).toEqual([18])
         expect(state.getMemoryByte).toBeCalledWith(0xabcf)
 
-        const assembler = decA.createAssembler([10])
+        const assembler = decA.createStatement([10])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')

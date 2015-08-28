@@ -27,7 +27,7 @@ describe('Call Instruction', () => {
         expect(transition.memoryOffset).toBe(0x2343)
         expect(transition.newMemoryData).toEqual([0x12, 0x37])
 
-        const assembler = callAddress.createAssembler(['.label'])
+        const assembler = callAddress.createStatement(['.label'])
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         }
@@ -69,7 +69,7 @@ describe('Call Instruction', () => {
         expect(nonZeroTransition.memoryOffset).toBe(0x2343)
         expect(nonZeroTransition.newMemoryData).toEqual([0x12, 0x37])
 
-        const assembler = callAddress.createAssembler([null, '.label'])
+        const assembler = callAddress.createStatement([null, '.label'])
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         }
@@ -99,7 +99,7 @@ describe('Call Instruction', () => {
         expect(transition.newRegisters.PC).toBe(0x1234)
         expect(transition.newRegisters.SP).toBe(0x2347)
 
-        const assembler = ret.createAssembler([])
+        const assembler = ret.createStatement([])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -134,7 +134,7 @@ describe('Call Instruction', () => {
         expect(nonZerotransition.newRegisters.PC).toBe(0x1234)
         expect(nonZerotransition.newRegisters.SP).toBe(0x2347)
 
-        const assembler = ret.createAssembler([null])
+        const assembler = ret.createStatement([null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')

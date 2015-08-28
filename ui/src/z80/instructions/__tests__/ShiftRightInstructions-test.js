@@ -29,7 +29,7 @@ describe('Shift right Instruction', () => {
         expect(transition.newFlags.P).toBe(false)
         expect(transition.newFlags.Z).toBe(false)
 
-        const assembler = decA.createAssembler([null])
+        const assembler = decA.createStatement([null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')

@@ -23,7 +23,7 @@ describe('Call Instruction', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(0xabcd)
 
-        const assembler = jumpAddress.createAssembler(['.label'])
+        const assembler = jumpAddress.createStatement(['.label'])
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         }
@@ -59,7 +59,7 @@ describe('Call Instruction', () => {
         expect(nonZeroTransition).toBeDefined()
         expect(nonZeroTransition.newRegisters.PC).toBe(0xabcd)
 
-        const assembler = jumpAddress.createAssembler([null, '.label'])
+        const assembler = jumpAddress.createStatement([null, '.label'])
         const labels = {
             getAddress: jest.genMockFunction().mockReturnValue([0x12, 0x34])
         }

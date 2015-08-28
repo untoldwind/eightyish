@@ -6,22 +6,22 @@ import SourceLabels from './SourceLabels'
 
 export default class SourceCode {
     constructor() {
-        this.instructions = [
-            InstructionSet.createInstruction(['HALT'])
+        this.statements = [
+            InstructionSet.createStatement(['HALT'])
         ]
         this.labels = new SourceLabels()
     }
 
     compile(lines) {
-        this.instructions = []
+        this.statements = []
         this.labels = new SourceLabels()
 
         if (!lines) {
             return
         }
-        lines.forEach(line => this.instructions.push(InstructionSet.parseLine(line)))
+        lines.forEach(line => this.statements.push(InstructionSet.parseLine(line)))
         let offset = 0
-        for (let instruction of this.instructions) {
+        for (let instruction of this.statements) {
             if (instruction.updateLabel) {
                 instruction.updateLabel(offset, this.labels)
             }
@@ -33,7 +33,7 @@ export default class SourceCode {
         let offset = 0
         const memory = []
 
-        for (let instruction of this.instructions) {
+        for (let instruction of this.statements) {
             const opcodes = instruction.opcodes(this.labels)
 
             memory.push(... opcodes)
@@ -47,7 +47,7 @@ export default class SourceCode {
         let offset = 0
         const lines = []
 
-        for (let instruction of this.instructions) {
+        for (let instruction of this.statements) {
             const opcodes = instruction.opcodes(this.labels)
 
             lines.push({offset: offset, dump: opcodes.map(formats.byte2hex).join(' ')})
@@ -58,6 +58,6 @@ export default class SourceCode {
     }
 
     get assembler() {
-        return this.instructions.map(instruction => instruction.assembler)
+        return this.statements.map(instruction => instruction.assembler)
     }
 }

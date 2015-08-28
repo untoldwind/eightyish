@@ -28,7 +28,7 @@ describe('Stack Instruction', () => {
         expect(transition.memoryOffset).toBe(2343)
         expect(transition.newMemoryData).toEqual([0xab, 0xcd])
 
-        const assembler = loadAB.createAssembler([null])
+        const assembler = loadAB.createStatement([null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
@@ -56,7 +56,7 @@ describe('Stack Instruction', () => {
         expect(transition.newRegisters.SP).toBe(2347)
         expect(transition.newRegisters.BC).toBe(0xabcd)
 
-        const assembler = loadAB.createAssembler([null])
+        const assembler = loadAB.createStatement([null])
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')

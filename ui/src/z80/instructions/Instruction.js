@@ -19,7 +19,7 @@ export default class Instruction {
         this.delim = delim
     }
 
-    createAssembler(params) {
+    createStatement(params) {
         const formattedParams = this.args.map((pattern, i) => pattern.formatValue(params[i]))
         return {
             type: 'instruction',

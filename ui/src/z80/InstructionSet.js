@@ -126,7 +126,7 @@ export function createLabel(label) {
     }
 }
 
-export function createInstruction(elements) {
+export function createStatement(elements) {
     if (!elements instanceof Array || elements.length === 0) {
         return null
     }
@@ -144,7 +144,7 @@ export function createInstruction(elements) {
 
     if (matchingVariant) {
         const params = matchingVariant.args.map((pattern, i) => pattern.extractValue(elements[i + 1]))
-        return matchingVariant.createAssembler(params)
+        return matchingVariant.createStatement(params)
     }
     return null
 }
@@ -157,7 +157,7 @@ export function parseLine(line) {
     if (trimmed.startsWith('.') && trimmed.endsWith(':')) {
         return createLabel(trimmed.substr(0, trimmed.length - 1))
     }
-    const instruction = createInstruction(line.trim().replace(/<\-|,/, ' ').split(/\s+/))
+    const instruction = createStatement(line.trim().replace(/<\-|,/, ' ').split(/\s+/))
 
     if (instruction) {
         return instruction
