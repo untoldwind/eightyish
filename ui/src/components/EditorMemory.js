@@ -32,7 +32,7 @@ export default class EditorMemory extends React.Component {
         if (breakpoint) {
             return <span className="glyphicon glyphicon-stop alert-danger"></span>
         }
-        return  <span className="glyphicon">{'\u0020'}</span>
+        return <span className="glyphicon">{'\u0020'}</span>
     }
 
     toggleBreakpoint(address) {

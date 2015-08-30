@@ -1,4 +1,3 @@
-
 export default class Instruction {
     constructor(opcode, cycles, name, args, delim = ', ') {
         this.opcode = opcode

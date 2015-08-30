@@ -121,7 +121,7 @@ class MachineState extends EventEmitter {
 
     fastForward() {
         let transition
-        while (transition = InstructionSet.process(this)) {
+        while ((transition = InstructionSet.process(this)) !== null) {
             this.transitions.push(transition)
             transition.perform(this)
             if (this.breakpoints.indexOf(this.registers.PC) >= 0) {
