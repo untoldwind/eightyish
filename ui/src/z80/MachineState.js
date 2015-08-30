@@ -55,6 +55,10 @@ class MachineState extends EventEmitter {
             this.stepForward()
             break
 
+        case AppConstants.MACHINE_FAST_FORWARD:
+            this.fastForward()
+            break
+
         case AppConstants.MACHINE_STEP_BACKWARD:
             this.stepBackward()
             break
@@ -113,6 +117,18 @@ class MachineState extends EventEmitter {
         } else {
             this.stop()
         }
+    }
+
+    fastForward() {
+        let transition
+        while (transition = InstructionSet.process(this)) {
+            this.transitions.push(transition)
+            transition.perform(this)
+            if (this.breakpoints.indexOf(this.registers.PC) >= 0) {
+                break
+            }
+        }
+        this.emitChange()
     }
 
     stepBackward() {

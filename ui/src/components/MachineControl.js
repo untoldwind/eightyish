@@ -23,16 +23,20 @@ export default class MachineControl extends React.Component {
                 <div className="col-md-2">
                     <Switch label="Video" valueLink={hasVideoLink}/>
                 </div>
-                <div className="col-md-3 btn-group">
-                    <button className="btn btn-danger" onClick={MachineActions.moveToSBegin}>
-                        <span className="glyphicon glyphicon-fast-backward"/>
-                    </button>
-                    <button className="btn btn-warning" onClick={MachineActions.stepBackward}>
-                        <span className="glyphicon glyphicon-step-backward"/>
-                    </button>
-                    <button className="btn btn-warning" onClick={MachineActions.stepForward}>
-                        <span className="glyphicon glyphicon-step-forward"/>
-                    </button>
+                <div className="col-md-4 btn-toolbar">
+                    <div className="btn-group">
+                        <button className="btn btn-danger" onClick={MachineActions.moveToSBegin}>
+                            <span className="glyphicon glyphicon-fast-backward"/>
+                        </button>
+                    </div>
+                    <div className="btn-group">
+                        <button className="btn btn-warning" onClick={MachineActions.stepBackward}>
+                            <span className="glyphicon glyphicon-step-backward"/>
+                        </button>
+                        <button className="btn btn-warning" onClick={MachineActions.stepForward}>
+                            <span className="glyphicon glyphicon-step-forward"/>
+                        </button>
+                    </div>
                     {this.renderPlayStop()}
                 </div>
                 <div className="col-md-2">
@@ -45,15 +49,22 @@ export default class MachineControl extends React.Component {
     renderPlayStop() {
         if (this.props.running) {
             return (
-                <button className="btn btn-danger" onClick={MachineActions.stop}>
-                    <span className="glyphicon glyphicon-stop"/>
-                </button>
+                <div className="btn-group">
+                    <button className="btn btn-danger" onClick={MachineActions.stop}>
+                        <span className="glyphicon glyphicon-stop"/>
+                    </button>
+                </div>
             )
         }
         return (
+            <div className="btn-group">
             <button className="btn btn-success" onClick={MachineActions.start}>
                 <span className="glyphicon glyphicon-play"/>
             </button>
+                <button className="btn btn-success" onClick={MachineActions.fastForward}>
+                    <span className="glyphicon glyphicon-forward"/>
+                </button>
+            </div>
         )
     }
 }

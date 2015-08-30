@@ -48,6 +48,12 @@ export function stepForward() {
     })
 }
 
+export function fastForward() {
+    appDispatcher.dispatch({
+        type: AppConstants.MACHINE_FAST_FORWARD
+    })
+}
+
 export function reset() {
     appDispatcher.dispatch({
         type: AppConstants.MACHINE_RESET
