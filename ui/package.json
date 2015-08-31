@@ -25,6 +25,7 @@
     "bootstrap-less": "^3.3.8",
     "flux": "^2.1.1",
     "react": "^0.13.3",
+    "react-overlays": "^0.4.4",
     "react-router": "^0.13.3"
   },
   "devDependencies": {

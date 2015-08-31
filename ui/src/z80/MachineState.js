@@ -7,6 +7,8 @@ import SourceCode from './SourceCode'
 import appDispatcher from '../dispatcher/AppDispatcher'
 import * as AppConstants from '../dispatcher/AppConstants'
 
+import firmware from './firmware'
+
 const CHANGE_EVENT = 'change'
 
 class MachineState extends EventEmitter {
@@ -20,7 +22,10 @@ class MachineState extends EventEmitter {
         this.videoWidth = videoWidth
         this.videoHeight = videoHeight
         this.videoMemory = null
-        this.sourceCode = new SourceCode()
+        this.sourceCode = new SourceCode(0)
+        this.firmwareOffset = 0x8000
+        this.firmwareMemory = []
+        this.firmwareSource = new SourceCode(this.firmwareOffset)
         this.breakpoints = []
         this.transitions = []
         this.totalCycles = 0
@@ -29,6 +34,8 @@ class MachineState extends EventEmitter {
         appDispatcher.register(this.handleAction.bind(this))
 
         this.restore()
+
+        this.compileFirmware(firmware)
 
         this.transferSourceToMemory()
     }
@@ -211,6 +218,11 @@ class MachineState extends EventEmitter {
             return (this.video[address - this.videoOffset] << 8) | this.video[address - this.videoOffset + 1]
         }
         return 0
+    }
+
+    compileFirmware(lines) {
+        this.firmwareSource.compile(lines)
+        this.firmwareMemory = this.firmwareSource.memoryAndBreakpoints[0]
     }
 
     transferSourceToMemory() {

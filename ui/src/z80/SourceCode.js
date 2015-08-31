@@ -5,7 +5,8 @@ import * as formats from '../components/formats'
 import SourceLabels from './SourceLabels'
 
 export default class SourceCode {
-    constructor() {
+    constructor(sourceOffset) {
+        this.sourceOffset = sourceOffset
         this.statements = [
             InstructionSet.createStatement(['HALT'])
         ]
@@ -20,7 +21,7 @@ export default class SourceCode {
             return
         }
         lines.forEach(line => this.statements.push(InstructionSet.parseLine(line)))
-        let offset = 0
+        let offset = this.sourceOffset
         for (let statement of this.statements) {
             if (statement.updateLabel) {
                 statement.updateLabel(offset, this.labels)
@@ -30,7 +31,7 @@ export default class SourceCode {
     }
 
     toggleBreakpoint(address) {
-        let offset = 0
+        let offset = this.sourceOffset
 
         for (let statement of this.statements) {
             if (offset === address) {
@@ -42,7 +43,7 @@ export default class SourceCode {
     }
 
     get memoryAndBreakpoints() {
-        let offset = 0
+        let offset = this.sourceOffset
         const memory = []
         const breakpoints = []
 
@@ -60,7 +61,7 @@ export default class SourceCode {
     }
 
     get memoryDump() {
-        let offset = 0
+        let offset = this.sourceOffset
         const lines = []
 
         for (let statement of this.statements) {
