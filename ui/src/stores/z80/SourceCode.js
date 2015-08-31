@@ -12,20 +12,25 @@ export default class SourceCode {
     }
 
     compile(lines) {
-        this.statements = []
-        this.labels = new SourceLabels()
-
         if (!lines) {
-            return
+            return this
         }
-        lines.forEach(line => this.statements.push(InstructionSet.parseLine(line)))
+
+        const statements = lines.map(line => InstructionSet.parseLine(line))
+        const labels = new SourceLabels()
+
         let offset = this.sourceOffset
-        for (let statement of this.statements) {
+        for (let statement of statements) {
             if (statement.updateLabel) {
-                statement.updateLabel(offset, this.labels)
+                statement.updateLabel(offset, labels)
             }
             offset += statement.size
         }
+
+        return this.copy({
+            statements: statements,
+            labels: labels
+        })
     }
 
     toggleBreakpoint(address) {
@@ -78,5 +83,9 @@ export default class SourceCode {
 
     get assembler() {
         return this.statements.map(instruction => instruction.assembler)
+    }
+
+    copy(...changes) {
+        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this, ...changes)
     }
 }

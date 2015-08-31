@@ -24,11 +24,7 @@ export default class MachineState {
         this.totalCycles = 0
         this.running = false
 
-        this.restore()
-
         this.compileFirmware(firmware)
-
-        this.transferSourceToMemory()
     }
 
     reset() {
@@ -59,9 +55,8 @@ export default class MachineState {
                 return nextState.stop()
             }
             return nextState
-        } else {
-            return this.stop()
         }
+        return this.stop()
     }
 
     fastForward() {
@@ -116,8 +111,14 @@ export default class MachineState {
     }
 
     compile(lines) {
-        this.sourceCode.compile(lines)
-        return this.transferSourceToMemory()
+        const sourceCode = this.sourceCode.compile(lines)
+        const [sourceMemory, sourceBreakpoints] = sourceCode.memoryAndBreakpoints
+
+        return this.copy({
+            sourceCode: sourceCode,
+            memory: this.memory.replace(0, sourceMemory),
+            breakpoints: new Set(sourceBreakpoints)
+        })
     }
 
     toggleBreakpoint(address) {
@@ -174,18 +175,26 @@ export default class MachineState {
     }
 
     copy(...changes) {
-        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this, ...changes)
+        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this, ...changes).store()
     }
 
     restore() {
         if (localStorage && localStorage.machineState) {
-            let storedState = JSON.parse(localStorage.machineState)
+            const storedState = JSON.parse(localStorage.machineState)
+            const sourceCode = this.sourceCode.compile(storedState.assembler)
+            const [sourceMemory, sourceBreakpoints] = sourceCode.memoryAndBreakpoints
 
-            Object.assign(this.registers, storedState.registers)
-            this.memory = this.memory.replace(0, storedState.memory)
-            this.videoMemory = storedState.videoMemory
-            this.sourceCode.compile(storedState.assembler)
+            return this.copy({
+                registers: this.registers.copy(storedState.registers),
+                sourceCode: sourceCode,
+                memory: this.memory.replace(0, storedState.memory).replace(0, sourceMemory),
+                breakpoints: new Set(sourceBreakpoints),
+                videoMemory: storedState.videoMemory ?
+                    new MemoryBlock(this.videoOffset, this.videoWidth * this.videoHeight / 8)
+                        .replace(this.videoOffset, storedState.videoMemory) : null
+            })
         }
+        return this
     }
 
     store() {
@@ -193,9 +202,10 @@ export default class MachineState {
             localStorage.machineState = JSON.stringify({
                 registers: this.registers,
                 memory: this.memory.data,
-                videoMemory: this.videoMemory,
+                videoMemory: this.videoMemory ? this.videoMemory.data : null,
                 assembler: this.sourceCode.assembler
             })
         }
+        return this
     }
 }
