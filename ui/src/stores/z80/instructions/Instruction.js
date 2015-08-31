@@ -1,3 +1,5 @@
+import {fill} from '../formats'
+
 export default class Instruction {
     constructor(opcode, cycles, name, args, delim = ', ') {
         this.opcode = opcode
@@ -22,7 +24,8 @@ export default class Instruction {
         const formattedParams = this.args.map((pattern, i) => pattern.formatValue(params[i]))
         return {
             type: 'instruction',
-            assembler: formattedParams.length === 0 ? this.name : `${this.name}\t${formattedParams.join(this.delim)}`,
+            assembler: formattedParams.length === 0 ?
+                `  ${this.name}` : `  ${this.name}${fill(this.name, 7)}${formattedParams.join(this.delim)}`,
             opcodes: (labels) => {
                 const extraOpcodes = this.args.map((pattern, i) => pattern.extraOpcodes(params[i], labels))
                 return this.opcodes.concat(...extraOpcodes).concat(this.postfix || [])

@@ -33,7 +33,7 @@ describe('Shift right Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('SHR\tA')
+        expect(assembler.assembler).toBe('  SHR    A')
         expect(assembler.opcodes(null)).toEqual([0xcb, 0x3f])
         expect(assembler.size).toBe(2)
     })

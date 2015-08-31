@@ -4,8 +4,8 @@ import * as InstructionSet from './InstructionSet'
 import Registers from './Registers'
 import SourceCode from './SourceCode'
 
-import appDispatcher from '../dispatcher/AppDispatcher'
-import * as AppConstants from '../dispatcher/AppConstants'
+import appDispatcher from '../../dispatcher/AppDispatcher'
+import * as AppConstants from '../../dispatcher/AppConstants'
 
 import firmware from './firmware'
 

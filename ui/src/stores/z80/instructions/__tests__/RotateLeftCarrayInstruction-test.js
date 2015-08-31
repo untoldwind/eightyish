@@ -36,7 +36,7 @@ describe('Rotate left with carry Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('ROTLC\tA')
+        expect(assembler.assembler).toBe('  ROTLC  A')
         expect(assembler.opcodes(null)).toEqual([0xcb, 0x17])
         expect(assembler.size).toBe(2)
     })
@@ -72,7 +72,7 @@ describe('Rotate left with carry Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('ROTLC\t(IX+10)')
+        expect(assembler.assembler).toBe('  ROTLC  (IX+10)')
         expect(assembler.opcodes(null)).toEqual([0xdd, 0xcb, 0xa, 0x16])
         expect(assembler.size).toBe(4)
     })

@@ -33,7 +33,7 @@ describe('Load Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('LOAD\tA <- B')
+        expect(assembler.assembler).toBe('  LOAD   A <- B')
         expect(assembler.opcodes(null)).toEqual([0x78])
         expect(assembler.size).toBe(1)
     })
@@ -59,7 +59,7 @@ describe('Load Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('LOAD\tSP <- HL')
+        expect(assembler.assembler).toBe('  LOAD   SP <- HL')
         expect(assembler.opcodes(null)).toEqual([0xf9])
         expect(assembler.size).toBe(1)
     })
@@ -93,7 +93,7 @@ describe('Load Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('LOAD\tA <- (.label)')
+        expect(assembler.assembler).toBe('  LOAD   A <- (.label)')
         expect(assembler.opcodes(labels)).toEqual([0x3a, 0x12, 0x34])
         expect(assembler.size).toBe(3)
     })
@@ -124,7 +124,7 @@ describe('Load Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('LOAD\t(.label) <- A')
+        expect(assembler.assembler).toBe('  LOAD   (.label) <- A')
         expect(assembler.opcodes(labels)).toEqual([0x32, 0x12, 0x34])
         expect(assembler.size).toBe(3)
     })
@@ -154,7 +154,7 @@ describe('Load Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('LOAD\tBC <- (.label)')
+        expect(assembler.assembler).toBe('  LOAD   BC <- (.label)')
         expect(assembler.opcodes(labels)).toEqual([0xed, 0x4b, 0x12, 0x34])
         expect(assembler.size).toBe(4)
     })
@@ -185,7 +185,7 @@ describe('Load Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('LOAD\t(.label) <- BC')
+        expect(assembler.assembler).toBe('  LOAD   (.label) <- BC')
         expect(assembler.opcodes(labels)).toEqual([0xed, 0x43, 0x12, 0x34])
         expect(assembler.size).toBe(4)
     })

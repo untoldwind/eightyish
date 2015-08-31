@@ -2,7 +2,7 @@ import appDispatcher from '../dispatcher/AppDispatcher'
 
 import * as AppConstants from '../dispatcher/AppConstants'
 
-import Transition from '../z80/Transition'
+import Transition from '../stores/z80/Transition'
 
 export function toggleVideo(videoEnabled) {
     appDispatcher.dispatch({

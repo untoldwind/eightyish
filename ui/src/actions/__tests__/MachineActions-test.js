@@ -1,5 +1,5 @@
 jest.dontMock('../MachineActions')
-jest.dontMock('../../z80/Transition')
+jest.dontMock('../../stores/z80/Transition')
 
 import * as AppConstants from '../../dispatcher/AppConstants'
 
@@ -18,7 +18,7 @@ describe('Machine actions', () => {
     it('should dispatch message on transition', () => {
         const appDispatcher = require('../../dispatcher/AppDispatcher')
         const MachineActions = require('../MachineActions')
-        const Transition = require('../../z80/Transition')
+        const Transition = require('../../stores/z80/Transition')
 
         MachineActions.transition({PC: 1234}, 2345, [0xab, 0xcd])
         expect(appDispatcher.dispatch).toBeCalledWith({

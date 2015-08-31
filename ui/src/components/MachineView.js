@@ -6,7 +6,7 @@ import RegistersView from './RegistersView'
 import Editor from './Editor'
 import VideoDisplay from './VideoDisplay'
 
-import machineState from '../z80/MachineState'
+import machineState from '../stores/z80/MachineState'
 
 function getCurrentState() {
     return {

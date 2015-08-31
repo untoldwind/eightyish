@@ -34,7 +34,7 @@ describe('And Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('AND\tA <- B')
+        expect(assembler.assembler).toBe('  AND    A <- B')
         expect(assembler.opcodes(null)).toEqual([0xa0])
         expect(assembler.size).toBe(1)
     })
@@ -64,7 +64,7 @@ describe('And Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('AND\tA <- 135')
+        expect(assembler.assembler).toBe('  AND    A <- 135')
         expect(assembler.opcodes(null)).toEqual([0xe6, 0x87])
         expect(assembler.size).toBe(2)
     })
@@ -97,7 +97,7 @@ describe('And Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('AND\tA <- (HL)')
+        expect(assembler.assembler).toBe('  AND    A <- (HL)')
         expect(assembler.opcodes(null)).toEqual([0xa6])
         expect(assembler.size).toBe(1)
     })
@@ -130,7 +130,7 @@ describe('And Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('AND\tA <- (IX+10)')
+        expect(assembler.assembler).toBe('  AND    A <- (IX+10)')
         expect(assembler.opcodes(null)).toEqual([0xdd, 0xa6, 0x0a])
         expect(assembler.size).toBe(3)
     })

@@ -1,4 +1,4 @@
-import 'babel/polyfill'
+import '../../../../node_modules/babel/polyfill'
 
 jest.autoMockOff()
 

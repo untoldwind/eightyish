@@ -20,7 +20,7 @@ export default class EditorMemory extends React.Component {
                             key={index}
                             onClick={this.toggleBreakpoint(line.offset)}>
                             {this.renderBreakpoint(line.breakpoint)}
-                            {'\u0020' + formats.word2hex(line.offset)}: {line.dump}
+                            {'\u0020' + formats.word2hex(line.offset)}: {line.dump.map(formats.byte2hex).join(' ')}
                         </li>
                     )
                 })}

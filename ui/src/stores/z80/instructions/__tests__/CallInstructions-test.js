@@ -34,7 +34,7 @@ describe('Call Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('CALL\t.label')
+        expect(assembler.assembler).toBe('  CALL   .label')
         expect(assembler.opcodes(labels)).toEqual([0xcd, 0x12, 0x34])
         expect(assembler.size).toBe(3)
         expect(labels.getAddress).toBeCalledWith('.label')
@@ -76,7 +76,7 @@ describe('Call Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('CALL\tNZ, .label')
+        expect(assembler.assembler).toBe('  CALL   NZ, .label')
         expect(assembler.opcodes(labels)).toEqual([0xc4, 0x12, 0x34])
         expect(assembler.size).toBe(3)
         expect(labels.getAddress).toBeCalledWith('.label')
@@ -103,7 +103,7 @@ describe('Call Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('RET')
+        expect(assembler.assembler).toBe('  RET')
         expect(assembler.opcodes(null)).toEqual([0xc9])
         expect(assembler.size).toBe(1)
     })
@@ -138,7 +138,7 @@ describe('Call Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('RET\tNZ')
+        expect(assembler.assembler).toBe('  RET    NZ')
         expect(assembler.opcodes(null)).toEqual([0xc0])
         expect(assembler.size).toBe(1)
     })

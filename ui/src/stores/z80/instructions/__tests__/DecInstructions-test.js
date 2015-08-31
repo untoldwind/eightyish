@@ -33,7 +33,7 @@ describe('Dec Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('DEC\tA')
+        expect(assembler.assembler).toBe('  DEC    A')
         expect(assembler.opcodes(null)).toEqual([0x3d])
         expect(assembler.size).toBe(1)
     })
@@ -63,7 +63,7 @@ describe('Dec Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('DEC\tBC')
+        expect(assembler.assembler).toBe('  DEC    BC')
         expect(assembler.opcodes(null)).toEqual([0x0b])
         expect(assembler.size).toBe(1)
     })

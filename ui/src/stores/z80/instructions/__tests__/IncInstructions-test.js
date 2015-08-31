@@ -33,7 +33,7 @@ describe('Inc Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('INC\tA')
+        expect(assembler.assembler).toBe('  INC    A')
         expect(assembler.opcodes(null)).toEqual([0x3c])
         expect(assembler.size).toBe(1)
     })
@@ -63,7 +63,7 @@ describe('Inc Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('INC\tBC')
+        expect(assembler.assembler).toBe('  INC    BC')
         expect(assembler.opcodes(null)).toEqual([0x03])
         expect(assembler.size).toBe(1)
     })

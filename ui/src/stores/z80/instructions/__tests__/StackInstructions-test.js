@@ -32,7 +32,7 @@ describe('Stack Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('PUSH\tBC')
+        expect(assembler.assembler).toBe('  PUSH   BC')
         expect(assembler.opcodes(null)).toEqual([0xc5])
         expect(assembler.size).toBe(1)
     })
@@ -60,7 +60,7 @@ describe('Stack Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('POP\tBC')
+        expect(assembler.assembler).toBe('  POP    BC')
         expect(assembler.opcodes(null)).toEqual([0xc1])
         expect(assembler.size).toBe(1)
     })

@@ -1,7 +1,5 @@
 import * as InstructionSet from './InstructionSet'
 
-import * as formats from '../components/formats'
-
 import SourceLabels from './SourceLabels'
 
 export default class SourceCode {
@@ -70,7 +68,7 @@ export default class SourceCode {
             lines.push({
                 breakpoint: statement.breakpoint,
                 offset: offset,
-                dump: opcodes.map(formats.byte2hex).join(' ')
+                dump: opcodes
             })
             offset += opcodes.length
         }

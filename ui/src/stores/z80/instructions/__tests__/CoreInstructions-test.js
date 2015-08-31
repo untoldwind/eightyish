@@ -27,7 +27,7 @@ describe('Core Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('NOP')
+        expect(assembler.assembler).toBe('  NOP')
         expect(assembler.opcodes(null)).toEqual([0x0])
         expect(assembler.size).toBe(1)
     })
@@ -46,7 +46,7 @@ describe('Core Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('HALT')
+        expect(assembler.assembler).toBe('  HALT')
         expect(assembler.opcodes(null)).toEqual([0x76])
         expect(assembler.size).toBe(1)
     })

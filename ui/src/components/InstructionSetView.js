@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { INSTRUCTIONS_BY_NAME } from '../z80/InstructionSet'
+import { INSTRUCTIONS_BY_NAME } from '../stores/z80/InstructionSet'
 
 class InstructionGroup {
     constructor(entry) {

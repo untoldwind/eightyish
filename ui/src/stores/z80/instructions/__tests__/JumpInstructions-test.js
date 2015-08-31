@@ -30,7 +30,7 @@ describe('Call Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('JUMP\t.label')
+        expect(assembler.assembler).toBe('  JUMP   .label')
         expect(assembler.opcodes(labels)).toEqual([0xc3, 0x12, 0x34])
         expect(assembler.size).toBe(3)
         expect(labels.getAddress).toBeCalledWith('.label')
@@ -66,7 +66,7 @@ describe('Call Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('JUMP\tNZ, .label')
+        expect(assembler.assembler).toBe('  JUMP   NZ, .label')
         expect(assembler.opcodes(labels)).toEqual([0xc2, 0x12, 0x34])
         expect(assembler.size).toBe(3)
         expect(labels.getAddress).toBeCalledWith('.label')

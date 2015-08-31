@@ -34,7 +34,7 @@ describe('Add Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('ADD\tA <- B')
+        expect(assembler.assembler).toBe('  ADD    A <- B')
         expect(assembler.opcodes(null)).toEqual([0x80])
         expect(assembler.size).toBe(1)
     })
@@ -64,7 +64,7 @@ describe('Add Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('ADD\tA <- 10')
+        expect(assembler.assembler).toBe('  ADD    A <- 10')
         expect(assembler.opcodes(null)).toEqual([0xc6, 0x0a])
         expect(assembler.size).toBe(2)
     })
@@ -97,7 +97,7 @@ describe('Add Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('ADD\tA <- (HL)')
+        expect(assembler.assembler).toBe('  ADD    A <- (HL)')
         expect(assembler.opcodes(null)).toEqual([0x86])
         expect(assembler.size).toBe(1)
     })
@@ -130,7 +130,7 @@ describe('Add Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('ADD\tA <- (IX+10)')
+        expect(assembler.assembler).toBe('  ADD    A <- (IX+10)')
         expect(assembler.opcodes(null)).toEqual([0xdd, 0x86, 0x0a])
         expect(assembler.size).toBe(3)
     })
@@ -161,7 +161,7 @@ describe('Add Instruction', () => {
 
         expect(assembler).toBeDefined()
         expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('ADD\tHL <- BC')
+        expect(assembler.assembler).toBe('  ADD    HL <- BC')
         expect(assembler.size).toBe(1)
     })
 })
