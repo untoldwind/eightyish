@@ -19,7 +19,7 @@ describe('Shift right Instruction', () => {
                 A: 81
             }
         }
-        const transition = decA.process(state, [0xcb, 0x3f])
+        const transition = decA.process(state, new Uint8Array([0xcb, 0x3f]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1236)

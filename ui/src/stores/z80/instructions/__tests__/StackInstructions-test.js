@@ -20,7 +20,7 @@ describe('Stack Instruction', () => {
                 BC: 0xabcd
             }
         }
-        const transition = loadAB.process(state, [0xc5])
+        const transition = loadAB.process(state, new Uint8Array([0xc5]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -49,7 +49,7 @@ describe('Stack Instruction', () => {
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(0xabcd)
         }
-        const transition = loadAB.process(state, [0xc1])
+        const transition = loadAB.process(state, new Uint8Array([0xc1]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)

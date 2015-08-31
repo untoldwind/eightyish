@@ -19,7 +19,7 @@ describe('Call Instruction', () => {
                 SP: 0x2345
             }
         }
-        const transition = callAddress.process(state, [0xcd, 0xab, 0xcd])
+        const transition = callAddress.process(state, new Uint8Array([0xcd, 0xab, 0xcd]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(0xabcd)
@@ -53,7 +53,7 @@ describe('Call Instruction', () => {
                 }
             }
         }
-        const zeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd])
+        const zeroTransition = callAddress.process(state, new Uint8Array([0xc4, 0xab, 0xcd]))
 
         expect(zeroTransition).toBeDefined()
         expect(zeroTransition.newRegisters.PC).toBe(0x1237)
@@ -61,7 +61,7 @@ describe('Call Instruction', () => {
         expect(zeroTransition.memoryOffset).toBeUndefined()
 
         state.registers.flags.Z = false
-        const nonZeroTransition = callAddress.process(state, [0xc4, 0xab, 0xcd])
+        const nonZeroTransition = callAddress.process(state, new Uint8Array([0xc4, 0xab, 0xcd]))
 
         expect(nonZeroTransition).toBeDefined()
         expect(nonZeroTransition.newRegisters.PC).toBe(0xabcd)
@@ -94,7 +94,7 @@ describe('Call Instruction', () => {
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(0x1234)
         }
-        const transition = ret.process(state, [0xc9])
+        const transition = ret.process(state, new Uint8Array([0xc9]))
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(0x1234)
         expect(transition.newRegisters.SP).toBe(0x2347)
@@ -123,13 +123,13 @@ describe('Call Instruction', () => {
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(0x1234)
         }
-        const zeroTransition = ret.process(state, [0xc0])
+        const zeroTransition = ret.process(state, new Uint8Array([0xc0]))
         expect(zeroTransition).toBeDefined()
         expect(zeroTransition.newRegisters.PC).toBe(0xabce)
         expect(zeroTransition.newRegisters.SP).toBeUndefined()
 
         state.registers.flags.Z = false
-        const nonZerotransition = ret.process(state, [0xc0])
+        const nonZerotransition = ret.process(state, new Uint8Array([0xc0]))
         expect(nonZerotransition).toBeDefined()
         expect(nonZerotransition.newRegisters.PC).toBe(0x1234)
         expect(nonZerotransition.newRegisters.SP).toBe(0x2347)

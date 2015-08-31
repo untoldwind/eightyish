@@ -11,7 +11,7 @@ class Call extends Instruction {
 
     process(state, pcMem) {
         return new Transition().
-            withWordRegister(PC, this.args[0].loader(state, pcMem.slice(this.opcodes.length))).
+            withWordRegister(PC, this.args[0].loader(state, pcMem.subarray(this.opcodes.length))).
             withWordRegister(SP, state.registers.SP - 2).
             withWordAt(state.registers.SP - 2, state.registers.PC + this.size).
             withCycles(this.cycles)
@@ -38,7 +38,7 @@ class ConditionalCall extends Instruction {
     }
 
     process(state, pcMem) {
-        const argPcMem = pcMem.slice(this.opcodes.length)
+        const argPcMem = pcMem.subarray(this.opcodes.length)
         if (this.args[0].loader(state, argPcMem)) {
             return new Transition().
                 withWordRegister(PC, this.args[1].loader(state, argPcMem)).
@@ -58,7 +58,7 @@ class ConditionalReturn extends Instruction {
     }
 
     process(state, pcMem) {
-        const argPcMem = pcMem.slice(this.opcodes.length)
+        const argPcMem = pcMem.subarray(this.opcodes.length)
         if (this.args[0].loader(state, argPcMem)) {
             const returnAddress = state.getMemoryWord(state.registers.SP)
             return new Transition().

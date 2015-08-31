@@ -20,7 +20,7 @@ describe('Compate Instruction', () => {
                 B: 7
             }
         }
-        const transition = andAB.process(state, [0xb8])
+        const transition = andAB.process(state, new Uint8Array([0xb8]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -49,7 +49,7 @@ describe('Compate Instruction', () => {
                 A: 10
             }
         }
-        const transition = andA.process(state, [0xfe, 17])
+        const transition = andA.process(state, new Uint8Array([0xfe, 17]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1236)
@@ -80,7 +80,7 @@ describe('Compate Instruction', () => {
             },
             getMemoryByte: jest.genMockFunction().mockReturnValue(7)
         }
-        const transition = andAHL.process(state, [0xbe])
+        const transition = andAHL.process(state, new Uint8Array([0xbe]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -112,7 +112,7 @@ describe('Compate Instruction', () => {
             getMemoryByte: jest.genMockFunction().mockReturnValue(7)
         }
 
-        const transition = andAIX.process(state, [0xdd, 0xbe, 0x0a])
+        const transition = andAIX.process(state, new Uint8Array([0xdd, 0xbe, 0x0a]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1237)

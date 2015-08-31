@@ -18,10 +18,10 @@ export default class MemoryRow extends React.Component {
     render() {
         return (
             <tr>
-                <td>{formats.word2hex(this.props.segmentOffset + this.props.offset)}</td>
+                <td>{formats.word2hex(this.props.offset)}</td>
                 {mapCount(this.props.columns, i =>
                         <EditableCell activeClassName="form-control input-sm"
-                                      className={this.mark(this.props.segmentOffset + this.props.offset + i)}
+                                      className={this.mark(this.props.offset + i)}
                                       key={i}
                                       valueLink={this.memoryValueLink(i)}/>
                 )}
@@ -31,11 +31,11 @@ export default class MemoryRow extends React.Component {
 
     memoryValueLink(i) {
         return {
-            value: formats.byte2hex(this.props.memory[i + this.props.offset]),
+            value: formats.byte2hex(this.props.memoryBlock.getByte(i + this.props.offset)),
             requestChange: str => {
                 const newValue = parseInt(str, 16)
                 if (typeof newValue === 'number' && newValue >= 0 && newValue <= 255) {
-                    MachineActions.transition({}, this.props.segmentOffset + this.props.offset + i, [newValue])
+                    MachineActions.transition({}, this.props.offset + i, [newValue])
                 }
             }
         }
@@ -58,9 +58,8 @@ export default class MemoryRow extends React.Component {
 }
 
 MemoryRow.propTypes = {
-    segmentOffset: React.PropTypes.number.isRequired,
     offset: React.PropTypes.number.isRequired,
     columns: React.PropTypes.number.isRequired,
-    memory: React.PropTypes.array.isRequired,
+    memoryBlock: React.PropTypes.object.isRequired,
     registers: React.PropTypes.object.isRequired
 }

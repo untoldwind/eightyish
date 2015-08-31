@@ -5,14 +5,6 @@ function byteParity(value) {
     return parity & 0x1
 }
 
-function memoryTransfer(targetOffset, sourceOffset, sourceData) {
-    return (value, targetIndex) => {
-        const sourceIndex = targetIndex + targetOffset - sourceOffset
-
-        return sourceIndex >= 0 && sourceIndex < sourceData.length ? sourceData[sourceIndex] : value
-    }
-}
-
 export default class Transition {
     constructor(newRegisters, memoryOffset, newMemoryData) {
         this.newRegisters = newRegisters || {}
@@ -81,16 +73,12 @@ export default class Transition {
         let videoMemory = state.videoMemory
 
         if (typeof this.memoryOffset === 'number') {
-            if (this.memoryOffset < state.memory.length) {
-                this.oldMemoryData = state.memory.slice(this.memoryOffset,
-                    this.memoryOffset + this.newMemoryData.length)
-                memory = Array.from(state.memory,
-                    memoryTransfer(0, this.memoryOffset, this.newMemoryData))
-            } else if (this.memoryOffset - state.videoOffset < state.videoMemory.length) {
-                this.oldMemoryData = state.videoMemory.slice(this.memoryOffset - state.videoOffset,
-                    this.memoryOffset - state.videoOffset + this.newMemoryData.length)
-                videoMemory = Array.from(state.videoMemory,
-                    memoryTransfer(state.videoOffset, this.memoryOffset, this.newMemoryData))
+            if(memory.contains(this.memoryOffset)) {
+                this.oldMemoryData = memory.getMemory(this.memoryOffset, this.newMemoryData.length)
+                memory = memory.replace(this.memoryOffset, this.newMemoryData)
+            } else if(videoMemory && videoMemory.contains(this.memoryOffset)) {
+                this.oldMemoryData = videoMemory.getMemory(this.memoryOffset, this.newMemoryData.length)
+                videoMemory = videoMemory.replace(this.memoryOffset, this.newMemoryData)
             }
         }
         return state.copy({
@@ -109,12 +97,10 @@ export default class Transition {
         let videoMemory = state.videoMemory
 
         if (typeof this.memoryOffset === 'number') {
-            if (this.memoryOffset < state.memory.length) {
-                memory = Array.from(state.memory,
-                    memoryTransfer(0, this.memoryOffset, this.oldMemoryData))
-            } else if (this.memoryOffset - state.videoOffset < state.videoMemory.length) {
-                videoMemory = Array.from(state.videoMemory,
-                    memoryTransfer(state.videoOffset, this.memoryOffset, this.oldMemoryData))
+            if(memory.contains(this.memoryOffset)) {
+                memory = memory.replace(this.memoryOffset, this.oldMemoryData)
+            } else if(videoMemory && videoMemory.contains(this.memoryOffset)) {
+                videoMemory = videoMemory.replace(this.memoryOffset, this.oldMemoryData)
             }
         }
 

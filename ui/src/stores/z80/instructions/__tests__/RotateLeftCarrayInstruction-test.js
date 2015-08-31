@@ -22,7 +22,7 @@ describe('Rotate left with carry Instruction', () => {
                 }
             }
         }
-        const transition = decA.process(state, [0xcb, 0x17])
+        const transition = decA.process(state, new Uint8Array([0xcb, 0x17]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1236)
@@ -56,7 +56,7 @@ describe('Rotate left with carry Instruction', () => {
             },
             getMemoryByte: jest.genMockFunction().mockReturnValue(0x41)
         }
-        const transition = decA.process(state, [0xdd, 0xcb, 0x2, 0x16])
+        const transition = decA.process(state, new Uint8Array([0xdd, 0xcb, 0x2, 0x16]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1238)

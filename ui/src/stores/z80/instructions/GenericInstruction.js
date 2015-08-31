@@ -9,7 +9,7 @@ export default class GenericInstruction extends Instruction {
     }
 
     process(state, pcMem) {
-        const argPcMem = pcMem.slice(this.opcodes.length)
+        const argPcMem = pcMem.subarray(this.opcodes.length)
         const transition = this.operation(
             this.args[0].storer(state, argPcMem),
             ... this.args.map((arg) => arg.loader(state, argPcMem)),

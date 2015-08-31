@@ -18,7 +18,7 @@ describe('Core Instruction', () => {
                 PC: 1234
             }
         }
-        const transition = nop.process(state, [0x0])
+        const transition = nop.process(state, new Uint8Array([0x0]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -38,7 +38,7 @@ describe('Core Instruction', () => {
         expect(nop).toBeDefined()
 
         const state = {}
-        const transition = nop.process(state, [0x76])
+        const transition = nop.process(state, new Uint8Array([0x76]))
 
         expect(transition).toBeNull()
 

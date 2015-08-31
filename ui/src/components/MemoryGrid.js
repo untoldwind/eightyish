@@ -17,13 +17,12 @@ export default class MemoryGrid extends React.Component {
                 </tr>
                 </thead>
                 <tbody>
-                {Array.from(new Array(this.props.memory.length / this.props.columns).keys()).map(i =>
+                {Array.from(new Array(this.props.memoryBlock.data.length / this.props.columns).keys()).map(i =>
                         <MemoryRow columns={this.props.columns}
                                    key={i}
-                                   memory={this.props.memory}
-                                   offset={i * this.props.columns}
-                                   registers={this.props.registers}
-                                   segmentOffset={this.props.segmentOffset}/>
+                                   memoryBlock={this.props.memoryBlock}
+                                   offset={i * this.props.columns + this.props.memoryBlock.offset}
+                                   registers={this.props.registers}/>
                 )}
                 </tbody>
             </table>
@@ -32,8 +31,7 @@ export default class MemoryGrid extends React.Component {
 }
 
 MemoryGrid.propTypes = {
-    segmentOffset: React.PropTypes.number.isRequired,
     columns: React.PropTypes.number.isRequired,
-    memory: React.PropTypes.array.isRequired,
+    memoryBlock: React.PropTypes.object.isRequired,
     registers: React.PropTypes.object.isRequired
 }

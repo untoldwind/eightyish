@@ -11,7 +11,7 @@ class Jump extends Instruction {
 
     process(state, pcMem) {
         return new Transition().
-            withWordRegister(PC, this.args[0].loader(state, pcMem.slice(this.opcodes.length)))
+            withWordRegister(PC, this.args[0].loader(state, pcMem.subarray(this.opcodes.length)))
     }
 }
 
@@ -21,7 +21,7 @@ class ConditionalJump extends Instruction {
     }
 
     process(state, pcMem) {
-        const argPcMem = pcMem.slice(this.opcodes.length)
+        const argPcMem = pcMem.subarray(this.opcodes.length)
         if (this.args[0].loader(state, argPcMem)) {
             return new Transition().
                 withWordRegister(PC, this.args[1].loader(state, argPcMem))

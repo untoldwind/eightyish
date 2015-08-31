@@ -20,7 +20,7 @@ describe('Add Instruction', () => {
                 B: 5
             }
         }
-        const transition = addAB.process(state, [0x80])
+        const transition = addAB.process(state, new Uint8Array([0x80]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -50,7 +50,7 @@ describe('Add Instruction', () => {
                 A: 10
             }
         }
-        const transition = addA.process(state, [0xc6, 0x0a])
+        const transition = addA.process(state, new Uint8Array([0xc6, 0x0a]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1236)
@@ -82,7 +82,7 @@ describe('Add Instruction', () => {
             },
             getMemoryByte: jest.genMockFunction().mockReturnValue(5)
         }
-        const transition = addAHL.process(state, [0x86])
+        const transition = addAHL.process(state, new Uint8Array([0x86]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -115,7 +115,7 @@ describe('Add Instruction', () => {
             getMemoryByte: jest.genMockFunction().mockReturnValue(5)
         }
 
-        const transition = addAIX.process(state, [0xdd, 0x86, 0x0a])
+        const transition = addAIX.process(state, new Uint8Array([0xdd, 0x86, 0x0a]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1237)
@@ -147,7 +147,7 @@ describe('Add Instruction', () => {
                 BC: 234
             }
         }
-        const transition = addHLBC.process(state, [0x09])
+        const transition = addHLBC.process(state, new Uint8Array([0x09]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)

@@ -18,7 +18,7 @@ describe('Call Instruction', () => {
                 PC: 0x1234
             }
         }
-        const transition = jumpAddress.process(state, [0xc3, 0xab, 0xcd])
+        const transition = jumpAddress.process(state, new Uint8Array([0xc3, 0xab, 0xcd]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(0xabcd)
@@ -48,13 +48,13 @@ describe('Call Instruction', () => {
                 }
             }
         }
-        const zeroTransition = jumpAddress.process(state, [0xc2, 0xab, 0xcd])
+        const zeroTransition = jumpAddress.process(state, new Uint8Array([0xc2, 0xab, 0xcd]))
 
         expect(zeroTransition).toBeDefined()
         expect(zeroTransition.newRegisters.PC).toBe(0x1237)
 
         state.registers.flags.Z = false
-        const nonZeroTransition = jumpAddress.process(state, [0xc2, 0xab, 0xcd])
+        const nonZeroTransition = jumpAddress.process(state, new Uint8Array([0xc2, 0xab, 0xcd]))
 
         expect(nonZeroTransition).toBeDefined()
         expect(nonZeroTransition.newRegisters.PC).toBe(0xabcd)

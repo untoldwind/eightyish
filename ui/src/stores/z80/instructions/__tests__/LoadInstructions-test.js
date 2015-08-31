@@ -19,7 +19,7 @@ describe('Load Instruction', () => {
                 B: 5
             }
         }
-        const transition = loadAB.process(state, [0x78])
+        const transition = loadAB.process(state, new Uint8Array([0x78]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -49,7 +49,7 @@ describe('Load Instruction', () => {
                 HL: 0xabcd
             }
         }
-        const transition = loadSPHL.process(state, [0xf9])
+        const transition = loadSPHL.process(state, new Uint8Array([0xf9]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -75,7 +75,7 @@ describe('Load Instruction', () => {
             },
             getMemoryByte: jest.genMockFunction().mockReturnValue(5)
         }
-        const transition = loadAMem.process(state, [0x3a, 0xab, 0xcd])
+        const transition = loadAMem.process(state, new Uint8Array([0x3a, 0xab, 0xcd]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1237)
@@ -110,7 +110,7 @@ describe('Load Instruction', () => {
             },
             getMemoryByte: jest.genMockFunction().mockReturnValue(5)
         }
-        const transition = loadAMem.process(state, [0x32, 0xab, 0xcd])
+        const transition = loadAMem.process(state, new Uint8Array([0x32, 0xab, 0xcd]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1237)
@@ -140,7 +140,7 @@ describe('Load Instruction', () => {
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(2345)
         }
-        const transition = loadAMem.process(state, [0xed, 0x4b, 0xab, 0xcd])
+        const transition = loadAMem.process(state, new Uint8Array([0xed, 0x4b, 0xab, 0xcd]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1238)
@@ -171,7 +171,7 @@ describe('Load Instruction', () => {
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(2345)
         }
-        const transition = loadAMem.process(state, [0xed, 0x43, 0xab, 0xcd])
+        const transition = loadAMem.process(state, new Uint8Array([0xed, 0x43, 0xab, 0xcd]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1238)

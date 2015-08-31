@@ -2,6 +2,7 @@ import * as InstructionSet from './InstructionSet'
 import Registers from './Registers'
 import SourceCode from './SourceCode'
 import Stack from './Stack'
+import MemoryBlock from './MemoryBlock'
 
 import firmware from './firmware'
 
@@ -9,7 +10,7 @@ export default class MachineState {
     constructor(memSize, videoWidth, videoHeight) {
         this.registers = new Registers(memSize)
         this.memSize = memSize
-        this.memory = Array.from(new Array(memSize), () => 0)
+        this.memory = new MemoryBlock(0, memSize)
         this.videoOffset = 0x1000
         this.videoWidth = videoWidth
         this.videoHeight = videoHeight
@@ -35,10 +36,9 @@ export default class MachineState {
             transitions: new Stack(),
             totalCycles: 0,
             running: false,
-            memory: Array.from(new Array(this.memSize), () => 0),
+            memory: this.memory.clear(),
             registers: new Registers(this.memSize),
-            videoMemory: this.videoMemory ?
-                Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0) : null
+            videoMemory: this.videoMemory ? this.videoMemory.clear() : null
         }).transferSourceToMemory()
     }
 
@@ -103,9 +103,9 @@ export default class MachineState {
     }
 
     toggleVideo(videoEnabled) {
-        if (videoEnabled && !(this.videoMemory instanceof Array)) {
+        if (videoEnabled && !(this.videoMemory instanceof MemoryBlock)) {
             return this.copy({
-                videoMemory: Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0)
+                videoMemory: new MemoryBlock(this.videoOffset, this.videoWidth * this.videoHeight / 8)
             })
         } else if (!videoEnabled) {
             return this.copy({
@@ -125,32 +125,32 @@ export default class MachineState {
         return this.transferSourceToMemory()
     }
 
-    getMemory(offset, length) {
-        if (offset < this.memory.length) {
-            return this.memory.slice(offset, offset + length)
+    getMemory(address, length) {
+        if (this.memory.contains(address)) {
+            return this.memory.getMemory(address, length)
         }
-        if (this.hasVideo && offset >= this.videoOffset && offset - this.videoOffset < this.videoMemory.length) {
-            return this.video.slice(offset - this.videoOffset, offset + length)
+        if (this.videoMemory && this.videoMemory.contains(address)) {
+            return this.videoMemory.getMemory(address, length)
         }
         return []
     }
 
     getMemoryByte(address) {
-        if (address < this.memory.length) {
-            return this.memory[address]
+        if (this.memory.contains(address)) {
+            return this.memory.getByte(address)
         }
-        if (this.hasVideo && address >= this.videoOffset && address - this.videoOffset < this.videoMemory.length) {
-            return this.video[address - this.videoOffset]
+        if (this.videoMemory && this.videoMemory.contains(address)) {
+            return this.videoMemory.getByte(address, length)
         }
         return 0
     }
 
     getMemoryWord(address) {
-        if (address < this.memory.length) {
-            return (this.memory[address] << 8) | this.memory[address + 1]
+        if (this.memory.contains(address)) {
+            return this.memory.getWord(address)
         }
-        if (this.hasVideo && address >= this.videoOffset && address - this.videoOffset < this.videoMemory.length) {
-            return (this.video[address - this.videoOffset] << 8) | this.video[address - this.videoOffset + 1]
+        if (this.videoMemory && this.videoMemory.contains(address)) {
+            return this.videoMemory.getWord(address, length)
         }
         return 0
     }
@@ -164,13 +164,13 @@ export default class MachineState {
         const [sourceMemory, sourceBreakpoints] = this.sourceCode.memoryAndBreakpoints
 
         return this.copy({
-            memory: Array.from(this.memory, (v, offset) => offset < sourceMemory.length ? sourceMemory[offset] : v),
+            memory: this.memory.replace(0, sourceMemory),
             breakpoints: new Set(sourceBreakpoints)
         })
     }
 
     get hasVideo() {
-        return this.videoMemory instanceof Array
+        return this.videoMemory instanceof MemoryBlock
     }
 
     copy(...changes) {
@@ -182,7 +182,7 @@ export default class MachineState {
             let storedState = JSON.parse(localStorage.machineState)
 
             Object.assign(this.registers, storedState.registers)
-            this.memory = storedState.memory
+            this.memory = this.memory.replace(0, storedState.memory)
             this.videoMemory = storedState.videoMemory
             this.sourceCode.compile(storedState.assembler)
         }
@@ -192,7 +192,7 @@ export default class MachineState {
         if (localStorage) {
             localStorage.machineState = JSON.stringify({
                 registers: this.registers,
-                memory: this.memory,
+                memory: this.memory.data,
                 videoMemory: this.videoMemory,
                 assembler: this.sourceCode.assembler
             })

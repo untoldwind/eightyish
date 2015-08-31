@@ -19,7 +19,7 @@ describe('Inc Instruction', () => {
                 A: 9
             }
         }
-        const transition = incA.process(state, [0x3c])
+        const transition = incA.process(state, new Uint8Array([0x3c]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -49,7 +49,7 @@ describe('Inc Instruction', () => {
                 BC: 123
             }
         }
-        const transition = incBC.process(state, [0x03])
+        const transition = incBC.process(state, new Uint8Array([0x03]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)

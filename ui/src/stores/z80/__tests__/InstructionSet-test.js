@@ -102,7 +102,7 @@ describe('InstructionSet', () => {
                 A: 0,
                 B: 13
             },
-            getMemory: jest.genMockFunction().mockReturnValue([0x78])
+            getMemory: jest.genMockFunction().mockReturnValue(new Uint8Array([0x78]))
         }
 
         const transition = InstructionSet.process(state)
@@ -125,7 +125,7 @@ describe('InstructionSet', () => {
             registers: {
                 PC: 0x1234
             },
-            getMemory: jest.genMockFunction().mockReturnValue([0xff])
+            getMemory: jest.genMockFunction().mockReturnValue(new Uint8Array([0xff]))
         }
 
         const transition = InstructionSet.process(state)
@@ -140,7 +140,7 @@ describe('InstructionSet', () => {
                 SP: 0x2345,
                 IX: 0xabcd
             },
-            getMemory: jest.genMockFunction().mockReturnValue([0xdd, 0xe5])
+            getMemory: jest.genMockFunction().mockReturnValue(new Uint8Array([0xdd, 0xe5]))
         }
 
         const transition = InstructionSet.process(state)
@@ -159,7 +159,7 @@ describe('InstructionSet', () => {
             registers: {
                 PC: 0x1234
             },
-            getMemory: jest.genMockFunction().mockReturnValue([0xdd])
+            getMemory: jest.genMockFunction().mockReturnValue(new Uint8Array([0xdd]))
         }
 
         const transition = InstructionSet.process(state)
@@ -173,7 +173,7 @@ describe('InstructionSet', () => {
                 PC: 1234,
                 IX: 0xabcd
             },
-            getMemory: jest.genMockFunction().mockReturnValue([0xdd, 0xcb, 0x2, 0x26]),
+            getMemory: jest.genMockFunction().mockReturnValue(new Uint8Array([0xdd, 0xcb, 0x2, 0x26])),
             getMemoryByte: jest.genMockFunction().mockReturnValue(9)
         }
         const transition = InstructionSet.process(state)

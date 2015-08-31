@@ -20,7 +20,7 @@ describe('Or Instruction', () => {
                 B: 0x45
             }
         }
-        const transition = andAB.process(state, [0xb0])
+        const transition = andAB.process(state, new Uint8Array([0xb0]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -50,7 +50,7 @@ describe('Or Instruction', () => {
                 A: 0x12
             }
         }
-        const transition = andA.process(state, [0xc6, 0x45])
+        const transition = andA.process(state, new Uint8Array([0xc6, 0x45]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1236)
@@ -82,7 +82,7 @@ describe('Or Instruction', () => {
             },
             getMemoryByte: jest.genMockFunction().mockReturnValue(0x45)
         }
-        const transition = andAHL.process(state, [0xb6])
+        const transition = andAHL.process(state, new Uint8Array([0xb6]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
@@ -115,7 +115,7 @@ describe('Or Instruction', () => {
             getMemoryByte: jest.genMockFunction().mockReturnValue(0x45)
         }
 
-        const transition = andAIX.process(state, [0xdd, 0xa6, 0x0a])
+        const transition = andAIX.process(state, new Uint8Array([0xdd, 0xa6, 0x0a]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1237)

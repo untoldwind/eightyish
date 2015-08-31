@@ -19,7 +19,7 @@ describe('Shift left Instruction', () => {
                 A: 9
             }
         }
-        const transition = decA.process(state, [0xcb, 0x27])
+        const transition = decA.process(state, new Uint8Array([0xcb, 0x27]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1236)
@@ -50,7 +50,7 @@ describe('Shift left Instruction', () => {
             },
             getMemoryByte: jest.genMockFunction().mockReturnValue(9)
         }
-        const transition = decA.process(state, [0xdd, 0xcb, 0x2, 0x26])
+        const transition = decA.process(state, new Uint8Array([0xdd, 0xcb, 0x2, 0x26]))
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1238)
