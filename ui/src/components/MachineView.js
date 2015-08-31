@@ -6,9 +6,10 @@ import RegistersView from './RegistersView'
 import Editor from './Editor'
 import VideoDisplay from './VideoDisplay'
 
-import machineState from '../stores/z80/MachineState'
+import machineStore from '../stores/MachineStore'
 
 function getCurrentState() {
+    const machineState = machineStore.getState()
     return {
         totalCycles: machineState.totalCycles,
         running: machineState.running,
@@ -30,11 +31,13 @@ export default class MachineView extends React.Component {
     }
 
     componentDidMount() {
-        machineState.addChangeListener(this.onChange.bind(this))
+        this.listener = machineStore.addListener(this.onChange.bind(this))
     }
 
     componentWillUnmount() {
-        machineState.removeChangeListener(this.onChange.bind(this))
+        if (this.listener) {
+            this.listener.remove()
+        }
     }
 
     onChange() {

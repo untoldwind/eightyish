@@ -1,6 +1,10 @@
-import {ReduceStore} from 'flux/utils'
+import ReduceStore from 'flux/lib/FluxReduceStore'
 
-import appDispatcher from '../../dispatcher/AppDispatcher'
+import * as AppConstants from '../dispatcher/AppConstants'
+
+import appDispatcher from '../dispatcher/AppDispatcher'
+
+import * as MachineActions from '../actions/MachineActions'
 
 import MachineState from './z80/MachineState.js'
 
@@ -10,12 +14,60 @@ class MachineStore extends ReduceStore {
     }
 
     getInitialState() {
-        return new MachineState()
+        return new MachineState(1024, 128, 64)
     }
 
     reduce(state, action) {
-        console.log(action)
-        return state
+        switch (action.type) {
+        case AppConstants.MACHINE_RESET:
+            return state.reset()
+
+        case AppConstants.MACHINE_START:
+        {
+            clearTimeout(this.timer)
+            const nextState = state.start()
+            if (nextState.running) {
+                this.timer = setTimeout(MachineActions.stepForward, 5)
+            }
+            return nextState
+        }
+
+        case AppConstants.MACHINE_STOP:
+            clearTimeout(this.timer)
+            return state.stop()
+
+        case AppConstants.MACHINE_MOVE_TO_BEGIN:
+            return state.moveToBegin()
+
+        case AppConstants.MACHINE_STEP_FORWARD: {
+            const nextState = state.stepForward()
+            if (nextState.running) {
+                this.timer = setTimeout(MachineActions.stepForward, 5)
+            }
+            return nextState
+        }
+
+        case AppConstants.MACHINE_FAST_FORWARD:
+            return state.fastForward()
+
+        case AppConstants.MACHINE_STEP_BACKWARD:
+            return state.stepBackward()
+
+        case AppConstants.MACHINE_TRANSITION:
+            return action.transition.perform(state)
+
+        case AppConstants.MACHINE_TOGGLE_VIDEO:
+            return state.toggleVideo(action.videoEnabled)
+
+        case AppConstants.MACHINE_COMPILE:
+            return state.compile(action.lines)
+
+        case AppConstants.TOGGLE_BREAKPOINT:
+            return state.toggleBreakpoint(action.address)
+
+        default:
+            return state
+        }
     }
 }
 

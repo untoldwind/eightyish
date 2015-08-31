@@ -5,6 +5,14 @@ function byteParity(value) {
     return parity & 0x1
 }
 
+function memoryTransfer(targetOffset, sourceOffset, sourceData) {
+    return (value, targetIndex) => {
+        const sourceIndex = targetIndex + targetOffset - sourceOffset
+
+        return sourceIndex >= 0 && sourceIndex < sourceData.length ? sourceData[sourceIndex] : value
+    }
+}
+
 export default class Transition {
     constructor(newRegisters, memoryOffset, newMemoryData) {
         this.newRegisters = newRegisters || {}
@@ -67,43 +75,55 @@ export default class Transition {
     }
 
     perform(state) {
-        this.oldRegisters = state.registers.copy()
-        state.registers.assign(this.newRegisters, this.newFlags)
+        this.oldRegisters = state.registers
+
+        let memory = state.memory
+        let videoMemory = state.videoMemory
+
         if (typeof this.memoryOffset === 'number') {
             if (this.memoryOffset < state.memory.length) {
                 this.oldMemoryData = state.memory.slice(this.memoryOffset,
                     this.memoryOffset + this.newMemoryData.length)
-                for (let i = 0; i < this.newMemoryData.length; i++) {
-                    state.memory[this.memoryOffset + i] = this.newMemoryData[i]
-                }
+                memory = Array.from(state.memory,
+                    memoryTransfer(0, this.memoryOffset, this.newMemoryData))
             } else if (this.memoryOffset - state.videoOffset < state.videoMemory.length) {
                 this.oldMemoryData = state.videoMemory.slice(this.memoryOffset - state.videoOffset,
                     this.memoryOffset - state.videoOffset + this.newMemoryData.length)
-                for (let i = 0; i < this.newMemoryData.length; i++) {
-                    state.videoMemory[this.memoryOffset - state.videoOffset + i] = this.newMemoryData[i]
-                }
+                videoMemory = Array.from(state.videoMemory,
+                    memoryTransfer(state.videoOffset, this.memoryOffset, this.newMemoryData))
             }
         }
-        if (typeof this.cycles === 'number') {
-            state.totalCycles += this.cycles
-        }
+        return state.copy({
+            transitions: state.transitions.push(this),
+            registers: state.registers.copy(this.newRegisters, {
+                flags: this.newFlags
+            }),
+            memory: memory,
+            videoMemory: videoMemory,
+            totalCycles: typeof this.cycles === 'number' ? state.totalCycles + this.cycles : state.totalCycles
+        })
     }
 
     undo(state) {
-        state.registers.assign(this.oldRegisters, {})
+        let memory = state.memory
+        let videoMemory = state.videoMemory
+
         if (typeof this.memoryOffset === 'number') {
             if (this.memoryOffset < state.memory.length) {
-                for (let i = 0; i < this.oldMemoryData.length; i++) {
-                    state.memory[this.memoryOffset + i] = this.oldMemoryData[i]
-                }
+                memory = Array.from(state.memory,
+                    memoryTransfer(0, this.memoryOffset, this.oldMemoryData))
             } else if (this.memoryOffset - state.videoOffset < state.videoMemory.length) {
-                for (let i = 0; i < this.oldMemoryData.length; i++) {
-                    state.videoMemory[this.memoryOffset - state.videoOffset + i] = this.oldMemoryData[i]
-                }
+                videoMemory = Array.from(state.videoMemory,
+                    memoryTransfer(state.videoOffset, this.memoryOffset, this.oldMemoryData))
             }
         }
-        if (typeof this.cycles === 'number') {
-            state.totalCycles -= this.cycles
-        }
+
+        return state.copy({
+            transitions: state.transitions.pop(),
+            registers: this.oldRegisters,
+            memory: memory,
+            videoMemory: videoMemory,
+            totalCycles: typeof this.cycles === 'number' ? state.totalCycles - this.cycles : state.totalCycles
+        })
     }
 }

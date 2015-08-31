@@ -1,20 +1,12 @@
-import EventEmitter from 'events'
-
 import * as InstructionSet from './InstructionSet'
 import Registers from './Registers'
 import SourceCode from './SourceCode'
-
-import appDispatcher from '../../dispatcher/AppDispatcher'
-import * as AppConstants from '../../dispatcher/AppConstants'
+import Stack from './Stack'
 
 import firmware from './firmware'
 
-const CHANGE_EVENT = 'change'
-
-class MachineState extends EventEmitter {
+export default class MachineState {
     constructor(memSize, videoWidth, videoHeight) {
-        super()
-
         this.registers = new Registers(memSize)
         this.memSize = memSize
         this.memory = Array.from(new Array(memSize), () => 0)
@@ -26,12 +18,10 @@ class MachineState extends EventEmitter {
         this.firmwareOffset = 0x8000
         this.firmwareMemory = []
         this.firmwareSource = new SourceCode(this.firmwareOffset)
-        this.breakpoints = []
-        this.transitions = []
+        this.breakpoints = new Set()
+        this.transitions = new Stack()
         this.totalCycles = 0
         this.running = false
-
-        appDispatcher.register(this.handleAction.bind(this))
 
         this.restore()
 
@@ -40,154 +30,99 @@ class MachineState extends EventEmitter {
         this.transferSourceToMemory()
     }
 
-    handleAction(action) {
-        switch (action.type) {
-        case AppConstants.MACHINE_RESET:
-            this.reset()
-            break
-
-        case AppConstants.MACHINE_START:
-            this.start()
-            break
-
-        case AppConstants.MACHINE_STOP:
-            this.stop()
-            break
-
-        case AppConstants.MACHINE_MOVE_TO_BEGIN:
-            this.moveToBegin()
-            break
-
-        case AppConstants.MACHINE_STEP_FORWARD:
-            this.stepForward()
-            break
-
-        case AppConstants.MACHINE_FAST_FORWARD:
-            this.fastForward()
-            break
-
-        case AppConstants.MACHINE_STEP_BACKWARD:
-            this.stepBackward()
-            break
-
-        case AppConstants.MACHINE_TRANSITION:
-            this.pushTransition(action.transition)
-            break
-
-        case AppConstants.MACHINE_TOGGLE_VIDEO:
-            this.toggleVideo(action.videoEnabled)
-            break
-
-        case AppConstants.MACHINE_COMPILE:
-            this.compile(action.lines)
-            break
-
-        case AppConstants.TOGGLE_BREAKPOINT:
-            this.toggleBreakpoint(action.address)
-            break
-
-        default:
-            break
-        }
-    }
-
     reset() {
-        this.transitions = []
-        this.totalCycles = 0
-        this.running = false
-        this.registers = new Registers(this.memSize)
-        this.memory = Array.from(new Array(this.memSize), () => 0)
-        if (this.videoMemory) {
-            this.videoMemory = Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0)
-        }
-        this.transferSourceToMemory()
-        this.emitChange()
+        return this.copy({
+            transitions: new Stack(),
+            totalCycles: 0,
+            running: false,
+            memory: Array.from(new Array(this.memSize), () => 0),
+            registers: new Registers(this.memSize),
+            videoMemory: this.videoMemory ?
+                Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0) : null
+        }).transferSourceToMemory()
     }
 
     moveToBegin() {
-        this.transitions = []
-        this.totalCycles = 0
-        this.running = false
-        this.registers = new Registers(this.memSize)
-        this.emitChange()
+        return this.copy({
+            transitions: new Stack(),
+            totalCycles: 0,
+            running: false,
+            registers: new Registers(this.memSize)
+        })
     }
 
     stepForward() {
         let transition = InstructionSet.process(this)
         if (transition) {
-            this.transitions.push(transition)
-            transition.perform(this)
-            this.emitChange()
-            if (this.running && this.breakpoints.indexOf(this.registers.PC) < 0) {
-                setTimeout(this.stepForward.bind(this), 5)
+            const nextState = transition.perform(this)
+            if (this.running && this.breakpoints.has(nextState.registers.PC)) {
+                return nextState.stop()
             }
+            return nextState
         } else {
-            this.stop()
+            return this.stop()
         }
     }
 
     fastForward() {
+        let currentState = this
         let transition
-        while ((transition = InstructionSet.process(this)) !== null) {
-            this.transitions.push(transition)
-            transition.perform(this)
-            if (this.breakpoints.indexOf(this.registers.PC) >= 0) {
-                break
+        while ((transition = InstructionSet.process(currentState)) !== null) {
+            currentState = transition.perform(currentState)
+            if (this.breakpoints.has(currentState.registers.PC)) {
+                return currentState
             }
         }
-        this.emitChange()
+        return currentState
     }
 
     stepBackward() {
-        let transition = this.transitions.pop()
+        const transition = this.transitions.peek()
         if (transition) {
-            transition.undo(this)
-            this.emitChange()
+            return transition.undo(this)
         }
+        return this
     }
 
     start() {
-        clearTimeout(this.timer)
-        this.transitions = []
-        this.totalCycles = 0
-        this.running = true
-        this.registers = new Registers(this.memSize)
-        this.emitChange()
-        setTimeout(this.stepForward.bind(this), 5)
+        return this.copy({
+            transitions: new Stack(),
+            totalCycles: 0,
+            running: true,
+            registers: new Registers(this.memSize)
+        })
     }
 
     stop() {
-        clearTimeout(this.timer)
-        this.running = false
-        this.emitChange()
-    }
-
-    pushTransition(transition) {
-        this.transitions.push(transition)
-        transition.perform(this)
-        this.emitChange()
+        if (!this.running) {
+            return this
+        }
+        return this.copy({
+            running: false
+        })
     }
 
     toggleVideo(videoEnabled) {
         if (videoEnabled && !(this.videoMemory instanceof Array)) {
-            this.videoMemory = Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0)
-            this.emitChange()
+            return this.copy({
+                videoMemory: Array.from(new Array(this.videoWidth * this.videoHeight / 8), () => 0)
+            })
         } else if (!videoEnabled) {
-            this.videoMemory = null
-            this.emitChange()
+            return this.copy({
+                videoMemory: null
+            })
         }
+        return this
     }
 
     compile(lines) {
         this.sourceCode.compile(lines)
-        this.transferSourceToMemory()
-        this.emitChange()
+        return this.transferSourceToMemory()
     }
 
     toggleBreakpoint(address) {
         this.sourceCode.toggleBreakpoint(address)
-        this.transferSourceToMemory()
-        this.emitChange()
+        return this.transferSourceToMemory()
     }
 
     getMemory(offset, length) {
@@ -226,28 +161,20 @@ class MachineState extends EventEmitter {
     }
 
     transferSourceToMemory() {
-        let [sourceMemory, sourceBreakpoints] = this.sourceCode.memoryAndBreakpoints
-        for (let i = 0; i < sourceMemory.length; i++) {
-            this.memory[i] = sourceMemory[i]
-        }
-        this.breakpoints = sourceBreakpoints
+        const [sourceMemory, sourceBreakpoints] = this.sourceCode.memoryAndBreakpoints
+
+        return this.copy({
+            memory: Array.from(this.memory, (v, offset) => offset < sourceMemory.length ? sourceMemory[offset] : v),
+            breakpoints: new Set(sourceBreakpoints)
+        })
     }
 
     get hasVideo() {
         return this.videoMemory instanceof Array
     }
 
-    emitChange() {
-        this.store()
-        this.emit(CHANGE_EVENT)
-    }
-
-    addChangeListener(callback) {
-        this.on(CHANGE_EVENT, callback)
-    }
-
-    removeChangeListener(callback) {
-        this.removeListener(CHANGE_EVENT, callback)
+    copy(...changes) {
+        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this, ...changes)
     }
 
     restore() {
@@ -272,5 +199,3 @@ class MachineState extends EventEmitter {
         }
     }
 }
-
-export default new MachineState(1024, 128, 64)

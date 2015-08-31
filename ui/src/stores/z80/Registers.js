@@ -77,12 +77,7 @@ export default class Registers {
         this.flags.S = (f & 0x80) !== 0
     }
 
-    copy() {
-        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this)
-    }
-
-    assign(values, flags) {
-        Object.assign(this, values)
-        Object.assign(this.flags, flags)
+    copy(...changes) {
+        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this, ...changes)
     }
 }
