@@ -18,7 +18,7 @@ export default class MachineControl extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <button className="btn btn-danger" onClick={MachineActions.reset}>Reset</button>
+                    <button className="btn btn-danger" id="btn-reset" onClick={MachineActions.reset}>Reset</button>
                 </div>
                 <div className="col-md-2">
                     <Switch label="Video" valueLink={hasVideoLink}/>

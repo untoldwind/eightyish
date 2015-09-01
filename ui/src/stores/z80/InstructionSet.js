@@ -98,7 +98,7 @@ export function process(state) {
     return null
 }
 
-export function createBlank() {
+export function createBlankStatement() {
     return {
         type: 'blank',
         assembler: '  ',
@@ -108,7 +108,7 @@ export function createBlank() {
     }
 }
 
-export function createError(line) {
+export function createErrorStatement(line) {
     return {
         type: 'error',
         assembler: line,
@@ -118,7 +118,7 @@ export function createError(line) {
     }
 }
 
-export function createLabel(label) {
+export function createLabelStatement(label) {
     return {
         type: 'sourcelabel',
         assembler: `${label}:`,
@@ -129,7 +129,7 @@ export function createLabel(label) {
     }
 }
 
-export function createStatement(elements) {
+export function createInstructionStatement(elements) {
     if (!elements instanceof Array || elements.length === 0) {
         return null
     }
@@ -155,16 +155,16 @@ export function createStatement(elements) {
 export function parseLine(line) {
     const trimmed = line.trim()
     if (trimmed.length === 0) {
-        return createBlank()
+        return createBlankStatement()
     }
     if (trimmed.startsWith('.') && trimmed.endsWith(':')) {
-        return createLabel(trimmed.substr(0, trimmed.length - 1))
+        return createLabelStatement(trimmed.substr(0, trimmed.length - 1))
     }
-    const instruction = createStatement(line.trim().replace(/<\-|,/, ' ').split(/\s+/))
+    const instruction = createInstructionStatement(line.trim().replace(/<\-|,/, ' ').split(/\s+/))
 
     if (instruction) {
         return instruction
     }
 
-    return createError(line)
+    return createErrorStatement(line)
 }

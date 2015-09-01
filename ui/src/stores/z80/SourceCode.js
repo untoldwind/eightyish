@@ -6,7 +6,7 @@ export default class SourceCode {
     constructor(sourceOffset) {
         this.sourceOffset = sourceOffset
         this.statements = [
-            InstructionSet.createStatement(['HALT'])
+            InstructionSet.createInstructionStatement(['HALT'])
         ]
         this.labels = new SourceLabels()
     }
