@@ -128,6 +128,34 @@ export function createLabelStatement(label) {
     })
 }
 
+export function createCommentStatement(comment) {
+    return Statement.create({
+        type: 'comment',
+        assembler: `#${comment}`,
+        opcodes: () => [],
+        size: 0
+    })
+}
+
+export function createDataStatement(dataSource) {
+    const trimmed = dataSource.trim()
+    let data
+
+    if (trimmed.startsWith('0x')) {
+        data = trimmed.slice(2).split(' ').map((str) => parseInt(str, 16) & 0xff)
+    } else if (dataSource.trim().startsWith('0b')) {
+        data = trimmed.slice(2).split(' ').map((str) => parseInt(str, 2) & 0xff)
+    } else {
+        data = trimmed.split(' ').map((str) => parseInt(str, 10) & 0xff)
+    }
+    return Statement.create({
+        type: 'data',
+        assembler: `= ${trimmed}`,
+        opcodes: () => data,
+        size: data.length
+    })
+}
+
 export function createInstructionStatement(elements) {
     if (!elements instanceof Array || elements.length === 0) {
         return null
@@ -158,6 +186,12 @@ export function parseLine(line) {
     }
     if (trimmed.startsWith('.') && trimmed.endsWith(':')) {
         return createLabelStatement(trimmed.substr(0, trimmed.length - 1))
+    }
+    if (trimmed.startsWith('#')) {
+        return createCommentStatement(trimmed.slice(1))
+    }
+    if (trimmed.startsWith('=')) {
+        return createDataStatement(trimmed.slice(1))
     }
     const instruction = createInstructionStatement(line.trim().replace(/<\-|,/, ' ').split(/\s+/))
 
