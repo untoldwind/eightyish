@@ -3,5 +3,3 @@ export default class Immutable {
         return Object.freeze(Object.assign({__proto__: Object.getPrototypeOf(this)}, this, ...changes))
     }
 }
-
-Immutable.create = (obj) => Object.freeze(Object.create(Immutable.prototype, obj))

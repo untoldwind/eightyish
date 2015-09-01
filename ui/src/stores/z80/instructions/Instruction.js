@@ -1,5 +1,7 @@
 import {fill} from '../formats'
 
+import Statement from '../Statement'
+
 export default class Instruction {
     constructor(opcode, cycles, name, args, delim = ', ') {
         this.opcode = opcode
@@ -22,7 +24,7 @@ export default class Instruction {
 
     createStatement(params) {
         const formattedParams = this.args.map((pattern, i) => pattern.formatValue(params[i]))
-        return {
+        return Statement.create({
             type: 'instruction',
             assembler: formattedParams.length === 0 ?
                 `  ${this.name}` : `  ${this.name}${fill(this.name, 7)}${formattedParams.join(this.delim)}`,
@@ -30,9 +32,8 @@ export default class Instruction {
                 const extraOpcodes = this.args.map((pattern, i) => pattern.extraOpcodes(params[i], labels))
                 return this.opcodes.concat(...extraOpcodes).concat(this.postfix || [])
             },
-            size: this.size,
-            breakpoint: false
-        }
+            size: this.size
+        })
     }
 
     get example() {

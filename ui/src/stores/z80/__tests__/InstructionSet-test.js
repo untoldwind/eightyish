@@ -13,7 +13,7 @@ describe('InstructionSet', () => {
     })
 
     it('should support blank assembler lines', () => {
-        const blank = InstructionSet.createBlank()
+        const blank = InstructionSet.createBlankStatement()
 
         expect(blank).toBeDefined()
         expect(blank.type).toBe('blank')
@@ -23,7 +23,7 @@ describe('InstructionSet', () => {
     })
 
     it('should support error assembler lines', () => {
-        const error = InstructionSet.createError('error')
+        const error = InstructionSet.createErrorStatement('error')
 
         expect(error).toBeDefined()
         expect(error.type).toBe('error')
@@ -35,7 +35,7 @@ describe('InstructionSet', () => {
         const labels = {
             setAddress: jest.genMockFunction()
         }
-        const label = InstructionSet.createLabel('aLabel')
+        const label = InstructionSet.createLabelStatement('aLabel')
 
         expect(label).toBeDefined()
         expect(label.type).toBe('sourcelabel')
@@ -50,28 +50,28 @@ describe('InstructionSet', () => {
         const labels = new SourceLabels()
         let assembler
 
-        assembler = InstructionSet.createStatement([])
+        assembler = InstructionSet.createInstructionStatement([])
         expect(assembler).toBeNull()
 
-        assembler = InstructionSet.createStatement(['something'])
+        assembler = InstructionSet.createInstructionStatement(['something'])
         expect(assembler).toBeNull()
 
-        assembler = InstructionSet.createStatement(['LOAD', 'G', 'I'])
+        assembler = InstructionSet.createInstructionStatement(['LOAD', 'G', 'I'])
         expect(assembler).toBeNull()
 
-        assembler = InstructionSet.createStatement(['LOAD', 'A', 'B'])
+        assembler = InstructionSet.createInstructionStatement(['LOAD', 'A', 'B'])
         expect(assembler.opcodes(labels)).toEqual([0x78])
 
-        assembler = InstructionSet.createStatement(['LOAD', 'BC', '(0xabcd)'])
+        assembler = InstructionSet.createInstructionStatement(['LOAD', 'BC', '(0xabcd)'])
         expect(assembler.opcodes(labels)).toEqual([0xed, 0x4b, 0xab, 0xcd])
 
-        assembler = InstructionSet.createStatement(['ADD', 'A', 'C'])
+        assembler = InstructionSet.createInstructionStatement(['ADD', 'A', 'C'])
         expect(assembler.opcodes(labels)).toEqual([0x81])
 
-        assembler = InstructionSet.createStatement(['SUB', 'A', '(IX+3)'])
+        assembler = InstructionSet.createInstructionStatement(['SUB', 'A', '(IX+3)'])
         expect(assembler.opcodes(labels)).toEqual([0xdd, 0x96, 0x03])
 
-        assembler = InstructionSet.createStatement(['INC', 'C'])
+        assembler = InstructionSet.createInstructionStatement(['INC', 'C'])
         expect(assembler.opcodes(labels)).toEqual([0x0c])
     })
 

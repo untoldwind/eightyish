@@ -16,6 +16,8 @@ import SubInstructions from './instructions/SubInstructions'
 import StackInstructions from './instructions/StackInstructions'
 import XorInstructions from './instructions/XorInstructions'
 
+import Statement from './Statement'
+
 export const INSTRUCTIONS = [].concat(
     AddInstructions,
     AndInstructions,
@@ -99,34 +101,31 @@ export function process(state) {
 }
 
 export function createBlankStatement() {
-    return {
+    return Statement.create({
         type: 'blank',
         assembler: '  ',
         opcodes: () => [],
-        size: 0,
-        breakpoint: false
-    }
+        size: 0
+    })
 }
 
 export function createErrorStatement(line) {
-    return {
+    return Statement.create({
         type: 'error',
         assembler: line,
         opcodes: () => [],
-        size: 0,
-        breakpoint: false
-    }
+        size: 0
+    })
 }
 
 export function createLabelStatement(label) {
-    return {
+    return Statement.create({
         type: 'sourcelabel',
         assembler: `${label}:`,
         opcodes: () => [],
         updateLabel: (offset, labels) => labels.setAddress(label, offset),
-        size: 0,
-        breakpoint: false
-    }
+        size: 0
+    })
 }
 
 export function createInstructionStatement(elements) {

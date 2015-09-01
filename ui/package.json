@@ -55,6 +55,7 @@
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
+    "setupEnvScriptFile": "<rootDir>/jestEnvironment.js",
     "testFileExtensions": [
       "es6",
       "js"

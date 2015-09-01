@@ -1,5 +1,9 @@
-export default class Registers {
+import Immutable from '../Immutable'
+
+export default class Registers extends Immutable {
     constructor(memSize) {
+        super()
+
         this.A = 0
         this.B = 0
         this.C = 0
@@ -75,9 +79,5 @@ export default class Registers {
         this.flags.H = (f & 0x10) !== 0
         this.flags.Z = (f & 0x40) !== 0
         this.flags.S = (f & 0x80) !== 0
-    }
-
-    copy(...changes) {
-        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this, ...changes)
     }
 }

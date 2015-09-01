@@ -3,11 +3,14 @@ import Registers from './Registers'
 import SourceCode from './SourceCode'
 import Stack from './Stack'
 import MemoryBlock from './MemoryBlock'
+import Immutable from '../Immutable'
 
 import firmware from './firmware'
 
-export default class MachineState {
+export default class MachineState extends Immutable {
     constructor(memSize, videoWidth, videoHeight) {
+        super()
+
         this.registers = new Registers(memSize)
         this.memSize = memSize
         this.memory = new MemoryBlock(0, memSize)
@@ -112,18 +115,18 @@ export default class MachineState {
 
     compile(lines) {
         const sourceCode = this.sourceCode.compile(lines)
-        const [sourceMemory, sourceBreakpoints] = sourceCode.memoryAndBreakpoints
 
         return this.copy({
-            sourceCode: sourceCode,
-            memory: this.memory.replace(0, sourceMemory),
-            breakpoints: new Set(sourceBreakpoints)
-        })
+            sourceCode: sourceCode
+        }).transferSourceToMemory()
     }
 
     toggleBreakpoint(address) {
-        this.sourceCode.toggleBreakpoint(address)
-        return this.transferSourceToMemory()
+        const sourceCode = this.sourceCode.toggleBreakpoint(address)
+
+        return this.copy({
+            sourceCode: sourceCode
+        }).transferSourceToMemory()
     }
 
     getMemory(address, length) {
@@ -172,10 +175,6 @@ export default class MachineState {
 
     get hasVideo() {
         return this.videoMemory instanceof MemoryBlock
-    }
-
-    copy(...changes) {
-        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this, ...changes).store()
     }
 
     restore() {

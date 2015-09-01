@@ -1,5 +1,9 @@
-export default class MemoryBlock {
+import Immutable from '../Immutable'
+
+export default class MemoryBlock extends Immutable {
     constructor(offset, size) {
+        super()
+
         this.offset = offset
         this.data = new Uint8Array(size)
     }
@@ -34,9 +38,5 @@ export default class MemoryBlock {
         return this.copy({
             data: new Uint8Array(this.data.length)
         })
-    }
-
-    copy(...changes) {
-        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this, ...changes)
     }
 }

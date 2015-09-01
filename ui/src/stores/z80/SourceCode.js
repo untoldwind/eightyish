@@ -1,9 +1,12 @@
+import Immutable from '../Immutable'
 import * as InstructionSet from './InstructionSet'
 
 import SourceLabels from './SourceLabels'
 
-export default class SourceCode {
+export default class SourceCode extends Immutable {
     constructor(sourceOffset) {
+        super()
+
         this.sourceOffset = sourceOffset
         this.statements = [
             InstructionSet.createInstructionStatement(['HALT'])
@@ -36,13 +39,16 @@ export default class SourceCode {
     toggleBreakpoint(address) {
         let offset = this.sourceOffset
 
-        for (let statement of this.statements) {
-            if (offset === address) {
-                statement.breakpoint = !statement.breakpoint
-                return
-            }
-            offset += statement.size
-        }
+        return this.copy({
+            statements: Array.from(this.statements, (statement) => {
+                if (offset === address) {
+                    offset += statement.size
+                    return statement.toggleBreakpoint()
+                }
+                offset += statement.size
+                return statement
+            })
+        })
     }
 
     get memoryAndBreakpoints() {
@@ -83,9 +89,5 @@ export default class SourceCode {
 
     get assembler() {
         return this.statements.map(instruction => instruction.assembler)
-    }
-
-    copy(...changes) {
-        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this, ...changes)
     }
 }
