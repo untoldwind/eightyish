@@ -38,7 +38,7 @@ export default class MachineState extends Immutable {
             memory: this.memory.clear(),
             registers: Registers.create(this.memSize),
             videoMemory: this.videoMemory ? this.videoMemory.clear() : null
-        }).transferSourceToMemory()
+        }).transferSourceToMemory().store()
     }
 
     moveToBegin() {
@@ -47,7 +47,7 @@ export default class MachineState extends Immutable {
             totalCycles: 0,
             running: false,
             registers: Registers.create(this.memSize)
-        })
+        }).store()
     }
 
     stepForward() {
@@ -55,11 +55,11 @@ export default class MachineState extends Immutable {
         if (transition) {
             const nextState = transition.perform(this)
             if (this.running && this.breakpoints.has(nextState.registers.PC)) {
-                return nextState.stop()
+                return nextState.stop().store()
             }
-            return nextState
+            return nextState.store()
         }
-        return this.stop()
+        return this.stop().store()
     }
 
     fastForward() {
@@ -68,16 +68,16 @@ export default class MachineState extends Immutable {
         while ((transition = InstructionSet.process(currentState)) !== null) {
             currentState = transition.perform(currentState)
             if (this.breakpoints.has(currentState.registers.PC)) {
-                return currentState
+                return currentState.store()
             }
         }
-        return currentState
+        return currentState.store()
     }
 
     stepBackward() {
         const transition = this.transitions.peek()
         if (transition) {
-            return transition.undo(this)
+            return transition.undo(this).store()
         }
         return this
     }
@@ -85,7 +85,7 @@ export default class MachineState extends Immutable {
     start() {
         return this.copy({
             running: true
-        })
+        }).store()
     }
 
     stop() {
@@ -94,18 +94,18 @@ export default class MachineState extends Immutable {
         }
         return this.copy({
             running: false
-        })
+        }).store()
     }
 
     toggleVideo(videoEnabled) {
         if (videoEnabled && !(this.videoMemory instanceof MemoryBlock)) {
             return this.copy({
-                videoMemory: MemoryBlock.clear(this.videoOffset, this.videoWidth * this.videoHeight / 8)
-            })
+                videoMemory: MemoryBlock.create(this.videoOffset, this.videoWidth * this.videoHeight / 8)
+            }).store()
         } else if (!videoEnabled) {
             return this.copy({
                 videoMemory: null
-            })
+            }).store()
         }
         return this
     }
@@ -115,7 +115,7 @@ export default class MachineState extends Immutable {
 
         return this.copy({
             sourceCode: sourceCode
-        }).transferSourceToMemory()
+        }).transferSourceToMemory().store()
     }
 
     toggleBreakpoint(address) {
@@ -123,7 +123,7 @@ export default class MachineState extends Immutable {
 
         return this.copy({
             sourceCode: sourceCode
-        }).transferSourceToMemory()
+        }).transferSourceToMemory().store()
     }
 
     getMemory(address, length) {
@@ -198,7 +198,7 @@ export default class MachineState extends Immutable {
             localStorage.machineState = JSON.stringify({
                 registers: this.registers,
                 memory: this.memory.data,
-                videoMemory: this.videoMemory ? this.videoMemory.data : null,
+                videoMemory: this.hasVideo ? this.videoMemory.data : null,
                 assembler: this.sourceCode.assembler
             })
         }
