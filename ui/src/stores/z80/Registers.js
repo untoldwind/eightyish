@@ -81,3 +81,5 @@ export default class Registers extends Immutable {
         this.flags.S = (f & 0x80) !== 0
     }
 }
+
+Registers.create = (memSize) => Object.freeze(new Registers(memSize))

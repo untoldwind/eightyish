@@ -1,6 +1,9 @@
-export default class Stack {
-    constructor(elements = []) {
-        this.elements = elements
+import Immutable from '../Immutable'
+
+export default class Stack extends Immutable {
+    constructor() {
+        super()
+        this.elements = []
     }
 
     peek() {
@@ -11,13 +14,19 @@ export default class Stack {
     }
 
     push(element) {
-        return new Stack(this.elements.concat(element))
+        return this.copy({
+            elements: this.elements.concat(element)
+        })
     }
 
     pop() {
         if (this.elements.length > 0) {
-            return new Stack(this.elements.slice(0, this.elements.length - 1))
+            return this.copy({
+                elements: this.elements.slice(0, this.elements.length - 1)
+            })
         }
         return this
     }
 }
+
+Stack.create = () => Object.freeze(new Stack())

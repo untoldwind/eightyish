@@ -40,3 +40,5 @@ export default class MemoryBlock extends Immutable {
         })
     }
 }
+
+MemoryBlock.create = (offset, size) => Object.freeze(new MemoryBlock(offset, size))

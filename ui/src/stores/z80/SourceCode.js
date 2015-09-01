@@ -91,3 +91,5 @@ export default class SourceCode extends Immutable {
         return this.statements.map(instruction => instruction.assembler)
     }
 }
+
+SourceCode.create = (sourceOffset) => Object.freeze(new SourceCode(sourceOffset))

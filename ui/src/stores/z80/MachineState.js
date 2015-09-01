@@ -11,19 +11,19 @@ export default class MachineState extends Immutable {
     constructor(memSize, videoWidth, videoHeight) {
         super()
 
-        this.registers = new Registers(memSize)
+        this.registers = Registers.create(memSize)
         this.memSize = memSize
-        this.memory = new MemoryBlock(0, memSize)
+        this.memory = MemoryBlock.create(0, memSize)
         this.videoOffset = 0x1000
         this.videoWidth = videoWidth
         this.videoHeight = videoHeight
         this.videoMemory = null
-        this.sourceCode = new SourceCode(0)
+        this.sourceCode = SourceCode.create(0)
         this.firmwareOffset = 0x8000
         this.firmwareMemory = []
-        this.firmwareSource = new SourceCode(this.firmwareOffset)
+        this.firmwareSource = SourceCode.create(this.firmwareOffset)
         this.breakpoints = new Set()
-        this.transitions = new Stack()
+        this.transitions = Stack.create()
         this.totalCycles = 0
         this.running = false
 
@@ -32,21 +32,21 @@ export default class MachineState extends Immutable {
 
     reset() {
         return this.copy({
-            transitions: new Stack(),
+            transitions: Stack.create(),
             totalCycles: 0,
             running: false,
             memory: this.memory.clear(),
-            registers: new Registers(this.memSize),
+            registers: Registers.create(this.memSize),
             videoMemory: this.videoMemory ? this.videoMemory.clear() : null
         }).transferSourceToMemory()
     }
 
     moveToBegin() {
         return this.copy({
-            transitions: new Stack(),
+            transitions: Stack.create(),
             totalCycles: 0,
             running: false,
-            registers: new Registers(this.memSize)
+            registers: Registers.create(this.memSize)
         })
     }
 
@@ -84,10 +84,7 @@ export default class MachineState extends Immutable {
 
     start() {
         return this.copy({
-            transitions: new Stack(),
-            totalCycles: 0,
-            running: true,
-            registers: new Registers(this.memSize)
+            running: true
         })
     }
 
@@ -103,7 +100,7 @@ export default class MachineState extends Immutable {
     toggleVideo(videoEnabled) {
         if (videoEnabled && !(this.videoMemory instanceof MemoryBlock)) {
             return this.copy({
-                videoMemory: new MemoryBlock(this.videoOffset, this.videoWidth * this.videoHeight / 8)
+                videoMemory: MemoryBlock.clear(this.videoOffset, this.videoWidth * this.videoHeight / 8)
             })
         } else if (!videoEnabled) {
             return this.copy({
@@ -189,7 +186,7 @@ export default class MachineState extends Immutable {
                 memory: this.memory.replace(0, storedState.memory).replace(0, sourceMemory),
                 breakpoints: new Set(sourceBreakpoints),
                 videoMemory: storedState.videoMemory ?
-                    new MemoryBlock(this.videoOffset, this.videoWidth * this.videoHeight / 8)
+                    MemoryBlock.create(this.videoOffset, this.videoWidth * this.videoHeight / 8)
                         .replace(this.videoOffset, storedState.videoMemory) : null
             })
         }
@@ -208,3 +205,6 @@ export default class MachineState extends Immutable {
         return this
     }
 }
+
+MachineState.create = (memSize, videoWidth, videoHeight) =>
+    Object.freeze(new MachineState(memSize, videoWidth, videoHeight))

@@ -14,7 +14,7 @@ class MachineStore extends ReduceStore {
     }
 
     getInitialState() {
-        return new MachineState(1024, 128, 64).restore()
+        return MachineState.create(1024, 128, 64).restore()
     }
 
     reduce(state, action) {
