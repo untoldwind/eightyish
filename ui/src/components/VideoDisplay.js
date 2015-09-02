@@ -1,6 +1,13 @@
 import React from 'react'
 
 export default class VideoDisplay extends React.Component {
+    static propTypes = {
+        memoryBlock: React.PropTypes.object.isRequired,
+        width: React.PropTypes.number.isRequired,
+        height: React.PropTypes.number.isRequired,
+        scale: React.PropTypes.number.isRequired
+    }
+
     componentDidMount() {
         this.updateCanvas()
     }
@@ -36,11 +43,4 @@ export default class VideoDisplay extends React.Component {
                     width={this.props.scale * this.props.width}/>
         )
     }
-}
-
-VideoDisplay.propTypes = {
-    memoryBlock: React.PropTypes.object.isRequired,
-    width: React.PropTypes.number.isRequired,
-    height: React.PropTypes.number.isRequired,
-    scale: React.PropTypes.number.isRequired
 }

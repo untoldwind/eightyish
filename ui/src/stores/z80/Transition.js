@@ -73,10 +73,10 @@ export default class Transition {
         let videoMemory = state.videoMemory
 
         if (typeof this.memoryOffset === 'number') {
-            if(memory.contains(this.memoryOffset)) {
+            if (memory.contains(this.memoryOffset)) {
                 this.oldMemoryData = memory.getMemory(this.memoryOffset, this.newMemoryData.length)
                 memory = memory.replace(this.memoryOffset, this.newMemoryData)
-            } else if(videoMemory && videoMemory.contains(this.memoryOffset)) {
+            } else if (videoMemory && videoMemory.contains(this.memoryOffset)) {
                 this.oldMemoryData = videoMemory.getMemory(this.memoryOffset, this.newMemoryData.length)
                 videoMemory = videoMemory.replace(this.memoryOffset, this.newMemoryData)
             }
@@ -97,9 +97,9 @@ export default class Transition {
         let videoMemory = state.videoMemory
 
         if (typeof this.memoryOffset === 'number') {
-            if(memory.contains(this.memoryOffset)) {
+            if (memory.contains(this.memoryOffset)) {
                 memory = memory.replace(this.memoryOffset, this.oldMemoryData)
-            } else if(videoMemory && videoMemory.contains(this.memoryOffset)) {
+            } else if (videoMemory && videoMemory.contains(this.memoryOffset)) {
                 videoMemory = videoMemory.replace(this.memoryOffset, this.oldMemoryData)
             }
         }

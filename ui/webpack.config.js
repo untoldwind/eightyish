@@ -13,7 +13,11 @@ var plugins = [
 if (DEBUG) {
 } else if (!TEST) {
     plugins.push(
-        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            compressor: {
+                warnings: false
+            }
+        }),
         new webpack.optimize.DedupePlugin(),
         new webpack.DefinePlugin({
             'process.env': {

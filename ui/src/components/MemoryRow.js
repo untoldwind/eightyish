@@ -15,6 +15,13 @@ function mapCount(count, callback) {
 }
 
 export default class MemoryRow extends React.Component {
+    static propTypes = {
+        offset: React.PropTypes.number.isRequired,
+        columns: React.PropTypes.number.isRequired,
+        memoryBlock: React.PropTypes.object.isRequired,
+        registers: React.PropTypes.object.isRequired
+    }
+
     render() {
         return (
             <tr>
@@ -23,20 +30,18 @@ export default class MemoryRow extends React.Component {
                         <EditableCell activeClassName="form-control input-sm"
                                       className={this.mark(this.props.offset + i)}
                                       key={i}
-                                      valueLink={this.memoryValueLink(i)}/>
+                                      onChange={this.changeMemory(i).bind(this)}
+                                      value={formats.byte2hex(this.props.memoryBlock.getByte(i + this.props.offset))}/>
                 )}
             </tr>
         )
     }
 
-    memoryValueLink(i) {
-        return {
-            value: formats.byte2hex(this.props.memoryBlock.getByte(i + this.props.offset)),
-            requestChange: str => {
-                const newValue = parseInt(str, 16)
-                if (typeof newValue === 'number' && newValue >= 0 && newValue <= 255) {
-                    MachineActions.transition({}, this.props.offset + i, [newValue])
-                }
+    changeMemory(i) {
+        return (str) => {
+            const newValue = parseInt(str, 16)
+            if (typeof newValue === 'number' && newValue >= 0 && newValue <= 255) {
+                MachineActions.transition({}, this.props.offset + i, [newValue])
             }
         }
     }
@@ -55,11 +60,4 @@ export default class MemoryRow extends React.Component {
         }
         return ''
     }
-}
-
-MemoryRow.propTypes = {
-    offset: React.PropTypes.number.isRequired,
-    columns: React.PropTypes.number.isRequired,
-    memoryBlock: React.PropTypes.object.isRequired,
-    registers: React.PropTypes.object.isRequired
 }

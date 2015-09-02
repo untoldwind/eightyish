@@ -7,14 +7,9 @@ const EditableCell = require('../EditableCell')
 describe('EditableCell component', () => {
     it('should render value as table cell', () => {
         window.HTMLInputElement.prototype.setSelectionRange = jest.genMockFunction()
-        const valueLink = {
-            value: 'content',
-            requestChange: jest.genMockFunction()
-        }
-
         const tr = document.createElement('tr')
 
-        const component = React.render(<EditableCell valueLink={valueLink}/>, tr)
+        const component = React.render(<EditableCell value="content"/>, tr)
         const td = TestUtils.findRenderedDOMComponentWithTag(component, 'td')
 
         expect(td).toBeDefined()
@@ -23,14 +18,11 @@ describe('EditableCell component', () => {
 
     it('should show input on click and abort on esc', () => {
         window.HTMLInputElement.prototype.setSelectionRange = jest.genMockFunction()
-        const valueLink = {
-            value: 'content',
-            requestChange: jest.genMockFunction()
-        }
 
+        const onChange = jest.genMockFunction()
         const tr = document.createElement('tr')
 
-        const component = React.render(<EditableCell valueLink={valueLink}/>, tr)
+        const component = React.render(<EditableCell value="content" onChange={onChange}/>, tr)
         let td = TestUtils.findRenderedDOMComponentWithTag(component, 'td')
 
         TestUtils.Simulate.click(td)
@@ -48,19 +40,16 @@ describe('EditableCell component', () => {
 
         expect(td).toBeDefined()
         expect(td.getDOMNode().textContent).toEqual('content')
-        expect(valueLink.requestChange).not.toBeCalled()
+        expect(onChange).not.toBeCalled()
     })
 
     it('should show input on click and abort on enter if content is not changed', () => {
         window.HTMLInputElement.prototype.setSelectionRange = jest.genMockFunction()
-        const valueLink = {
-            value: 'content',
-            requestChange: jest.genMockFunction()
-        }
 
+        const onChange = jest.genMockFunction()
         const tr = document.createElement('tr')
 
-        const component = React.render(<EditableCell valueLink={valueLink}/>, tr)
+        const component = React.render(<EditableCell value="content" onChange={onChange}/>, tr)
         let td = TestUtils.findRenderedDOMComponentWithTag(component, 'td')
 
         TestUtils.Simulate.click(td)
@@ -78,19 +67,16 @@ describe('EditableCell component', () => {
 
         expect(td).toBeDefined()
         expect(td.getDOMNode().textContent).toEqual('content')
-        expect(valueLink.requestChange).not.toBeCalled()
+        expect(onChange).not.toBeCalled()
     })
 
     it('should show input on click and send changed content on enter', () => {
         window.HTMLInputElement.prototype.setSelectionRange = jest.genMockFunction()
-        const valueLink = {
-            value: 'content',
-            requestChange: jest.genMockFunction()
-        }
 
+        const onChange = jest.genMockFunction()
         const tr = document.createElement('tr')
 
-        const component = React.render(<EditableCell valueLink={valueLink}/>, tr)
+        const component = React.render(<EditableCell value="content" onChange={onChange}/>, tr)
         let td = TestUtils.findRenderedDOMComponentWithTag(component, 'td')
 
         TestUtils.Simulate.click(td)
@@ -110,6 +96,6 @@ describe('EditableCell component', () => {
 
         expect(td).toBeDefined()
         expect(td.getDOMNode().textContent).toEqual('content')
-        expect(valueLink.requestChange).toBeCalledWith('newContent')
+        expect(onChange).toBeCalledWith('newContent')
     })
 })

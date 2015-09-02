@@ -5,6 +5,12 @@ import MemoryRow from './MemoryRow'
 import * as formats from './formats'
 
 export default class MemoryGrid extends React.Component {
+    static propTypes = {
+        columns: React.PropTypes.number.isRequired,
+        memoryBlock: React.PropTypes.object.isRequired,
+        registers: React.PropTypes.object.isRequired
+    }
+
     render() {
         return (
             <table className="table table-condensed table-bordered">
@@ -28,10 +34,4 @@ export default class MemoryGrid extends React.Component {
             </table>
         )
     }
-}
-
-MemoryGrid.propTypes = {
-    columns: React.PropTypes.number.isRequired,
-    memoryBlock: React.PropTypes.object.isRequired,
-    registers: React.PropTypes.object.isRequired
 }

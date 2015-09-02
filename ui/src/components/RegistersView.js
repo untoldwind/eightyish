@@ -6,6 +6,10 @@ import * as MachineActions from '../actions/MachineActions'
 import * as formats from './formats'
 
 export default class RegistersView extends React.Component {
+    static propTypes = {
+        registers: React.PropTypes.object.isRequired
+    }
+
     render() {
         return (
             <table className="table table-condensed table-bordered">
@@ -39,53 +43,52 @@ export default class RegistersView extends React.Component {
     }
 
     renderByteRegisters(highRegister, lowRegister, className) {
-        const highValueLink = {
-            value: this.props.registers[highRegister],
-            requestChange: value => MachineActions.transition({[highRegister]: value})
-        }
-        const lowValueLink = {
-            value: this.props.registers[lowRegister],
-            requestChange: value => MachineActions.transition({[lowRegister]: value})
-        }
-        const valueLink = {
-            value: this.props.registers[highRegister + lowRegister],
-            requestChange: value => MachineActions.transition({[highRegister + lowRegister]: value})
-        }
+        const highSetter = formats.byteParser((value) =>
+            MachineActions.transition({[highRegister]: value}))
+        const lowSetter = formats.byteParser((value) =>
+            MachineActions.transition({[lowRegister]: value}))
+        const wordSetter = formats.wordParser((value) =>
+            MachineActions.transition({[highRegister + lowRegister]: value}))
+
         return [
             <tr key="high">
                 <td>{highRegister}</td>
                 <EditableCell activeClassName="form-control input-sm"
-                              valueLink={formats.byteValueLink(10, highValueLink)}/>
+                              onChange={highSetter}
+                              value={this.props.registers[highRegister]}/>
                 <EditableCell activeClassName="form-control input-sm"
-                              valueLink={formats.byteValueLink(16, highValueLink)}/>
+                              onChange={highSetter}
+                              value={`0x${formats.byte2hex(this.props.registers[highRegister])}`}/>
                 <EditableCell activeClassName="form-control input-sm"
-                              valueLink={formats.byteValueLink(2, highValueLink)}/>
+                              onChange={highSetter}
+                              value={`0b${formats.byte2bin(this.props.registers[highRegister])}`}/>
                 <td className={className}
                     rowSpan="2" style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
                 <EditableCell activeClassName="form-control input-sm" className={className}
                               rowSpan={2} style={{verticalAlign: 'middle'}}
-                              valueLink={formats.wordValueLink(10, valueLink)}/>
+                              onChange={wordSetter}
+                              value={this.props.registers[highRegister + lowRegister]}/>
                 <EditableCell activeClassName="form-control input-sm" className={className}
                               rowSpan={2} style={{verticalAlign: 'middle'}}
-                              valueLink={formats.wordValueLink(16, valueLink)}/>
+                              onChange={wordSetter}
+                              value={`0x${formats.word2hex(this.props.registers[highRegister + lowRegister])}`}/>
             </tr>,
             <tr key="low">
                 <td>{lowRegister}</td>
                 <EditableCell activeClassName="form-control input-sm"
-                              valueLink={formats.byteValueLink(10, lowValueLink)}/>
+                              onChange={lowSetter}
+                              value={this.props.registers[lowRegister]}/>
                 <EditableCell activeClassName="form-control input-sm"
-                              valueLink={formats.byteValueLink(16, lowValueLink)}/>
+                              onChange={lowSetter}
+                              value={`0x${formats.byte2hex(this.props.registers[lowRegister])}`}/>
                 <EditableCell activeClassName="form-control input-sm"
-                              valueLink={formats.byteValueLink(2, lowValueLink)}/>
+                              onChange={lowSetter}
+                              value={`0b${formats.byte2bin(this.props.registers[lowRegister])}`}/>
             </tr>
         ]
     }
 
     renderWordRegister(register, className, flagName, flagDescription) {
-        const valueLink = {
-            value: this.props.registers[register],
-            requestChange: value => MachineActions.transition({[register]: value})
-        }
         let flag
         if (flagName) {
             flag = (
@@ -99,19 +102,21 @@ export default class RegistersView extends React.Component {
         } else {
             flag = <td colSpan="4">Flags</td>
         }
+
+        const wordSetter = formats.wordParser((value) =>
+            MachineActions.transition({[register]: value}))
+
         return (
             <tr>
                 {flag}
                 <td className={className}>{register}</td>
                 <EditableCell activeClassName="form-control input-sm" className={className}
-                              valueLink={formats.wordValueLink(10, valueLink)}/>
+                              onChange={wordSetter}
+                              value={this.props.registers[register]}/>
                 <EditableCell activeClassName="form-control input-sm" className={className}
-                              valueLink={formats.wordValueLink(16, valueLink)}/>
+                              onChange={wordSetter}
+                              value={`0x${formats.word2hex(this.props.registers[register])}`}/>
             </tr>
         )
     }
-}
-
-RegistersView.propTypes = {
-    registers: React.PropTypes.object.isRequired
 }

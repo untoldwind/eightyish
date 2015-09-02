@@ -4,6 +4,11 @@ import EditorMemory from './EditorMemory'
 import EditorAssembler from './EditorAssembler'
 
 export default class Editor extends React.Component {
+    static propTypes = {
+        pc: React.PropTypes.number.isRequired,
+        sourceCode: React.PropTypes.object.isRequired
+    }
+
     render() {
         return (
             <div style={{maxHeight: '30em', overflowY: 'scroll', border: '1px solid black'}}>
@@ -16,9 +21,4 @@ export default class Editor extends React.Component {
             </div>
         )
     }
-}
-
-Editor.propTypes = {
-    pc: React.PropTypes.number.isRequired,
-    sourceCode: React.PropTypes.object.isRequired
 }

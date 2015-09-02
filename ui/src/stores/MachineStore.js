@@ -39,7 +39,8 @@ class MachineStore extends ReduceStore {
         case AppConstants.MACHINE_MOVE_TO_BEGIN:
             return state.moveToBegin()
 
-        case AppConstants.MACHINE_STEP_FORWARD: {
+        case AppConstants.MACHINE_STEP_FORWARD:
+        {
             const nextState = state.stepForward()
             if (nextState.running) {
                 this.timer = setTimeout(MachineActions.stepForward, 5)

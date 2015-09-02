@@ -5,23 +5,25 @@ import Switch from './Switch'
 import * as MachineActions from '../actions/MachineActions'
 
 export default class MachineControl extends React.Component {
+    static propTypes = {
+        hasVideo: React.PropTypes.bool.isRequired,
+        running: React.PropTypes.bool.isRequired,
+        totalCycles: React.PropTypes.number.isRequired
+    }
+
     constructor(props) {
         super(props)
         this.state = {toggle: false}
     }
 
     render() {
-        const hasVideoLink = {
-            value: this.props.hasVideo,
-            requestChange: (value) => MachineActions.toggleVideo(value)
-        }
         return (
             <div className="row">
                 <div className="col-md-2">
                     <button className="btn btn-danger" id="btn-reset" onClick={MachineActions.reset}>Reset</button>
                 </div>
                 <div className="col-md-2">
-                    <Switch label="Video" valueLink={hasVideoLink}/>
+                    <Switch label="Video" value={this.props.hasVideo} onChange={MachineActions.toggleVideo}/>
                 </div>
                 <div className="col-md-4 btn-toolbar">
                     <div className="btn-group">
@@ -67,10 +69,4 @@ export default class MachineControl extends React.Component {
             </div>
         )
     }
-}
-
-MachineControl.propTypes = {
-    hasVideo: React.PropTypes.bool.isRequired,
-    running: React.PropTypes.bool.isRequired,
-    totalCycles: React.PropTypes.number.isRequired
 }

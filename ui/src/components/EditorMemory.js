@@ -5,6 +5,11 @@ import * as MachineActions from '../actions/MachineActions'
 import * as formats from './formats'
 
 export default class EditorMemory extends React.Component {
+    static propTypes = {
+        pc: React.PropTypes.number.isRequired,
+        sourceCode: React.PropTypes.object.isRequired
+    }
+
     render() {
         return (
             <ul className="assembler">
@@ -38,9 +43,4 @@ export default class EditorMemory extends React.Component {
     toggleBreakpoint(address) {
         return () => MachineActions.toggleBreakpoint(address)
     }
-}
-
-EditorMemory.propTypes = {
-    pc: React.PropTypes.number.isRequired,
-    sourceCode: React.PropTypes.object.isRequired
 }

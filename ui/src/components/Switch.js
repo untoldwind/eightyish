@@ -1,6 +1,22 @@
 import React from 'react'
 
+import shouldPureComponentUpdate from 'react-pure-render/function'
+
 export default class Switch extends React.Component {
+    static propTypes = {
+        onText: React.PropTypes.string.isRequired,
+        offText: React.PropTypes.string.isRequired,
+        label: React.PropTypes.string.isRequired,
+        value: React.PropTypes.bool.isRequired,
+        onChange: React.PropTypes.func
+    }
+
+    static defaultProps = {
+        onText: 'ON',
+        offText: 'OFF',
+        label: '\u00a0'
+    }
+
     componentDidMount() {
         this.updateWidths()
     }
@@ -8,6 +24,8 @@ export default class Switch extends React.Component {
     componentDidUpdate() {
         this.updateWidths()
     }
+
+    shouldComponentUpdate = shouldPureComponentUpdate;
 
     updateWidths() {
         const width = React.findDOMNode(this.refs.label).offsetWidth
@@ -18,7 +36,7 @@ export default class Switch extends React.Component {
         React.findDOMNode(this.refs.wrapper).style.width = (2 * width) + 'px'
         React.findDOMNode(this.refs.container).style.width = (3 * width) + 'px'
 
-        if (this.props.valueLink.value) {
+        if (this.props.value) {
             React.findDOMNode(this.refs.container).style.marginLeft = '0px'
         } else {
             React.findDOMNode(this.refs.container).style.marginLeft = (-width) + 'px'
@@ -27,7 +45,7 @@ export default class Switch extends React.Component {
 
     render() {
         let className = 'bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate '
-        if (this.props.valueLink.value) {
+        if (this.props.value) {
             className += 'bootstrap-switch-on'
         } else {
             className += 'bootstrap-switch-off'
@@ -35,13 +53,13 @@ export default class Switch extends React.Component {
         return (
             <div className={className} onClick={this.toggle.bind(this)} ref="wrapper">
                 <div className="bootstrap-switch-container" ref="container">
-                    <span className="bootstrap-switch-handle-on bootstrap-switch-primary" ref ="on">
+                    <span className="bootstrap-switch-handle-on bootstrap-switch-primary" ref="on">
                         {this.props.onText}
                     </span>
                     <span className="bootstrap-switch-label" ref="label">
                         {this.props.label}
                     </span>
-                    <span className="bootstrap-switch-handle-off bootstrap-switch-default" ref ="off">
+                    <span className="bootstrap-switch-handle-off bootstrap-switch-default" ref="off">
                         {this.props.offText}
                     </span>
                 </div>
@@ -50,22 +68,8 @@ export default class Switch extends React.Component {
     }
 
     toggle() {
-        this.props.valueLink.requestChange(!this.props.valueLink.value)
+        if (this.props.onChange) {
+            this.props.onChange(!this.props.value)
+        }
     }
-}
-
-Switch.propTypes = {
-    onText: React.PropTypes.string.isRequired,
-    offText: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
-    valueLink: React.PropTypes.shape({
-        value: React.PropTypes.bool.isRequired,
-        requestChange: React.PropTypes.func.isRequired
-    }).isRequired
-}
-
-Switch.defaultProps = {
-    onText: 'ON',
-    offText: 'OFF',
-    label: '\u00a0'
 }

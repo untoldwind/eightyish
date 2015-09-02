@@ -1,6 +1,17 @@
 import React from 'react'
 
+import shouldPureComponentUpdate from 'react-pure-render/function'
+
 export default class EditableCell extends React.Component {
+    static propTypes = {
+        className: React.PropTypes.string,
+        activeClassName: React.PropTypes.string,
+        value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
+        onChange: React.PropTypes.func,
+        rowSpan: React.PropTypes.number,
+        style: React.PropTypes.object
+    }
+
     constructor(props) {
         super(props)
 
@@ -10,19 +21,21 @@ export default class EditableCell extends React.Component {
     }
 
     startEditing() {
-        this.setState({editing: true, text: this.props.valueLink.value})
+        this.setState({editing: true, text: this.props.value})
     }
 
     finishEditing() {
-        if (this.props.valueLink.value !== this.state.text) {
+        if (this.props.value !== this.state.text) {
             this.commitEditing()
-        } else if (this.props.valueLink.value === this.state.text) {
+        } else if (this.props.value === this.state.text) {
             this.cancelEditing()
         }
     }
 
     commitEditing() {
-        this.props.valueLink.requestChange(this.state.text)
+        if (this.props.onChange) {
+            this.props.onChange(this.state.text)
+        }
         this.setState({editing: false})
     }
 
@@ -49,10 +62,12 @@ export default class EditableCell extends React.Component {
         if (this.state.editing && !prevState.editing) {
             inputElem.focus()
             inputElem.setSelectionRange(0, inputElem.value.length)
-        } else if (this.state.editing && prevProps.valueLink.value !== this.props.valueLink.value) {
+        } else if (this.state.editing && prevProps.value !== this.props.value) {
             this.finishEditing()
         }
     }
+
+    shouldComponentUpdate = shouldPureComponentUpdate;
 
     render() {
         if (!this.state.editing) {
@@ -61,7 +76,7 @@ export default class EditableCell extends React.Component {
                     onClick={this.startEditing.bind(this)}
                     rowSpan={this.props.rowSpan}
                     style={this.props.style}>
-                    {this.props.valueLink.value}
+                    {this.props.value}
                 </td>
             )
         }
@@ -77,19 +92,8 @@ export default class EditableCell extends React.Component {
                        onKeyDown={this.keyDown.bind(this)}
                        onReturn={this.finishEditing.bind(this)}
                        ref="input"
-                       size={this.props.valueLink.value.length}/>
+                       size={this.props.value.length}/>
             </td>
         )
     }
-}
-
-EditableCell.propTypes = {
-    className: React.PropTypes.string,
-    activeClassName: React.PropTypes.string,
-    valueLink: React.PropTypes.shape({
-        value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
-        requestChange: React.PropTypes.func.isRequired
-    }).isRequired,
-    rowSpan: React.PropTypes.number,
-    style: React.PropTypes.object
 }

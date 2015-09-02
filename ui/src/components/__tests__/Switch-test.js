@@ -11,12 +11,7 @@ describe('Switch component', () => {
             get: () => 50
         })
         const node = document.createElement('div')
-        const valueLink = {
-            value: true,
-            requestChange: () => {
-            }
-        }
-        let component = React.render(<Switch label="Test" valueLink={valueLink}/>, node)
+        let component = React.render(<Switch label="Test" value={true}/>, node)
 
         expect(component.refs.wrapper.props.className).toContain('bootstrap-switch-on')
         expect(component.refs.label.getDOMNode().textContent).toBe('Test')
@@ -27,8 +22,7 @@ describe('Switch component', () => {
         expect(component.refs.container.getDOMNode().style.width).toBe('150px')
         expect(component.refs.container.getDOMNode().style.marginLeft).toBe('0px')
 
-        valueLink.value = false
-        component = React.render(<Switch label="Test" valueLink={valueLink}/>, node)
+        component = React.render(<Switch label="Test" value={false}/>, node)
 
         expect(component.refs.wrapper.props.className).toContain('bootstrap-switch-off')
         expect(component.refs.label.getDOMNode().textContent).toBe('Test')
@@ -41,22 +35,15 @@ describe('Switch component', () => {
     })
 
     it('should toggle on click', () => {
-        let changedValue = false
-
-        const valueLink = {
-            value: false,
-            requestChange: (value) => {
-                changedValue = value
-            }
-        }
+        const onChange = jest.genMockFunction()
         const component = TestUtils.renderIntoDocument(
-            <Switch label="Test" valueLink={valueLink}/>
+            <Switch label="Test" value={false} onChange={onChange}/>
         )
 
         expect(component.refs.wrapper.props.className).toContain('bootstrap-switch-off')
         TestUtils.Simulate.click(component.refs.wrapper)
 
-        expect(changedValue).toBe(true)
+        expect(onChange).toBeCalledWith(true)
     })
 })
 

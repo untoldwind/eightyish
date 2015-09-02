@@ -3,6 +3,9 @@ import React from 'react'
 import * as MachineActions from '../actions/MachineActions'
 
 export default class EditorAssembler extends React.Component {
+    static propTypes = {
+        sourceCode: React.PropTypes.object.isRequired
+    }
 
     componentDidMount() {
         this.updateContent()
@@ -93,8 +96,4 @@ export default class EditorAssembler extends React.Component {
             MachineActions.compile(lines)
         }
     }
-}
-
-EditorAssembler.propTypes = {
-    sourceCode: React.PropTypes.object.isRequired
 }
