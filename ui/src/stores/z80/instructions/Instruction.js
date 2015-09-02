@@ -1,4 +1,4 @@
-import {fill} from '../formats'
+import {fill} from '../../../util/formats'
 
 import Statement from '../Statement'
 

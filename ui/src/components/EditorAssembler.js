@@ -22,6 +22,10 @@ export default class EditorAssembler extends React.Component {
         this.setSelectedLine(selectedLine)
     }
 
+    shouldComponentUpdate(nextProps) {
+        return this.props.sourceCode !== nextProps.sourceCode
+    }
+
     getSelectedLine() {
         if (!window.getSelection) {
             return -1

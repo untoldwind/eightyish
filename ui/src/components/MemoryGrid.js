@@ -2,13 +2,19 @@ import React from 'react'
 
 import MemoryRow from './MemoryRow'
 
-import * as formats from './formats'
+import * as formats from './../util/formats'
+
+import shallowEqual from '../util/shallowEqual'
 
 export default class MemoryGrid extends React.Component {
     static propTypes = {
         columns: React.PropTypes.number.isRequired,
         memoryBlock: React.PropTypes.object.isRequired,
         registers: React.PropTypes.object.isRequired
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return !shallowEqual(this.props, nextProps)
     }
 
     render() {

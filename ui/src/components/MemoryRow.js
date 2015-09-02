@@ -4,7 +4,7 @@ import EditableCell from './EditableCell'
 
 import * as MachineActions from '../actions/MachineActions'
 
-import * as formats from './formats'
+import * as formats from './../util/formats'
 
 function mapCount(count, callback) {
     const result = []

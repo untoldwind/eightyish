@@ -1,6 +1,6 @@
 import React from 'react'
 
-import shouldPureComponentUpdate from 'react-pure-render/function'
+import shallowEqual from '../util/shallowEqual'
 
 export default class EditableCell extends React.Component {
     static propTypes = {
@@ -67,7 +67,9 @@ export default class EditableCell extends React.Component {
         }
     }
 
-    shouldComponentUpdate = shouldPureComponentUpdate;
+    shouldComponentUpdate(nextProps, nextState) {
+        return !shallowEqual(this.props, nextProps, true) || !shallowEqual(this.state, nextState)
+    }
 
     render() {
         if (!this.state.editing) {

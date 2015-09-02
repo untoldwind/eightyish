@@ -1,5 +1,7 @@
 import React from 'react'
 
+import shallowEqual from '../util/shallowEqual'
+
 export default class VideoDisplay extends React.Component {
     static propTypes = {
         memoryBlock: React.PropTypes.object.isRequired,
@@ -34,6 +36,10 @@ export default class VideoDisplay extends React.Component {
                 bitOffset++
             }
         }
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return !shallowEqual(this.props, nextProps)
     }
 
     render() {

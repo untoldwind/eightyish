@@ -3,7 +3,7 @@ import React from 'react'
 import EditableCell from './EditableCell'
 
 import * as MachineActions from '../actions/MachineActions'
-import * as formats from './formats'
+import * as formats from './../util/formats'
 
 export default class RegistersView extends React.Component {
     static propTypes = {

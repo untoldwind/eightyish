@@ -2,6 +2,10 @@ export function repeat(ch, count) {
     return new Array(count + 1).join(ch)
 }
 
+export function fill(prefix, upTo) {
+    return repeat(' ', upTo - prefix.length)
+}
+
 export function byte2bin(v) {
     if (typeof v !== 'number') {
         return ''

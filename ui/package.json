@@ -27,7 +27,6 @@
     "flux": "^2.1.1",
     "react": "^0.13.3",
     "react-overlays": "^0.4.4",
-    "react-pure-render": "^1.0.2",
     "react-router": "^0.13.3"
   },
   "devDependencies": {

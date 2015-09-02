@@ -1,6 +1,6 @@
 import React from 'react'
 
-import shouldPureComponentUpdate from 'react-pure-render/function'
+import shallowEqual from '../util/shallowEqual'
 
 export default class Switch extends React.Component {
     static propTypes = {
@@ -25,7 +25,9 @@ export default class Switch extends React.Component {
         this.updateWidths()
     }
 
-    shouldComponentUpdate = shouldPureComponentUpdate;
+    shouldComponentUpdate(nextProps) {
+        return !shallowEqual(this.props, nextProps, true)
+    }
 
     updateWidths() {
         const width = React.findDOMNode(this.refs.label).offsetWidth

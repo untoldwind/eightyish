@@ -2,12 +2,16 @@ import React from 'react'
 
 import * as MachineActions from '../actions/MachineActions'
 
-import * as formats from './formats'
+import * as formats from './../util/formats'
 
 export default class EditorMemory extends React.Component {
     static propTypes = {
         pc: React.PropTypes.number.isRequired,
         sourceCode: React.PropTypes.object.isRequired
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return this.props.sourceCode !== nextProps.sourceCode || this.props.pc !== nextProps.pc
     }
 
     render() {
