@@ -6,3 +6,5 @@ ui/lib
 ui/coverage
 .idea/
 *.iml
+ui/specs/reports/
+ui/specs/temp-tests/
