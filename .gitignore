@@ -7,4 +7,4 @@ ui/coverage
 .idea/
 *.iml
 ui/specs/reports/
-ui/specs/temp-tests/
+ui/specs/temp-runners/

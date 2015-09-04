@@ -1,4 +1,6 @@
+@Basic
 Feature: Basic functionality
+
   Scenario: Machine reset
     Given Navigate to machine view
     When Reset button is clicked

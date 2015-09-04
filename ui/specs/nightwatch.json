@@ -1,10 +1,10 @@
 {
-  "src_folders" : ["specs/start"],
+  "src_folders" : ["specs/temp-runners"],
   "output_folder" : "specs/reports",
   "custom_commands_path" : "",
   "custom_assertions_path" : "",
   "page_objects_path" : "",
-  "globals_path" : "",
+  "globals_path" : "specs/globals/runnerGenerator.js",
 
   "selenium" : {
     "start_process" : true,
