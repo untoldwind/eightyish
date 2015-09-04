@@ -5,6 +5,7 @@ import EditorAssembler from './EditorAssembler'
 
 export default class Editor extends React.Component {
     static propTypes = {
+        firmware: React.PropTypes.bool.isRequired,
         pc: React.PropTypes.number.isRequired,
         sourceCode: React.PropTypes.object.isRequired
     }
@@ -16,7 +17,7 @@ export default class Editor extends React.Component {
                     <EditorMemory pc={this.props.pc} sourceCode={this.props.sourceCode}/>
                 </div>
                 <div className="col-md-8">
-                    <EditorAssembler sourceCode={this.props.sourceCode}/>
+                    <EditorAssembler firmware={this.props.firmware} sourceCode={this.props.sourceCode}/>
                 </div>
             </div>
         )

@@ -208,8 +208,8 @@ export default class MachineState extends Immutable {
         if (localStorage) {
             localStorage.machineState = JSON.stringify({
                 registers: this.registers,
-                memory: this.memory.data,
-                videoMemory: this.hasVideo ? this.videoMemory.data : null,
+                memory: Array.from(this.memory.data),
+                videoMemory: this.hasVideo ? Array.from(this.videoMemory.data) : null,
                 assembler: this.sourceCode.assembler
             })
         }

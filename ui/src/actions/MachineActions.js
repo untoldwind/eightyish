@@ -67,6 +67,13 @@ export function compile(lines) {
     })
 }
 
+export function compileFirmware(lines) {
+    appDispatcher.dispatch({
+        type: AppConstants.MACHINE_COMPILE_FIRMWARE,
+        lines: lines
+    })
+}
+
 export function toggleBreakpoint(address) {
     appDispatcher.dispatch({
         type: AppConstants.TOGGLE_BREAKPOINT,

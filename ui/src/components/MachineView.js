@@ -39,11 +39,13 @@ class MachineView extends React.Component {
                     <div className="col-md-7">
                         <TabContainer>
                             <TabPanel title="Assember">
-                                <Editor pc={this.state.machineState.registers.PC}
+                                <Editor firmware={false}
+                                        pc={this.state.machineState.registers.PC}
                                         sourceCode={this.state.machineState.sourceCode}/>
                             </TabPanel>
                             <TabPanel title="Firmware">
-                                <Editor pc={this.state.machineState.registers.PC}
+                                <Editor firmware={true}
+                                        pc={this.state.machineState.registers.PC}
                                         sourceCode={this.state.machineState.firmwareSource}/>
                             </TabPanel>
                         </TabContainer>
@@ -65,7 +67,6 @@ class MachineView extends React.Component {
                         <VideoDisplay height={this.state.machineState.videoHeight}
                                       id="video-memory-display"
                                       memoryBlock={this.state.machineState.videoMemory}
-                                      scale={4}
                                       width={this.state.machineState.videoWidth}/>
                     </div>
                     <div className="col-md-6">

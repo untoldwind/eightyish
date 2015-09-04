@@ -63,6 +63,9 @@ class MachineStore extends ReduceStore {
         case AppConstants.MACHINE_COMPILE:
             return state.compile(action.lines)
 
+        case AppConstants.MACHONE_COMPILE_FIRMWARE:
+            return state.compileFirmware(action.lines)
+
         case AppConstants.TOGGLE_BREAKPOINT:
             return state.toggleBreakpoint(action.address)
 

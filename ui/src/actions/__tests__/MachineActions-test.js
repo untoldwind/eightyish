@@ -77,6 +77,16 @@ describe('Machine actions', () => {
         })
     })
 
+    it('should dispatch message on fastFormward', () => {
+        const appDispatcher = require('../../dispatcher/AppDispatcher')
+        const MachineActions = require('../MachineActions')
+
+        MachineActions.fastForward()
+        expect(appDispatcher.dispatch).toBeCalledWith({
+            type: AppConstants.MACHINE_FAST_FORWARD
+        })
+    })
+
     it('should dispatch message on reset', () => {
         const appDispatcher = require('../../dispatcher/AppDispatcher')
         const MachineActions = require('../MachineActions')
@@ -95,6 +105,28 @@ describe('Machine actions', () => {
         expect(appDispatcher.dispatch).toBeCalledWith({
             type: AppConstants.MACHINE_COMPILE,
             lines: ['Line1', 'Line2']
+        })
+    })
+
+    it('should dispatch message on compileFirmware', () => {
+        const appDispatcher = require('../../dispatcher/AppDispatcher')
+        const MachineActions = require('../MachineActions')
+
+        MachineActions.compileFirmware(['Line1', 'Line2'])
+        expect(appDispatcher.dispatch).toBeCalledWith({
+            type: AppConstants.MACHINE_COMPILE_FIRMWARE,
+            lines: ['Line1', 'Line2']
+        })
+    })
+
+    it('should dispatch message on toggleBreakpoint', () => {
+        const appDispatcher = require('../../dispatcher/AppDispatcher')
+        const MachineActions = require('../MachineActions')
+
+        MachineActions.toggleBreakpoint(0x1234)
+        expect(appDispatcher.dispatch).toBeCalledWith({
+            type: AppConstants.TOGGLE_BREAKPOINT,
+            address: 0x1234
         })
     })
 })

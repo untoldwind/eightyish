@@ -4,6 +4,7 @@ import * as MachineActions from '../actions/MachineActions'
 
 export default class EditorAssembler extends React.Component {
     static propTypes = {
+        firmware: React.PropTypes.bool.isRequired,
         sourceCode: React.PropTypes.object.isRequired
     }
 
@@ -98,7 +99,11 @@ export default class EditorAssembler extends React.Component {
             lines = lines.concat(child.textContent.split('\n'))
         }
         if (force || lines.length !== this.props.sourceCode.statements.length) {
-            MachineActions.compile(lines)
+            if ( this.props.firmware) {
+                MachineActions.compileFirmware(lines)
+            } else {
+                MachineActions.compile(lines)
+            }
         }
     }
 }
