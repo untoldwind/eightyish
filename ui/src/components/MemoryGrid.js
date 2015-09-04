@@ -9,6 +9,7 @@ import shallowEqual from '../util/shallowEqual'
 export default class MemoryGrid extends React.Component {
     static propTypes = {
         columns: React.PropTypes.number.isRequired,
+        id: React.PropTypes.string,
         memoryBlock: React.PropTypes.object.isRequired,
         registers: React.PropTypes.object.isRequired
     }
@@ -19,7 +20,7 @@ export default class MemoryGrid extends React.Component {
 
     render() {
         return (
-            <table className="table table-condensed table-bordered">
+            <table className="table table-condensed table-bordered" id={this.props.id}>
                 <thead>
                 <tr>
                     <th></th>

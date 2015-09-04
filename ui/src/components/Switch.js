@@ -6,6 +6,7 @@ export default class Switch extends React.Component {
     static propTypes = {
         onText: React.PropTypes.string.isRequired,
         offText: React.PropTypes.string.isRequired,
+        id: React.PropTypes.string,
         label: React.PropTypes.string.isRequired,
         value: React.PropTypes.bool.isRequired,
         onChange: React.PropTypes.func
@@ -53,7 +54,7 @@ export default class Switch extends React.Component {
             className += 'bootstrap-switch-off'
         }
         return (
-            <div className={className} onClick={this.toggle.bind(this)} ref="wrapper">
+            <div className={className} id={this.props.id} onClick={this.toggle.bind(this)} ref="wrapper">
                 <div className="bootstrap-switch-container" ref="container">
                     <span className="bootstrap-switch-handle-on bootstrap-switch-primary" ref="on">
                         {this.props.onText}

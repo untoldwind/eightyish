@@ -4,12 +4,13 @@ import shallowEqual from '../util/shallowEqual'
 
 export default class EditableCell extends React.Component {
     static propTypes = {
-        className: React.PropTypes.string,
         activeClassName: React.PropTypes.string,
-        value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
+        className: React.PropTypes.string,
+        id: React.PropTypes.string,
         onChange: React.PropTypes.func,
         rowSpan: React.PropTypes.number,
-        style: React.PropTypes.object
+        style: React.PropTypes.object,
+        value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired
     }
 
     constructor(props) {
@@ -75,6 +76,7 @@ export default class EditableCell extends React.Component {
         if (!this.state.editing) {
             return (
                 <td className={this.props.className}
+                    id={this.props.id}
                     onClick={this.startEditing.bind(this)}
                     rowSpan={this.props.rowSpan}
                     style={this.props.style}>
@@ -84,6 +86,7 @@ export default class EditableCell extends React.Component {
         }
         return (
             <td className={this.props.className}
+                id={this.props.id}
                 onClick={this.startEditing.bind(this)}
                 rowSpan={this.props.rowSpan}
                 style={this.props.style}>

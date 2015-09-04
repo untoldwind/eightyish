@@ -7,10 +7,13 @@ const parser = new Yadda.parsers.FeatureParser()
 const features = new Yadda.FeatureFileSearch('specs/features').list()
 const steps = {}
 
-const stepInitializers = new Yadda.FileSearch('specs/steps', /.*-steps\.js$/).list().
-    map((file) => require(`../../${file}`))
+const stepInitializers = new Yadda.FileSearch('specs/steps', /.*-steps\.js$/).list()
+    .map((file) => require(`../../${file}`))
 
 const dictionary = new Yadda.Dictionary()
+    .define('num', /(0x[0-9A-F]+|\d+)/, Yadda.converters.integer)
+    .define('onOff', /(on|off)/, (value, next) => next(null, value === 'on'))
+    .define('assembler', /([^\u0000]*)/)
 
 features.forEach((file) => {
     const text = fs.readFileSync(file, 'utf8')
@@ -25,7 +28,6 @@ features.forEach((file) => {
             let counter = 1
             const library = English.library(dictionary)
             const ctx = {
-                browser: browser,
                 feature: feature.title,
                 scenario: scenario.title,
                 takeScreenshot: () => {
@@ -33,16 +35,21 @@ features.forEach((file) => {
                     counter++
                 }
             }
-            stepInitializers.forEach((stepInitializer) => stepInitializer(library, ctx))
+            stepInitializers.forEach((stepInitializer) => stepInitializer(library, browser, ctx))
             const yadda = new Yadda.Yadda(library)
-            yadda.yadda(scenario.steps, {browser: browser})
+            scenario.steps.forEach((step) => {
+                browser.perform(() => {
+                    console.log(`- ${step}`)
+                })
+                yadda.yadda([step], {browser: browser})
+            })
+            browser.end()
         }
     })
-
 })
 
-steps['Close Session'] = (browser) => {
-    browser.end()
-}
+//steps['Close Session'] = (browser) => {
+//    browser.end()
+//}
 
 export default steps

@@ -74,10 +74,12 @@ export default class MachineView extends React.Component {
                     <div className="col-md-6">
                         <h4>Video</h4>
                         <VideoDisplay height={this.state.videoHeight}
+                                      id="video-memory-display"
                                       memoryBlock={this.state.videoMemory}
                                       scale={4}
                                       width={this.state.videoWidth}/>
                         <MemoryGrid columns={16}
+                                    id="video-memory-grid"
                                     memoryBlock={this.state.videoMemory}
                                     registers={this.state.registers}/>
                     </div>
@@ -95,6 +97,7 @@ export default class MachineView extends React.Component {
                 <div className="col-md-12">
                     <h4>Main memory</h4>
                     <MemoryGrid columns={32}
+                                id="main-memory-grid"
                                 memoryBlock={this.state.memory}
                                 registers={this.state.registers}
                                 segmentOffset={0}/>

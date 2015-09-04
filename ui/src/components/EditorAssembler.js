@@ -78,6 +78,7 @@ export default class EditorAssembler extends React.Component {
         return (
             <ul className="assembler"
                 contentEditable="true"
+                id="editor-assembler"
                 onBlur={this.handleBlur.bind(this)}
                 onInput={this.handleInput.bind(this)}/>
         )

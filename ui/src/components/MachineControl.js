@@ -23,7 +23,8 @@ export default class MachineControl extends React.Component {
                     <button className="btn btn-danger" id="btn-reset" onClick={MachineActions.reset}>Reset</button>
                 </div>
                 <div className="col-md-2">
-                    <Switch label="Video" value={this.props.hasVideo} onChange={MachineActions.toggleVideo}/>
+                    <Switch id="switch-video" label="Video" value={this.props.hasVideo}
+                            onChange={MachineActions.toggleVideo}/>
                 </div>
                 <div className="col-md-4 btn-toolbar">
                     <div className="btn-group">

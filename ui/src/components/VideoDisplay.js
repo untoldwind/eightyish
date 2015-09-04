@@ -4,6 +4,7 @@ import shallowEqual from '../util/shallowEqual'
 
 export default class VideoDisplay extends React.Component {
     static propTypes = {
+        id: React.PropTypes.string,
         memoryBlock: React.PropTypes.object.isRequired,
         width: React.PropTypes.number.isRequired,
         height: React.PropTypes.number.isRequired,
@@ -45,6 +46,7 @@ export default class VideoDisplay extends React.Component {
     render() {
         return (
             <canvas height={this.props.scale * this.props.height}
+                    id={this.props.id}
                     ref="canvas"
                     width={this.props.scale * this.props.width}/>
         )
