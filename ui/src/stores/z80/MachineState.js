@@ -20,14 +20,12 @@ export default class MachineState extends Immutable {
         this.videoMemory = null
         this.sourceCode = SourceCode.create(0)
         this.firmwareOffset = 0x8000
-        this.firmwareMemory = []
+        this.firmwareMemory = MemoryBlock.create(this.firmwareOffset, 0)
         this.firmwareSource = SourceCode.create(this.firmwareOffset)
         this.breakpoints = new Set()
         this.transitions = Stack.create()
         this.totalCycles = 0
         this.running = false
-
-        this.compileFirmware(firmware)
     }
 
     reset() {
@@ -130,6 +128,9 @@ export default class MachineState extends Immutable {
         if (this.memory.contains(address)) {
             return this.memory.getMemory(address, length)
         }
+        if (this.firmwareMemory.contains(address)) {
+            return this.firmwareMemory.getMemory(address, length)
+        }
         if (this.videoMemory && this.videoMemory.contains(address)) {
             return this.videoMemory.getMemory(address, length)
         }
@@ -140,8 +141,11 @@ export default class MachineState extends Immutable {
         if (this.memory.contains(address)) {
             return this.memory.getByte(address)
         }
+        if (this.firmwareMemory.contains(address)) {
+            return this.firmwareMemory.getByte(address)
+        }
         if (this.videoMemory && this.videoMemory.contains(address)) {
-            return this.videoMemory.getByte(address, length)
+            return this.videoMemory.getByte(address)
         }
         return 0
     }
@@ -150,22 +154,29 @@ export default class MachineState extends Immutable {
         if (this.memory.contains(address)) {
             return this.memory.getWord(address)
         }
+        if (this.firmwareMemory.contains(address)) {
+            return this.firmwareMemory.getWord(address)
+        }
         if (this.videoMemory && this.videoMemory.contains(address)) {
-            return this.videoMemory.getWord(address, length)
+            return this.videoMemory.getWord(address)
         }
         return 0
     }
 
     compileFirmware(lines) {
-        this.firmwareSource.compile(lines)
-        this.firmwareMemory = this.firmwareSource.memoryAndBreakpoints[0]
+        const firmwareSource = this.firmwareSource.compile(lines)
+        const [firmwareMemory, firmwareBreakpoints] = firmwareSource.memoryAndBreakpoints
+        return this.copy({
+            firmwareSource: firmwareSource,
+            firmwareMemory: this.firmwareMemory.replaceData(firmwareMemory)
+        })
     }
 
     transferSourceToMemory() {
         const [sourceMemory, sourceBreakpoints] = this.sourceCode.memoryAndBreakpoints
 
         return this.copy({
-            memory: this.memory.replace(0, sourceMemory),
+            memory: this.memory.updateData(0, sourceMemory),
             breakpoints: new Set(sourceBreakpoints)
         })
     }
@@ -183,11 +194,11 @@ export default class MachineState extends Immutable {
             return this.copy({
                 registers: this.registers.copy(storedState.registers),
                 sourceCode: sourceCode,
-                memory: this.memory.replace(0, storedState.memory).replace(0, sourceMemory),
+                memory: this.memory.updateData(0, storedState.memory).updateData(0, sourceMemory),
                 breakpoints: new Set(sourceBreakpoints),
                 videoMemory: storedState.videoMemory ?
                     MemoryBlock.create(this.videoOffset, this.videoWidth * this.videoHeight / 8)
-                        .replace(this.videoOffset, storedState.videoMemory) : null
+                        .updateData(this.videoOffset, storedState.videoMemory) : null
             })
         }
         return this
@@ -207,4 +218,4 @@ export default class MachineState extends Immutable {
 }
 
 MachineState.create = (memSize, videoWidth, videoHeight) =>
-    Object.freeze(new MachineState(memSize, videoWidth, videoHeight))
+    Object.freeze(new MachineState(memSize, videoWidth, videoHeight)).compileFirmware(firmware)

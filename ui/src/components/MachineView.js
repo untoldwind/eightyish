@@ -27,6 +27,7 @@ function getCurrentState() {
 export default class MachineView extends React.Component {
     constructor(props) {
         super(props)
+        
         this.state = getCurrentState()
     }
 
@@ -53,11 +54,16 @@ export default class MachineView extends React.Component {
 
                 <div className="row">
                     <div className="col-md-5">
-                        <h4>Registers</h4>
+                        <ul className="nav nav-tabs">
+                            <li className="active"><a href="#">Registers</a></li>
+                        </ul>
                         <RegistersView registers={this.state.registers}/>
                     </div>
                     <div className="col-md-7">
-                        <h4>Assember</h4>
+                        <ul className="nav nav-tabs">
+                            <li className="active"><a href="#">Assember</a></li>
+                            <li><a href="#">Firmware</a></li>
+                        </ul>
                         <Editor pc={this.state.registers.PC}
                                 sourceCode={this.state.sourceCode}/>
                     </div>
@@ -72,7 +78,9 @@ export default class MachineView extends React.Component {
             return (
                 <div className="row">
                     <div className="col-md-6">
-                        <h4>Video</h4>
+                        <ul className="nav nav-tabs">
+                            <li className="active"><a href="#">Video display</a></li>
+                        </ul>
                         <VideoDisplay height={this.state.videoHeight}
                                       id="video-memory-display"
                                       memoryBlock={this.state.videoMemory}
@@ -84,7 +92,10 @@ export default class MachineView extends React.Component {
                                     registers={this.state.registers}/>
                     </div>
                     <div className="col-md-6">
-                        <h4>Main memory</h4>
+                        <ul className="nav nav-tabs">
+                            <li className="active"><a href="#">Main memory</a></li>
+                            <li><a href="#">Video memory</a></li>
+                        </ul>
                         <MemoryGrid columns={16}
                                     memoryBlock={this.state.memory}
                                     registers={this.state.registers}/>
@@ -95,7 +106,9 @@ export default class MachineView extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-12">
-                    <h4>Main memory</h4>
+                    <ul className="nav nav-tabs">
+                        <li className="active"><a href="#">Main memory</a></li>
+                    </ul>
                     <MemoryGrid columns={32}
                                 id="main-memory-grid"
                                 memoryBlock={this.state.memory}

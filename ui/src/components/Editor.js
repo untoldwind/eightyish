@@ -11,7 +11,7 @@ export default class Editor extends React.Component {
 
     render() {
         return (
-            <div style={{maxHeight: '30em', overflowY: 'scroll', border: '1px solid black'}}>
+            <div className="editor">
                 <div className="col-md-4">
                     <EditorMemory pc={this.props.pc} sourceCode={this.props.sourceCode}/>
                 </div>

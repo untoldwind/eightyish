@@ -18,7 +18,7 @@ export default function (library, browser, ctx) {
         })
         .then('Video should be toggled $onOff', (onOff) => {
             const expectedClass = onOff ? 'bootstrap-switch-on' : 'bootstrap-switch-off'
-            browser.expect.element('#switch-video').to.have.attribute('class').which.contain(expectedClass).before(500)
+            browser.expect.element('#switch-video').to.have.attribute('class').which.contain(expectedClass).before(1000)
             if (onOff) {
                 browser.expect.element('#video-memory-display').to.be.visible.before(500)
                 browser.expect.element('#video-memory-grid').to.be.visible.before(500)

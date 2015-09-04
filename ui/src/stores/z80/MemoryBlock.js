@@ -24,7 +24,13 @@ export default class MemoryBlock extends Immutable {
         return this.data.subarray(address - this.offset, address - this.offset + length)
     }
 
-    replace(address, changes) {
+    replaceData(newData) {
+        return this.copy({
+            data:  new Uint8Array(newData)
+        })
+    }
+
+    updateData(address, changes) {
         const newData = new Uint8Array(this.data)
 
         newData.set(changes, address - this.offset)
