@@ -1,71 +1,52 @@
 import React from 'react'
+import FluxContainer from 'flux/lib/FluxContainer'
 
 import MachineControl from './MachineControl'
 import MemoryGrid from './MemoryGrid'
 import RegistersView from './RegistersView'
 import Editor from './Editor'
 import VideoDisplay from './VideoDisplay'
+import TabContainer from './TabContainer'
+import TabPanel from './TabPanel'
 
 import machineStore from '../stores/MachineStore'
 
-function getCurrentState() {
-    const machineState = machineStore.getState()
-    return {
-        totalCycles: machineState.totalCycles,
-        running: machineState.running,
-        registers: machineState.registers,
-        memory: machineState.memory,
-        hasVideo: machineState.hasVideo,
-        videoOffset: machineState.videoOffset,
-        videoWidth: machineState.videoWidth,
-        videoHeight: machineState.videoHeight,
-        videoMemory: machineState.videoMemory,
-        sourceCode: machineState.sourceCode
-    }
-}
-
-export default class MachineView extends React.Component {
-    constructor(props) {
-        super(props)
-        
-        this.state = getCurrentState()
+class MachineView extends React.Component {
+    static getStores() {
+        return [machineStore]
     }
 
-    componentDidMount() {
-        this.listener = machineStore.addListener(this.onChange.bind(this))
-    }
-
-    componentWillUnmount() {
-        if (this.listener) {
-            this.listener.remove()
+    static calculateState() {
+        return {
+            machineState: machineStore.getState()
         }
-    }
-
-    onChange() {
-        this.setState(getCurrentState())
     }
 
     render() {
         return (
             <div className="container">
-                <MachineControl hasVideo={this.state.hasVideo}
-                                running={this.state.running}
-                                totalCycles={this.state.totalCycles}/>
+                <MachineControl hasVideo={this.state.machineState.hasVideo}
+                                running={this.state.machineState.running}
+                                totalCycles={this.state.machineState.totalCycles}/>
 
                 <div className="row">
                     <div className="col-md-5">
                         <ul className="nav nav-tabs">
                             <li className="active"><a href="#">Registers</a></li>
                         </ul>
-                        <RegistersView registers={this.state.registers}/>
+                        <RegistersView registers={this.state.machineState.registers}/>
                     </div>
                     <div className="col-md-7">
-                        <ul className="nav nav-tabs">
-                            <li className="active"><a href="#">Assember</a></li>
-                            <li><a href="#">Firmware</a></li>
-                        </ul>
-                        <Editor pc={this.state.registers.PC}
-                                sourceCode={this.state.sourceCode}/>
+                        <TabContainer>
+                            <TabPanel title="Assember">
+                                <Editor pc={this.state.machineState.registers.PC}
+                                        sourceCode={this.state.machineState.sourceCode}/>
+                            </TabPanel>
+                            <TabPanel title="Firmware">
+                                <Editor pc={this.state.machineState.registers.PC}
+                                        sourceCode={this.state.machineState.firmwareSource}/>
+                            </TabPanel>
+                        </TabContainer>
                     </div>
                 </div>
                 {this.renderMemory()}
@@ -74,31 +55,33 @@ export default class MachineView extends React.Component {
     }
 
     renderMemory() {
-        if (this.state.hasVideo) {
+        if (this.state.machineState.hasVideo) {
             return (
                 <div className="row">
                     <div className="col-md-6">
                         <ul className="nav nav-tabs">
                             <li className="active"><a href="#">Video display</a></li>
                         </ul>
-                        <VideoDisplay height={this.state.videoHeight}
+                        <VideoDisplay height={this.state.machineState.videoHeight}
                                       id="video-memory-display"
-                                      memoryBlock={this.state.videoMemory}
+                                      memoryBlock={this.state.machineState.videoMemory}
                                       scale={4}
-                                      width={this.state.videoWidth}/>
-                        <MemoryGrid columns={16}
-                                    id="video-memory-grid"
-                                    memoryBlock={this.state.videoMemory}
-                                    registers={this.state.registers}/>
+                                      width={this.state.machineState.videoWidth}/>
                     </div>
                     <div className="col-md-6">
-                        <ul className="nav nav-tabs">
-                            <li className="active"><a href="#">Main memory</a></li>
-                            <li><a href="#">Video memory</a></li>
-                        </ul>
-                        <MemoryGrid columns={16}
-                                    memoryBlock={this.state.memory}
-                                    registers={this.state.registers}/>
+                        <TabContainer>
+                            <TabPanel title="Main memory">
+                                <MemoryGrid columns={16}
+                                            memoryBlock={this.state.machineState.memory}
+                                            registers={this.state.machineState.registers}/>
+                            </TabPanel>
+                            <TabPanel title="Video memory">
+                                <MemoryGrid columns={16}
+                                            id="video-memory-grid"
+                                            memoryBlock={this.state.machineState.videoMemory}
+                                            registers={this.state.machineState.registers}/>
+                            </TabPanel>
+                        </TabContainer>
                     </div>
                 </div>
             )
@@ -111,11 +94,13 @@ export default class MachineView extends React.Component {
                     </ul>
                     <MemoryGrid columns={32}
                                 id="main-memory-grid"
-                                memoryBlock={this.state.memory}
-                                registers={this.state.registers}
+                                memoryBlock={this.state.machineState.memory}
+                                registers={this.state.machineState.registers}
                                 segmentOffset={0}/>
                 </div>
             </div>
         )
     }
 }
+
+export default FluxContainer.create(MachineView)

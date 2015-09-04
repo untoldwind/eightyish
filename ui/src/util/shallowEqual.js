@@ -15,7 +15,7 @@ export default function (objA, objB, ignoreFunctions = false) {
     }
 
     // Test for A's keys different from B.
-    const bHasOwnProperty = Object.prototype.hasOwnProperty.bind(objB);
+    const bHasOwnProperty = Object.prototype.hasOwnProperty.bind(objB)
     for (let i = 0; i < keysA.length; i++) {
         if (ignoreFunctions && typeof objA[keysA[i]] === 'function') {
             continue

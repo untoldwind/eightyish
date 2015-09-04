@@ -26,7 +26,7 @@ export default class MemoryBlock extends Immutable {
 
     replaceData(newData) {
         return this.copy({
-            data:  new Uint8Array(newData)
+            data: new Uint8Array(newData)
         })
     }
 

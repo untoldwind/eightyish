@@ -21,10 +21,8 @@ export default function (library, browser, ctx) {
             browser.expect.element('#switch-video').to.have.attribute('class').which.contain(expectedClass).before(1000)
             if (onOff) {
                 browser.expect.element('#video-memory-display').to.be.visible.before(500)
-                browser.expect.element('#video-memory-grid').to.be.visible.before(500)
             } else {
                 browser.expect.element('#video-memory-display').to.be.not.present.before(500)
-                browser.expect.element('#video-memory-grid').to.be.not.present.before(500)
             }
         })
 }

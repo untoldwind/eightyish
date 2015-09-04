@@ -75,10 +75,10 @@ export default class Transition {
         if (typeof this.memoryOffset === 'number') {
             if (memory.contains(this.memoryOffset)) {
                 this.oldMemoryData = memory.getMemory(this.memoryOffset, this.newMemoryData.length)
-                memory = memory.replace(this.memoryOffset, this.newMemoryData)
+                memory = memory.updateData(this.memoryOffset, this.newMemoryData)
             } else if (videoMemory && videoMemory.contains(this.memoryOffset)) {
                 this.oldMemoryData = videoMemory.getMemory(this.memoryOffset, this.newMemoryData.length)
-                videoMemory = videoMemory.replace(this.memoryOffset, this.newMemoryData)
+                videoMemory = videoMemory.updateData(this.memoryOffset, this.newMemoryData)
             }
         }
         return state.copy({
@@ -98,9 +98,9 @@ export default class Transition {
 
         if (typeof this.memoryOffset === 'number') {
             if (memory.contains(this.memoryOffset)) {
-                memory = memory.replace(this.memoryOffset, this.oldMemoryData)
+                memory = memory.updateData(this.memoryOffset, this.oldMemoryData)
             } else if (videoMemory && videoMemory.contains(this.memoryOffset)) {
-                videoMemory = videoMemory.replace(this.memoryOffset, this.oldMemoryData)
+                videoMemory = videoMemory.updateData(this.memoryOffset, this.oldMemoryData)
             }
         }
 
