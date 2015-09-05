@@ -98,8 +98,9 @@ export default class EditorAssembler extends React.Component {
         for (let child of React.findDOMNode(this).children) {
             lines = lines.concat(child.textContent.split('\n'))
         }
-        if (force || lines.length !== this.props.sourceCode.statements.length) {
-            if ( this.props.firmware) {
+
+        if (lines.length !== this.props.sourceCode.statements.length) {
+            if (this.props.firmware) {
                 MachineActions.compileFirmware(lines)
             } else {
                 MachineActions.compile(lines)

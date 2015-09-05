@@ -1,6 +1,6 @@
 export default class SourceLabels {
-    constructor() {
-        this.labels = new Map()
+    constructor(labels) {
+        this.labels = new Map(labels)
     }
 
     setAddress(label, address) {

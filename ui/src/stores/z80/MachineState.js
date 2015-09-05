@@ -109,7 +109,7 @@ export default class MachineState extends Immutable {
     }
 
     compile(lines) {
-        const sourceCode = this.sourceCode.compile(lines)
+        const sourceCode = this.sourceCode.compile(lines, this.firmwareSource.labels)
 
         return this.copy({
             sourceCode: sourceCode
@@ -175,6 +175,7 @@ export default class MachineState extends Immutable {
     transferSourceToMemory() {
         const [sourceMemory, sourceBreakpoints] = this.sourceCode.memoryAndBreakpoints
 
+        console.log(sourceBreakpoints)
         return this.copy({
             memory: this.memory.updateData(0, sourceMemory),
             breakpoints: new Set(sourceBreakpoints)

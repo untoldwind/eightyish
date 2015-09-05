@@ -14,13 +14,13 @@ export default class SourceCode extends Immutable {
         this.labels = new SourceLabels()
     }
 
-    compile(lines) {
+    compile(lines, predefinedLabels) {
         if (!lines) {
             return this
         }
 
         const statements = lines.map(line => InstructionSet.parseLine(line))
-        const labels = new SourceLabels()
+        const labels = predefinedLabels ? new SourceLabels(predefinedLabels.labels) : new SourceLabels()
 
         let offset = this.sourceOffset
         for (let statement of statements) {
