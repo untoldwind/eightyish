@@ -189,7 +189,7 @@ export default class MachineState extends Immutable {
     restore() {
         if (localStorage && localStorage.machineState) {
             const storedState = JSON.parse(localStorage.machineState)
-            const sourceCode = this.sourceCode.compile(storedState.assembler)
+            const sourceCode = this.sourceCode.compile(storedState.assembler, this.firmwareSource.labels)
             const [sourceMemory, sourceBreakpoints] = sourceCode.memoryAndBreakpoints
 
             return this.copy({
