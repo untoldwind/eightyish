@@ -7,7 +7,7 @@ import { BYTE_VAL, REG_A, POINTER_DELIM, XOR } from './constants'
 function operation(storer, first, second) {
     const result = first ^ second
 
-    return storer(result).withFlags(result)
+    return storer(result).withFlags(result).withCarry(false)
 }
 
 function create(opcode, cycles, to, from) {

@@ -111,12 +111,6 @@ describe('InstructionSet', () => {
             A: 13,
             PC: 0x1235
         })
-        expect(transition.newFlags).toEqual({
-            C: false,
-            P: true,
-            S: false,
-            Z: false
-        })
         expect(state.getMemory).toBeCalledWith(0x1234, 4)
     })
 

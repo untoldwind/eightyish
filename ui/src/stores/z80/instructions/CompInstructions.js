@@ -8,7 +8,7 @@ import { BYTE_VAL, REG_A, COMP } from './constants'
 function operation(storer, first, second) {
     const result = first - second
 
-    return new Transition().withFlags(result)
+    return new Transition().withFlags(result).withCarry(result < 0)
 }
 
 function create(opcode, cycles, to, from) {

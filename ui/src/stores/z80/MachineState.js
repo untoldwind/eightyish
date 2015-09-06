@@ -48,11 +48,11 @@ export default class MachineState extends Immutable {
         }).store()
     }
 
-    stepForward() {
+    stepForward(until = (pc) => this.breakpoints.has(pc)) {
         let transition = InstructionSet.process(this)
         if (transition) {
             const nextState = transition.perform(this)
-            if (this.running && this.breakpoints.has(nextState.registers.PC)) {
+            if (this.running && until(nextState.registers.PC)) {
                 return nextState.stop().store()
             }
             return nextState.store()
@@ -60,12 +60,12 @@ export default class MachineState extends Immutable {
         return this.stop().store()
     }
 
-    fastForward() {
+    fastForward(until = (pc) => this.breakpoints.has(pc)) {
         let currentState = this
         let transition
         while ((transition = InstructionSet.process(currentState)) !== null) {
             currentState = transition.perform(currentState)
-            if (this.breakpoints.has(currentState.registers.PC)) {
+            if (until(currentState.registers.PC)) {
                 return currentState.store()
             }
         }
@@ -175,7 +175,6 @@ export default class MachineState extends Immutable {
     transferSourceToMemory() {
         const [sourceMemory, sourceBreakpoints] = this.sourceCode.memoryAndBreakpoints
 
-        console.log(sourceBreakpoints)
         return this.copy({
             memory: this.memory.updateData(0, sourceMemory),
             breakpoints: new Set(sourceBreakpoints)

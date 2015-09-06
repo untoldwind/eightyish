@@ -19,25 +19,18 @@ export default class Transition {
         return this
     }
 
-    withFlag(flag, value) {
-        this.newFlags[flag] = value
+    withCarry(value) {
+        this.newFlags.C = value
 
         return this
     }
 
     withFlags(value) {
         this.newFlags.P = byteParity(value) !== 0
-        this.newFlags.C = (value & 0x100) !== 0
         this.newFlags.Z = value === 0
         this.newFlags.S = (value & 0x80) !== 0
 
         return this
-    }
-
-    withByteRegisterAndFlags(register, value) {
-        this.newRegisters[register] = value & 0xff
-
-        return this.withFlags(value)
     }
 
     withWordRegister(register, value) {

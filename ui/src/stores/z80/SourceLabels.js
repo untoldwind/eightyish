@@ -1,10 +1,10 @@
-export default class SourceLabels {
+export default class SourceLabels extends Map {
     constructor(labels) {
-        this.labels = new Map(labels)
+        super(labels)
     }
 
     setAddress(label, address) {
-        this.labels.set(label, address)
+        this.set(label, address)
     }
 
     getAddress(labelOfAddress) {
@@ -13,7 +13,7 @@ export default class SourceLabels {
             return [(labelOfAddress >> 8) & 0xff, labelOfAddress & 0xff]
         case 'string':
             if (labelOfAddress.startsWith('.')) {
-                const address = this.labels.get(labelOfAddress)
+                const address = this.get(labelOfAddress)
 
                 if (address) {
                     return [(address >> 8) & 0xff, address & 0xff]

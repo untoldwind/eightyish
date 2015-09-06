@@ -24,10 +24,6 @@ describe('Load Instruction', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
         expect(transition.newRegisters.A).toBe(5)
-        expect(transition.newFlags.C).toBe(false)
-        expect(transition.newFlags.S).toBe(false)
-        expect(transition.newFlags.P).toBe(false)
-        expect(transition.newFlags.Z).toBe(false)
 
         const assembler = loadAB.createStatement([null, null])
 
@@ -80,10 +76,6 @@ describe('Load Instruction', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1237)
         expect(transition.newRegisters.A).toBe(5)
-        expect(transition.newFlags.C).toBe(false)
-        expect(transition.newFlags.S).toBe(false)
-        expect(transition.newFlags.P).toBe(false)
-        expect(transition.newFlags.Z).toBe(false)
         expect(state.getMemoryByte).toBeCalledWith(0xabcd)
 
         const assembler = loadAMem.createStatement([null, '.label'])

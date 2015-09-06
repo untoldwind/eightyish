@@ -8,7 +8,7 @@ import { BYTE_VAL, REG_A, REG_BC, REG_DE, REG_HL, REG_IX, REG_IY, REG_SP,
 function byteOperation(storer, first, second) {
     const result = first + second
 
-    return storer(result).withFlags(result)
+    return storer(result).withFlags(result).withCarry((result & 0x100) !== 0)
 }
 
 function wordOperation(storer, first, second) {

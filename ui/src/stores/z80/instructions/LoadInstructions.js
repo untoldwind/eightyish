@@ -7,7 +7,7 @@ import { BYTE_VAL, BYTE_POINTER, WORD_VAL, WORD_POINTER,
     REG_SP, REG_HL, REG_IX, REG_IY, POINTER_HL, POINTER_IX, POINTER_IY } from './constants'
 
 function byteOperation(storer, first, second) {
-    return storer(second).withFlags(second)
+    return storer(second)
 }
 
 function wordOperation(storer, first, second) {

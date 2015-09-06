@@ -20,7 +20,7 @@ export default class SourceCode extends Immutable {
         }
 
         const statements = lines.map(line => InstructionSet.parseLine(line))
-        const labels = predefinedLabels ? new SourceLabels(predefinedLabels.labels) : new SourceLabels()
+        const labels = new SourceLabels(predefinedLabels)
 
         let offset = this.sourceOffset
         for (let statement of statements) {

@@ -7,7 +7,7 @@ import { ROTLC, POINTER_HL, POINTER_IX, POINTER_IY } from './constants'
 function operation(storer, first, flags) {
     const result = (first << 1) | (flags.C ? 0x1 : 0x0)
 
-    return storer(result).withFlags(result)
+    return storer(result).withFlags(result).withCarry((first & 0x80) !== 0)
 }
 
 function create(opcode, cycles, target) {

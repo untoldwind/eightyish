@@ -23,7 +23,7 @@ describe('Transition', () => {
     })
 
     it('should support flags transitions', () => {
-        const transition = new Transition().withFlags(0x83)
+        const transition = new Transition().withFlags(0x83).withCarry(false)
 
         expect(transition.newFlags.P).toBe(true)
         expect(transition.newFlags.S).toBe(true)
@@ -38,17 +38,7 @@ describe('Transition', () => {
         expect(nextState.registers.flags.Z).toBe(false)
         expect(nextState.registers.flags.C).toBe(false)
     })
-
-    it('should support byte with flag transitions', () => {
-        const transition = new Transition().withByteRegisterAndFlags('A', 13)
-
-        expect(transition.newRegisters.A).toBe(13)
-        expect(transition.newFlags.P).toBe(true)
-        expect(transition.newFlags.S).toBe(false)
-        expect(transition.newFlags.Z).toBe(false)
-        expect(transition.newFlags.C).toBe(false)
-    })
-
+    
     it('should support word register transitions', () => {
         const transition = new Transition().withWordRegister('BC', 0x1234)
 

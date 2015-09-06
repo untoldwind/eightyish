@@ -7,7 +7,7 @@ import { SHR, POINTER_HL, POINTER_IX, POINTER_IY } from './constants'
 function operation(storer, first) {
     const result = first >> 1
 
-    return storer(result).withFlags(result).withFlag('C', (first & 0x1) !== 0)
+    return storer(result).withFlags(result).withCarry((first & 0x1) !== 0)
 }
 
 function create(opcode, cycles, target) {
