@@ -97,7 +97,7 @@ export default class EditableCell extends React.Component {
                        onKeyDown={this.keyDown.bind(this)}
                        onReturn={this.finishEditing.bind(this)}
                        ref="input"
-                       size={this.props.value.length}/>
+                       size={this.props.value.toString().length}/>
             </td>
         )
     }

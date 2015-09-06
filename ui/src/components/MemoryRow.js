@@ -27,7 +27,7 @@ export default class MemoryRow extends React.Component {
             <tr>
                 <td>{formats.word2hex(this.props.offset)}</td>
                 {mapCount(this.props.columns, i =>
-                        <EditableCell activeClassName="form-control input-sm"
+                        <EditableCell activeClassName="form-control input-xs"
                                       className={this.mark(this.props.offset + i)}
                                       key={i}
                                       onChange={this.changeMemory(i).bind(this)}

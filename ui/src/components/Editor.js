@@ -13,10 +13,10 @@ export default class Editor extends React.Component {
     render() {
         return (
             <div className="editor">
-                <div className="col-md-4">
+                <div className="raw-col-4">
                     <EditorMemory pc={this.props.pc} sourceCode={this.props.sourceCode}/>
                 </div>
-                <div className="col-md-8">
+                <div className="raw-col-8">
                     <EditorAssembler firmware={this.props.firmware} sourceCode={this.props.sourceCode}/>
                 </div>
             </div>

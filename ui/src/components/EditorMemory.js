@@ -16,7 +16,8 @@ export default class EditorMemory extends React.Component {
 
     render() {
         return (
-            <ul className="assembler">
+            <ul className="assembler"
+                id="editor-memory">
                 {this.props.sourceCode.memoryDump.map((line, index) => {
                     let className = 'memory-dump'
 
@@ -39,9 +40,9 @@ export default class EditorMemory extends React.Component {
 
     renderBreakpoint(breakpoint) {
         if (breakpoint) {
-            return <span className="glyphicon glyphicon-stop alert-danger"></span>
+            return <span>{'\u2B24'}</span>
         }
-        return <span className="glyphicon">{'\u0020'}</span>
+        return <span>{'\u0020'}</span>
     }
 
     toggleBreakpoint(address) {

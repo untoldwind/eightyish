@@ -42,6 +42,12 @@ ul.assembler {
     white-space: pre;
   }
 
+  li.memory-dump span:first-child {
+    float: left;
+    width: 20px;
+    color: red;
+  }
+
   li.sourcelabel {
     color: blue;
   }
@@ -53,4 +59,28 @@ ul.assembler {
   li.error {
     color: red;
   }
+}
+
+.input-xs {
+  .input-size(24px; 2px; 2px; @font-size-small; 1.0; 1px);
+}
+
+.raw-col-4 {
+  float: left;
+  width: 33%;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+.raw-col-8 {
+  float: left;
+  width: 67%;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+#editor-assembler {
+}
+
+#editor-memory {
 }
