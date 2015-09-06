@@ -43,9 +43,7 @@ describe('Call Instruction', () => {
         const state = {
             registers: {
                 PC: 0x1234,
-                flags: {
-                    Z: true
-                }
+                flagZ: true
             }
         }
         const zeroTransition = jumpAddress.process(state, new Uint8Array([0xc2, 0xab, 0xcd]))
@@ -53,7 +51,7 @@ describe('Call Instruction', () => {
         expect(zeroTransition).toBeDefined()
         expect(zeroTransition.newRegisters.PC).toBe(0x1237)
 
-        state.registers.flags.Z = false
+        state.registers.flagZ = false
         const nonZeroTransition = jumpAddress.process(state, new Uint8Array([0xc2, 0xab, 0xcd]))
 
         expect(nonZeroTransition).toBeDefined()

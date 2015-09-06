@@ -13,7 +13,7 @@ export default class GenericInstruction extends Instruction {
         const transition = this.operation(
             this.args[0].storer(state, argPcMem),
             ... this.args.map((arg) => arg.loader(state, argPcMem)),
-            state.registers.flags)
+            state.registers.flagC)
 
         return transition.withWordRegister(PC, state.registers.PC + this.size).withCycles(this.cycles)
     }

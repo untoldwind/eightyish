@@ -19,6 +19,24 @@ export default `
   POP    AF
   RET
 
+# Clears a pixel at (B, C)
+.clearPixel:
+  PUSH   AF
+  PUSH   DE
+  PUSH   HL
+  CALL   .getPixel_address
+  LOAD   A <- 255
+.clearPixel_shiftx:
+  ROTRC  A
+  DEC    E
+  JUMP   NS, .clearPixel_shiftx
+  AND    A <- (HL)
+  LOAD   (HL) <- A
+  POP    HL
+  POP    DE
+  POP    AF
+  RET
+
 # Set address for a pixel at (B, C)
 # Memory address will be stored in HL
 # Bit position will be stored in E

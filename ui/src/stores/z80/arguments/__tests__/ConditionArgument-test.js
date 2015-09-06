@@ -44,10 +44,8 @@ describe('ConditionArgument', () => {
     it('should load a boolean depending on actual flags', () => {
         const state = {
             registers: {
-                flags: {
-                    C: true,
-                    Z: false
-                }
+                flagC: true,
+                flagZ: false
             }
         }
 

@@ -25,20 +25,20 @@ describe('Transition', () => {
     it('should support flags transitions', () => {
         const transition = new Transition().withFlags(0x83).withCarry(false)
 
-        expect(transition.newFlags.P).toBe(true)
-        expect(transition.newFlags.S).toBe(true)
-        expect(transition.newFlags.Z).toBe(false)
-        expect(transition.newFlags.C).toBe(false)
+        expect(transition.newRegisters.flagP).toBe(true)
+        expect(transition.newRegisters.flagS).toBe(true)
+        expect(transition.newRegisters.flagZ).toBe(false)
+        expect(transition.newRegisters.flagC).toBe(false)
 
         const state = MachineState.create(10, 10, 8)
         const nextState = transition.perform(state)
 
-        expect(nextState.registers.flags.P).toBe(true)
-        expect(nextState.registers.flags.S).toBe(true)
-        expect(nextState.registers.flags.Z).toBe(false)
-        expect(nextState.registers.flags.C).toBe(false)
+        expect(nextState.registers.flagP).toBe(true)
+        expect(nextState.registers.flagS).toBe(true)
+        expect(nextState.registers.flagZ).toBe(false)
+        expect(nextState.registers.flagC).toBe(false)
     })
-    
+
     it('should support word register transitions', () => {
         const transition = new Transition().withWordRegister('BC', 0x1234)
 

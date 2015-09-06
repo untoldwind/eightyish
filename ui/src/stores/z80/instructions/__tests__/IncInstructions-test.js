@@ -24,9 +24,9 @@ describe('Inc Instruction', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
         expect(transition.newRegisters.A).toBe(10)
-        expect(transition.newFlags.S).toBe(false)
-        expect(transition.newFlags.P).toBe(false)
-        expect(transition.newFlags.Z).toBe(false)
+        expect(transition.newRegisters.flagS).toBe(false)
+        expect(transition.newRegisters.flagP).toBe(false)
+        expect(transition.newRegisters.flagZ).toBe(false)
 
         const assembler = incA.createStatement([])
 
@@ -53,9 +53,9 @@ describe('Inc Instruction', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1235)
         expect(transition.newRegisters.BC).toBe(124)
-        expect(transition.newFlags.S).toBeUndefined()
-        expect(transition.newFlags.P).toBeUndefined()
-        expect(transition.newFlags.Z).toBeUndefined()
+        expect(transition.newRegisters.flagS).toBeUndefined()
+        expect(transition.newRegisters.flagP).toBeUndefined()
+        expect(transition.newRegisters.flagZ).toBeUndefined()
 
         const assembler = incBC.createStatement([])
 

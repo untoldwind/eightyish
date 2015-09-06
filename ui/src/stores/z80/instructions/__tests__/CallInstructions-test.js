@@ -48,9 +48,7 @@ describe('Call Instruction', () => {
             registers: {
                 PC: 0x1234,
                 SP: 0x2345,
-                flags: {
-                    Z: true
-                }
+                flagZ: true
             }
         }
         const zeroTransition = callAddress.process(state, new Uint8Array([0xc4, 0xab, 0xcd]))
@@ -60,7 +58,7 @@ describe('Call Instruction', () => {
         expect(zeroTransition.newRegisters.SP).toBeUndefined()
         expect(zeroTransition.memoryOffset).toBeUndefined()
 
-        state.registers.flags.Z = false
+        state.registers.flagZ = false
         const nonZeroTransition = callAddress.process(state, new Uint8Array([0xc4, 0xab, 0xcd]))
 
         expect(nonZeroTransition).toBeDefined()
@@ -117,9 +115,7 @@ describe('Call Instruction', () => {
             registers: {
                 PC: 0xabcd,
                 SP: 0x2345,
-                flags: {
-                    Z: true
-                }
+                flagZ: true
             },
             getMemoryWord: jest.genMockFunction().mockReturnValue(0x1234)
         }
@@ -128,7 +124,7 @@ describe('Call Instruction', () => {
         expect(zeroTransition.newRegisters.PC).toBe(0xabce)
         expect(zeroTransition.newRegisters.SP).toBeUndefined()
 
-        state.registers.flags.Z = false
+        state.registers.flagZ = false
         const nonZerotransition = ret.process(state, new Uint8Array([0xc0]))
         expect(nonZerotransition).toBeDefined()
         expect(nonZerotransition.newRegisters.PC).toBe(0x1234)

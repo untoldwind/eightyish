@@ -17,9 +17,7 @@ describe('Rotate right with carry Instruction', () => {
             registers: {
                 PC: 1234,
                 A: 0x83,
-                flags: {
-                    C: false
-                }
+                flagC: false
             }
         }
         const transition = decA.process(state, new Uint8Array([0xcb, 0x1f]))
@@ -27,10 +25,10 @@ describe('Rotate right with carry Instruction', () => {
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1236)
         expect(transition.newRegisters.A).toBe(0x41)
-        expect(transition.newFlags.C).toBe(true)
-        expect(transition.newFlags.S).toBe(false)
-        expect(transition.newFlags.P).toBe(false)
-        expect(transition.newFlags.Z).toBe(false)
+        expect(transition.newRegisters.flagC).toBe(true)
+        expect(transition.newRegisters.flagS).toBe(false)
+        expect(transition.newRegisters.flagP).toBe(false)
+        expect(transition.newRegisters.flagZ).toBe(false)
 
         const assembler = decA.createStatement([null])
 
@@ -50,9 +48,7 @@ describe('Rotate right with carry Instruction', () => {
             registers: {
                 PC: 1234,
                 IX: 0xabcd,
-                flags: {
-                    C: true
-                }
+                flagC: true
             },
             getMemoryByte: jest.genMockFunction().mockReturnValue(0x40)
         }
@@ -60,10 +56,10 @@ describe('Rotate right with carry Instruction', () => {
 
         expect(transition).toBeDefined()
         expect(transition.newRegisters.PC).toBe(1238)
-        expect(transition.newFlags.C).toBe(false)
-        expect(transition.newFlags.S).toBe(true)
-        expect(transition.newFlags.P).toBe(false)
-        expect(transition.newFlags.Z).toBe(false)
+        expect(transition.newRegisters.flagC).toBe(false)
+        expect(transition.newRegisters.flagS).toBe(true)
+        expect(transition.newRegisters.flagP).toBe(false)
+        expect(transition.newRegisters.flagZ).toBe(false)
         expect(transition.memoryOffset).toBe(0xabcf)
         expect(transition.newMemoryData).toEqual([0xa0])
         expect(state.getMemoryByte).toBeCalledWith(0xabcf)

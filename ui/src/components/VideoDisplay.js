@@ -64,7 +64,7 @@ export default class VideoDisplay extends React.Component {
             let byte = data[i]
             for(let j = 0; j < 8; j++) {
                 if ((byte & 0x80) != 0 ) {
-                    ctx.fillRect(x, y, this.state.scale, this.state.scale)
+                    ctx.rect(x, y, this.state.scale, this.state.scale)
                 }
                 byte <<= 1
                 x += this.state.scale
@@ -76,6 +76,7 @@ export default class VideoDisplay extends React.Component {
                 }
             }
         }
+        ctx.fill()
     }
 
     shouldComponentUpdate(nextProps, nextState) {

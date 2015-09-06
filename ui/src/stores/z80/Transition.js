@@ -8,7 +8,6 @@ function byteParity(value) {
 export default class Transition {
     constructor(newRegisters, memoryOffset, newMemoryData) {
         this.newRegisters = newRegisters || {}
-        this.newFlags = {}
         this.memoryOffset = memoryOffset
         this.newMemoryData = newMemoryData
     }
@@ -20,15 +19,15 @@ export default class Transition {
     }
 
     withCarry(value) {
-        this.newFlags.C = value
+        this.newRegisters.flagC = value
 
         return this
     }
 
     withFlags(value) {
-        this.newFlags.P = byteParity(value) !== 0
-        this.newFlags.Z = value === 0
-        this.newFlags.S = (value & 0x80) !== 0
+        this.newRegisters.flagP = byteParity(value) !== 0
+        this.newRegisters.flagZ = value === 0
+        this.newRegisters.flagS = (value & 0x80) !== 0
 
         return this
     }
@@ -76,9 +75,7 @@ export default class Transition {
         }
         return state.copy({
             transitions: state.transitions.push(this),
-            registers: state.registers.copy(this.newRegisters, {
-                flags: this.newFlags
-            }),
+            registers: state.registers.copy(this.newRegisters),
             memory: memory,
             videoMemory: videoMemory,
             totalCycles: typeof this.cycles === 'number' ? state.totalCycles + this.cycles : state.totalCycles

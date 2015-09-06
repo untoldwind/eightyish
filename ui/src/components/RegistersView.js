@@ -101,7 +101,7 @@ export default class RegistersView extends React.Component {
         if (flagName) {
             flag = (
                 <td colSpan="4">
-                <span className={this.props.registers.flags[flagName] ? 'label label-success' : 'label label-default'}>
+                <span className={this.props.registers[`flag${flagName}`] ? 'label label-success' : 'label label-default'}>
                     {flagDescription.substring(0, 1)}
                 </span>
                     {flagDescription.substring(1)}
