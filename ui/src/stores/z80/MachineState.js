@@ -52,8 +52,13 @@ export default class MachineState extends Immutable {
         let transition = InstructionSet.process(this)
         if (transition) {
             const nextState = transition.perform(this)
-            if (this.running && until(nextState.registers.PC)) {
-                return nextState.stop().store()
+            if (this.running) {
+                if (until(nextState.registers.PC)) {
+                    return nextState.stop().store()
+                }
+                if (nextState.registers.PC >= 0x1000) {
+                    return nextState.fastForward((pc) => pc < 0x1000)
+                }
             }
             return nextState.store()
         }
