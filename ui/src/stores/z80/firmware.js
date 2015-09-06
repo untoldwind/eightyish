@@ -1,5 +1,30 @@
 export default `
 .firmware:
+# Multiply: HL = A * BC
+.multiply:
+  LOAD   HL <- 0x0
+.multiply_loop:
+  SHR    A
+  JUMP   NC, .multiply_skip
+  ADD    HL <- BC
+.multiply_skip:
+  RET    Z
+  SHL    C
+  ROTLC  B
+  JUMP   .multiply_loop
+
+# Fill memory with A
+# Start address: HL
+# Count: DE
+.fillMemory:
+  LOAD   (HL) <- A
+  INC    HL
+  DEC    E
+  JUMP   NZ, .fillMemory
+  DEC    D
+  JUMP   NZ, .fillMemory
+  RET
+
 # Sets a pixel at (B, C)
 .setPixel:
   PUSH   AF

@@ -41,7 +41,7 @@ export default class VideoDisplay extends React.Component {
         const parent = React.findDOMNode(this.refs.canvas).parentNode
         const scale = (parent.clientWidth - 30.0) / this.props.width
 
-        if ( scale !== this.state.scale) {
+        if (scale !== this.state.scale) {
             this.setState({
                 scale: scale
             })
@@ -51,31 +51,30 @@ export default class VideoDisplay extends React.Component {
     updateCanvas() {
         const data = this.props.memoryBlock.data
         const canvas = React.findDOMNode(this.refs.canvas)
-        const ctx = canvas.getContext('2d')
+        let ctx = canvas.getContext('2d')
 
         ctx.fillStyle = 'white'
         ctx.fillRect(0, 0, this.state.scale * this.props.width, this.state.scale * this.props.height)
         ctx.fillStyle = 'black'
 
         let x = 0
-        let ix = 0
         let y = 0
+        ctx.beginPath()
         for (let i = 0; i < data.length; i++) {
             let byte = data[i]
-            for(let j = 0; j < 8; j++) {
-                if ((byte & 0x80) != 0 ) {
-                    ctx.rect(x, y, this.state.scale, this.state.scale)
+            for (let j = 0; j < 8; j++) {
+                if ((byte & 0x80) != 0) {
+                    ctx.rect(x * this.state.scale, y * this.state.scale, this.state.scale, this.state.scale)
                 }
                 byte <<= 1
-                x += this.state.scale
-                ix ++
-                if (ix >= this.props.width) {
-                    ix = 0
+                x++
+                if (x >= this.props.width) {
                     x = 0
-                    y += this.state.scale
+                    y++
                 }
             }
         }
+        ctx.closePath()
         ctx.fill()
     }
 
@@ -91,6 +90,4 @@ export default class VideoDisplay extends React.Component {
                     width={this.state.scale * this.props.width}/>
         )
     }
-
-
 }
