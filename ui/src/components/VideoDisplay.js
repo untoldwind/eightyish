@@ -21,7 +21,6 @@ export default class VideoDisplay extends React.Component {
 
     componentDidMount() {
         this.updateScale()
-        this.createBackingCanvas()
         this.updateCanvas()
         window.addEventListener('resize', this.handleResize)
     }
@@ -30,10 +29,7 @@ export default class VideoDisplay extends React.Component {
         window.removeEventListener('resize', this.handleResize)
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.width !== prevProps.width || this.props.height !== prevProps.height) {
-            this.createBackingCanvas()
-        }
+    componentDidUpdate() {
         this.updateCanvas()
     }
 
@@ -52,47 +48,34 @@ export default class VideoDisplay extends React.Component {
         }
     }
 
-    createBackingCanvas() {
-        this.backingCanvas = document.createElement('canvas')
-        this.backingCanvas.setAttribute('width', this.props.width)
-        this.backingCanvas.setAttribute('height', this.props.height)
-        this.backingContext = this.backingCanvas.getContext('2d')
-        this.backingImageData = this.backingContext.createImageData(this.props.width, this.props.height)
-    }
-
     updateCanvas() {
         const data = this.props.memoryBlock.data
-        const imageData = this.backingImageData.data
-        let index = 0
-
-        for (let i = 0; i < data.length; i++) {
-            let byte = data[i]
-            for (let j = 0; j < 8; j++) {
-                if ((byte & 0x80) !== 0) {
-                    imageData[index++] = 0
-                    imageData[index++] = 0
-                    imageData[index++] = 0
-                    imageData[index++] = 255
-                } else {
-                    imageData[index++] = 255
-                    imageData[index++] = 255
-                    imageData[index++] = 255
-                    imageData[index++] = 255
-                }
-                byte <<= 1
-            }
-        }
-        this.backingContext.putImageData(this.backingImageData, 0, 0)
-
         const canvas = React.findDOMNode(this.refs.canvas)
         const ctx = canvas.getContext('2d')
 
-        ctx.imageSmoothingEnabled = false
-        ctx.mozImageSmoothingEnabled = false
-        ctx.webkitImageSmoothingEnabled = false
-        ctx.msImageSmoothingEnabled = false
-        ctx.drawImage(this.backingCanvas, 0, 0, this.props.width, this.props.height,
-            0, 0, this.state.scale * this.props.width, this.state.scale * this.props.height)
+        ctx.fillStyle = 'white'
+        ctx.fillRect(0, 0, this.state.scale * this.props.width, this.state.scale * this.props.height)
+        ctx.fillStyle = 'black'
+
+        let x = 0
+        let ix = 0
+        let y = 0
+        for (let i = 0; i < data.length; i++) {
+            let byte = data[i]
+            for(let j = 0; j < 8; j++) {
+                if ((byte & 0x80) != 0 ) {
+                    ctx.fillRect(x, y, this.state.scale, this.state.scale)
+                }
+                byte <<= 1
+                x += this.state.scale
+                ix ++
+                if (ix >= this.props.width) {
+                    ix = 0
+                    x = 0
+                    y += this.state.scale
+                }
+            }
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {

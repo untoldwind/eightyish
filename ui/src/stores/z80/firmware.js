@@ -1,9 +1,28 @@
 export default `
 .firmware:
+# Sets a pixel at (B, C)
 .setPixel:
   PUSH   AF
   PUSH   DE
   PUSH   HL
+  CALL   .getPixel_address
+  LOAD   A <- 1
+  ROTRC  A
+.setPixel_shiftx:
+  ROTRC  A
+  DEC    E
+  JUMP   NS, .setPixel_shiftx
+  OR     A <- (HL)
+  LOAD   (HL) <- A
+  POP    HL
+  POP    DE
+  POP    AF
+  RET
+
+# Set address for a pixel at (B, C)
+# Memory address will be stored in HL
+# Bit position will be stored in E
+.getPixel_address:
   LOAD   H <- 0
   LOAD   L <- C
   LOAD   E <- 4
@@ -22,18 +41,6 @@ export default `
   ADD    HL <- DE
   LOAD   A <- B
   AND    A <- 7
-  ADD    A <- 1
   LOAD   E <- A
-  LOAD   A <- 1
-  ROTRC  A
-.setPixel_shiftx:
-  ROTRC  A
-  DEC    E
-  JUMP   NZ, .setPixel_shiftx
-  OR     A <- (HL)
-  LOAD   (HL) <- A
-  POP    HL
-  POP    DE
-  POP    AF
   RET
-`.split('\n')
+`.trim().split('\n')
