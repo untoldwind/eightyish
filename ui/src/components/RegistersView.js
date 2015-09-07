@@ -99,9 +99,10 @@ export default class RegistersView extends React.Component {
     renderWordRegister(register, className, flagName, flagDescription) {
         let flag
         if (flagName) {
+            const spanClass = this.props.registers[`flag${flagName}`] ? 'label label-success' : 'label label-default'
             flag = (
                 <td colSpan="4">
-                <span className={this.props.registers[`flag${flagName}`] ? 'label label-success' : 'label label-default'}>
+                <span className={spanClass}>
                     {flagDescription.substring(0, 1)}
                 </span>
                     {flagDescription.substring(1)}
