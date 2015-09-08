@@ -54,25 +54,30 @@ export default class RegistersView extends React.Component {
             <tr key="high">
                 <td>{highRegister}</td>
                 <EditableCell activeClassName="form-control input-xs"
+                              className="dec-value"
                               id={`register-${highRegister}-dec`}
                               onChange={highSetter}
                               value={this.props.registers[highRegister]}/>
                 <EditableCell activeClassName="form-control input-xs"
+                              className="hex-value"
                               id={`register-${highRegister}-hex`}
                               onChange={highSetter}
                               value={`0x${formats.byte2hex(this.props.registers[highRegister])}`}/>
                 <EditableCell activeClassName="form-control input-xs"
+                              className="bin-value"
                               id={`register-${highRegister}-bin`}
                               onChange={highSetter}
                               value={`0b${formats.byte2bin(this.props.registers[highRegister])}`}/>
                 <td className={className}
                     rowSpan="2" style={{verticalAlign: 'middle'}}>{highRegister + lowRegister}</td>
-                <EditableCell activeClassName="form-control input-xs" className={className}
+                <EditableCell activeClassName="form-control input-xs"
+                              className={className + ' dec-value'}
                               id={`register-${highRegister}${lowRegister}-dec`}
                               rowSpan={2} style={{verticalAlign: 'middle'}}
                               onChange={wordSetter}
                               value={this.props.registers[highRegister + lowRegister]}/>
-                <EditableCell activeClassName="form-control input-xs" className={className}
+                <EditableCell activeClassName="form-control input-xs"
+                              className={className + ' hex-value'}
                               id={`register-${highRegister}${lowRegister}-hex`}
                               rowSpan={2} style={{verticalAlign: 'middle'}}
                               onChange={wordSetter}
@@ -81,14 +86,17 @@ export default class RegistersView extends React.Component {
             <tr key="low">
                 <td>{lowRegister}</td>
                 <EditableCell activeClassName="form-control input-xs"
+                              className="dec-value"
                               id={`register-${lowRegister}-dec`}
                               onChange={lowSetter}
                               value={this.props.registers[lowRegister]}/>
                 <EditableCell activeClassName="form-control input-xs"
+                              className="hex-value"
                               id={`register-${lowRegister}-hex`}
                               onChange={lowSetter}
                               value={`0x${formats.byte2hex(this.props.registers[lowRegister])}`}/>
                 <EditableCell activeClassName="form-control input-xs"
+                              className="bin-value"
                               id={`register-${lowRegister}-bin`}
                               onChange={lowSetter}
                               value={`0b${formats.byte2bin(this.props.registers[lowRegister])}`}/>
@@ -119,11 +127,13 @@ export default class RegistersView extends React.Component {
             <tr>
                 {flag}
                 <td className={className}>{register}</td>
-                <EditableCell activeClassName="form-control input-xs" className={className}
+                <EditableCell activeClassName="form-control input-xs"
+                              className={className + ' dec-value'}
                               id={`register-${register}-dec`}
                               onChange={wordSetter}
                               value={this.props.registers[register]}/>
-                <EditableCell activeClassName="form-control input-xs" className={className}
+                <EditableCell activeClassName="form-control input-xs"
+                              className={className + ' hex-value'}
                               id={`register-${register}-hex`}
                               onChange={wordSetter}
                               value={`0x${formats.word2hex(this.props.registers[register])}`}/>

@@ -3,6 +3,7 @@ import Registers from './Registers'
 import SourceCode from './SourceCode'
 import Stack from './Stack'
 import MemoryBlock from './MemoryBlock'
+import Typewriter from './Typewriter'
 import Immutable from '../Immutable'
 
 import firmware from './firmware'
@@ -25,6 +26,7 @@ export default class MachineState extends Immutable {
         this.breakpoints = new Set()
         this.transitions = Stack.create()
         this.totalCycles = 0
+        this.channel0 = null
         this.running = false
     }
 
@@ -113,6 +115,20 @@ export default class MachineState extends Immutable {
         return this
     }
 
+    toggleTypewriter(typewriterEnabled) {
+        if (typewriterEnabled == this.hasTypewriter) {
+            return this
+        }
+        if (typewriterEnabled) {
+            return this.copy({
+                channel0: Typewriter.create()
+            })
+        }
+        return this.copy({
+            channel0: null
+        })
+    }
+
     compile(lines) {
         const sourceCode = this.sourceCode.compile(lines, this.firmwareSource.labels)
 
@@ -188,6 +204,10 @@ export default class MachineState extends Immutable {
 
     get hasVideo() {
         return this.videoMemory instanceof MemoryBlock
+    }
+
+    get hasTypewriter() {
+        return this.channel0 instanceof Typewriter
     }
 
     restore() {

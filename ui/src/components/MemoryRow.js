@@ -48,16 +48,16 @@ export default class MemoryRow extends React.Component {
 
     mark(address) {
         if (address === this.props.registers.PC) {
-            return 'bg-primary'
+            return 'bg-primary hex-value'
         } else if (address === this.props.registers.SP) {
-            return 'bg-danger'
+            return 'bg-danger hex-value'
         } else if (address === this.props.registers.HL) {
-            return 'bg-success'
+            return 'bg-success hex-value'
         } else if (address === this.props.registers.IX) {
-            return 'bg-info'
+            return 'bg-info hex-value'
         } else if (address === this.props.registers.IY) {
-            return 'bg-warning'
+            return 'bg-warning hex-value'
         }
-        return ''
+        return 'hex-value'
     }
 }

@@ -11,6 +11,13 @@ export function toggleVideo(videoEnabled) {
     })
 }
 
+export function toggleTypewriter(typewriterEnabled) {
+    appDispatcher.dispatch({
+        type: AppConstants.MACHINE_TOGGLE_TYPEWRITER,
+        typewriterEnabled: typewriterEnabled
+    })
+}
+
 export function transition(newRegisters, memoryOffset, newMemoryData) {
     appDispatcher.dispatch({
         type: AppConstants.MACHINE_TRANSITION,

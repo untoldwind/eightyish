@@ -7,6 +7,7 @@ import * as MachineActions from '../actions/MachineActions'
 export default class MachineControl extends React.Component {
     static propTypes = {
         hasVideo: React.PropTypes.bool.isRequired,
+        hasTypewriter: React.PropTypes.bool.isRequired,
         running: React.PropTypes.bool.isRequired,
         totalCycles: React.PropTypes.number.isRequired
     }
@@ -21,6 +22,10 @@ export default class MachineControl extends React.Component {
             <div className="row">
                 <div className="col-md-2">
                     <button className="btn btn-danger" id="btn-reset" onClick={MachineActions.reset}>Reset</button>
+                </div>
+                <div className="col-md-2">
+                    <Switch id="switch-typewriter" label="Printer" value={this.props.hasTypewriter}
+                            onChange={MachineActions.toggleTypewriter}/>
                 </div>
                 <div className="col-md-2">
                     <Switch id="switch-video" label="Video" value={this.props.hasVideo}

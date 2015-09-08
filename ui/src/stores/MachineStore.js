@@ -60,6 +60,9 @@ class MachineStore extends ReduceStore {
         case AppConstants.MACHINE_TOGGLE_VIDEO:
             return state.toggleVideo(action.videoEnabled)
 
+        case AppConstants.MACHINE_TOGGLE_TYPEWRITER:
+            return state.toggleTypewriter(action.typewriterEnabled)
+
         case AppConstants.MACHINE_COMPILE:
             return state.compile(action.lines)
 

@@ -5,6 +5,7 @@ import MachineControl from './MachineControl'
 import MemoryGrid from './MemoryGrid'
 import RegistersView from './RegistersView'
 import Editor from './Editor'
+import TypewriterDisplay from './TypewriterDisplay'
 import VideoDisplay from './VideoDisplay'
 import TabContainer from './TabContainer'
 import TabPanel from './TabPanel'
@@ -25,7 +26,8 @@ class MachineView extends React.Component {
     render() {
         return (
             <div className="container">
-                <MachineControl hasVideo={this.state.machineState.hasVideo}
+                <MachineControl hasTypewriter={this.state.machineState.hasTypewriter}
+                                hasVideo={this.state.machineState.hasVideo}
                                 running={this.state.machineState.running}
                                 totalCycles={this.state.machineState.totalCycles}/>
 
@@ -57,31 +59,24 @@ class MachineView extends React.Component {
     }
 
     renderMemory() {
-        if (this.state.machineState.hasVideo) {
+        if (this.state.machineState.hasVideo || this.state.machineState.hasTypewriter) {
             return (
                 <div className="row">
                     <div className="col-md-6">
-                        <ul className="nav nav-tabs">
-                            <li className="active"><a href="#">Video display</a></li>
-                        </ul>
-                        <VideoDisplay height={this.state.machineState.videoHeight}
-                                      id="video-memory-display"
-                                      memoryBlock={this.state.machineState.videoMemory}
-                                      width={this.state.machineState.videoWidth}/>
+                        <TabContainer>
+                            {this.renderVideoDisplay()}
+                            {this.renderTypewriterDisplay()}
+                        </TabContainer>
                     </div>
                     <div className="col-md-6">
                         <TabContainer>
                             <TabPanel title="Main memory">
                                 <MemoryGrid columns={16}
+                                            id="main-memory-grid"
                                             memoryBlock={this.state.machineState.memory}
                                             registers={this.state.machineState.registers}/>
                             </TabPanel>
-                            <TabPanel title="Video memory">
-                                <MemoryGrid columns={16}
-                                            id="video-memory-grid"
-                                            memoryBlock={this.state.machineState.videoMemory}
-                                            registers={this.state.machineState.registers}/>
-                            </TabPanel>
+                            {this.renderVideoMemory()}
                         </TabContainer>
                     </div>
                 </div>
@@ -96,11 +91,47 @@ class MachineView extends React.Component {
                     <MemoryGrid columns={32}
                                 id="main-memory-grid"
                                 memoryBlock={this.state.machineState.memory}
-                                registers={this.state.machineState.registers}
-                                segmentOffset={0}/>
+                                registers={this.state.machineState.registers}/>
                 </div>
             </div>
         )
+    }
+
+    renderVideoDisplay() {
+        if (this.state.machineState.hasVideo) {
+            return (
+                <TabPanel title="Video display">
+                    <VideoDisplay height={this.state.machineState.videoHeight}
+                                  id="video-memory-display"
+                                  memoryBlock={this.state.machineState.videoMemory}
+                                  width={this.state.machineState.videoWidth}/>
+                </TabPanel>
+            )
+        }
+    }
+
+    renderTypewriterDisplay() {
+        if (this.state.machineState.hasTypewriter) {
+            return (
+                <TabPanel title="Typewriter">
+                    <TypewriterDisplay id="typewriter-display"
+                                       typewriter={this.state.machineState.channel0}/>
+                </TabPanel>
+            )
+        }
+    }
+
+    renderVideoMemory() {
+        if(this.state.machineState.hasVideo) {
+            return (
+                <TabPanel title="Video memory">
+                    <MemoryGrid columns={16}
+                                id="video-memory-grid"
+                                memoryBlock={this.state.machineState.videoMemory}
+                                registers={this.state.machineState.registers}/>
+                </TabPanel>
+            )
+        }
     }
 }
 

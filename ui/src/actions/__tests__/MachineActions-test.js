@@ -15,6 +15,17 @@ describe('Machine actions', () => {
         })
     })
 
+    it('should dispatch message on toggleTypewriter', () => {
+        const appDispatcher = require('../../dispatcher/AppDispatcher')
+        const MachineActions = require('../MachineActions')
+
+        MachineActions.toggleTypewriter(true)
+        expect(appDispatcher.dispatch).toBeCalledWith({
+            type: AppConstants.MACHINE_TOGGLE_TYPEWRITER,
+            typewriterEnabled: true
+        })
+    })
+
     it('should dispatch message on transition', () => {
         const appDispatcher = require('../../dispatcher/AppDispatcher')
         const MachineActions = require('../MachineActions')

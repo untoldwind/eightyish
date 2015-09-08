@@ -58,6 +58,13 @@ export default class Transition {
         return this
     }
 
+    withChannelOut(channel, data) {
+        this.outChannel = channel
+        this.outChannelData = data
+
+        return this
+    }
+
     perform(state) {
         this.oldRegisters = state.registers
 
@@ -73,13 +80,21 @@ export default class Transition {
                 videoMemory = videoMemory.updateData(this.memoryOffset, this.newMemoryData)
             }
         }
+        const channels = {}
+        if (typeof this.outChannel === 'number') {
+            const channel = state[`channel${this.outChannel}`]
+            if (channel) {
+                channels[`channel${this.outChannel}`] = channel.output(this.outChannelData)
+            }
+
+        }
         return state.copy({
             transitions: state.transitions.push(this),
             registers: state.registers.copy(this.newRegisters),
             memory: memory,
             videoMemory: videoMemory,
             totalCycles: typeof this.cycles === 'number' ? state.totalCycles + this.cycles : state.totalCycles
-        })
+        }, channels)
     }
 
     undo(state) {

@@ -49,7 +49,7 @@ export default class TabContainer extends React.Component {
     }
 
     renderSelected() {
-        return this.props.children[this.state.tabActive]
+        return this.getPanels()[this.state.tabActive]
     }
 
     getPanels() {
