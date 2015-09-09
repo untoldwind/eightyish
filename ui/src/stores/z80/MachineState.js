@@ -37,7 +37,8 @@ export default class MachineState extends Immutable {
             running: false,
             memory: this.memory.clear(),
             registers: Registers.create(this.memSize),
-            videoMemory: this.videoMemory ? this.videoMemory.clear() : null
+            videoMemory: this.videoMemory ? this.videoMemory.clear() : null,
+            channel0: this.channel0 ? this.channel0.clear() : null
         }).transferSourceToMemory().store()
     }
 
@@ -122,11 +123,11 @@ export default class MachineState extends Immutable {
         if (typewriterEnabled) {
             return this.copy({
                 channel0: Typewriter.create()
-            })
+            }).store()
         }
         return this.copy({
             channel0: null
-        })
+        }).store()
     }
 
     compile(lines) {
@@ -223,7 +224,10 @@ export default class MachineState extends Immutable {
                 breakpoints: new Set(sourceBreakpoints),
                 videoMemory: storedState.videoMemory ?
                     MemoryBlock.create(this.videoOffset, this.videoWidth * this.videoHeight / 8)
-                        .updateData(this.videoOffset, storedState.videoMemory) : null
+                        .updateData(this.videoOffset, storedState.videoMemory) : null,
+                channel0: storedState.typewriter ?
+                    Typewriter.create().copy({lines: storedState.typewriter.lines,
+                        position: storedState.typewriter.position }) : null
             })
         }
         return this
@@ -235,6 +239,7 @@ export default class MachineState extends Immutable {
                 registers: this.registers,
                 memory: Array.from(this.memory.data),
                 videoMemory: this.hasVideo ? Array.from(this.videoMemory.data) : null,
+                typewriter: this.channel0 ? { lines: this.channel0.lines, position: this.channel0.position} : null,
                 assembler: this.sourceCode.assembler
             })
         }

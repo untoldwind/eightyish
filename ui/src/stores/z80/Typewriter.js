@@ -5,8 +5,15 @@ import {repeat} from '../../util/formats'
 export default class Typewriter extends Immutable {
     constructor() {
         super()
-        this.lines = [""]
+        this.lines = ['']
         this.position = 0
+    }
+
+    clear() {
+        return this.copy({
+            lines: [''],
+            position: 0
+        })
     }
 
     output(ch) {

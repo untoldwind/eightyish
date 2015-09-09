@@ -145,8 +145,10 @@ export function createDataStatement(dataSource) {
 
     if (trimmed.startsWith('0x')) {
         data = trimmed.slice(2).split(' ').map((str) => parseInt(str, 16) & 0xff)
-    } else if (dataSource.trim().startsWith('0b')) {
+    } else if (trimmed.startsWith('0b')) {
         data = trimmed.slice(2).split(' ').map((str) => parseInt(str, 2) & 0xff)
+    } else if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+        data = [...JSON.parse(trimmed)].map((c) => c.charCodeAt(0)).concat(0)
     } else {
         data = trimmed.split(' ').map((str) => parseInt(str, 10) & 0xff)
     }

@@ -1,5 +1,20 @@
 export default `
 .firmware:
+# Prints A to the typewriter
+.printChar:
+  OUT    0 <- A
+  RET
+
+# Prints string (HL) to typewriter
+# String are terminated by 0x00
+.printString:
+  LOAD   A <- (HL)
+  INC    HL
+  COMP   A, 0
+  RET    Z
+  OUT    0 <- A
+  JUMP   .printString
+
 # Multiply: HL = A * BC
 .multiply:
   LOAD   HL <- 0x0
@@ -90,7 +105,7 @@ export default `
 # Print char A (ascii)
 # Column: B
 # Row: C
-.printChar:
+.drawChar:
   PUSH   AF
   PUSH   BC
   PUSH   DE
