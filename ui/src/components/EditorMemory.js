@@ -24,13 +24,17 @@ export default class EditorMemory extends React.Component {
                     if (line.offset === this.props.pc) {
                         className += ' bg-primary'
                     }
+                    let dump = line.dump.map(formats.byte2hex)
 
+                    if(dump.length > 5) {
+                        dump = dump.slice(0, 4).concat('...')
+                    }
                     return (
                         <li className={className}
                             key={index}
                             onClick={this.toggleBreakpoint(line.offset)}>
                             {this.renderBreakpoint(line.breakpoint)}
-                            {'\u0020' + formats.word2hex(line.offset)}: {line.dump.map(formats.byte2hex).join(' ')}
+                            {'\u0020' + formats.word2hex(line.offset)}: {dump.join(' ')}
                         </li>
                     )
                 })}

@@ -133,13 +133,13 @@ export default `
   ADD    HL <- DE
   LOAD   B <- 8
   LOAD   DE <- 0x10
-.printChar_loop:
+.drawChar_loop:
   LOAD   A <- (IX+0)
   LOAD   (HL) <- A
   INC    IX
   ADD    HL <- DE
   DEC    B
-  JUMP   NZ, .printChar_loop
+  JUMP   NZ, .drawChar_loop
 
   POP    IX
   POP    HL

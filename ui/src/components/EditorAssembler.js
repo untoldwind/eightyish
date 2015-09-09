@@ -18,8 +18,8 @@ export default class EditorAssembler extends React.Component {
 
     updateContent() {
         const selectedLine = this.getSelectedLine()
-        React.findDOMNode(this).innerHTML = this.props.sourceCode.statements.map(instruction =>
-            `<li class="${instruction.type}">${instruction.assembler}</li>`).join('')
+        React.findDOMNode(this).innerHTML = '<ul class="assembler">' + this.props.sourceCode.statements.map(instruction =>
+                `<li class="${instruction.type}">${instruction.assembler}</li>`).join('') + '</ul>'
         this.setSelectedLine(selectedLine)
     }
 
@@ -45,7 +45,7 @@ export default class EditorAssembler extends React.Component {
             selectedNode = selectedNode.parentNode
         }
 
-        const parent = React.findDOMNode(this)
+        const parent = React.findDOMNode(this).getElementsByTagName('UL')[0]
 
         if (selectedNode.parentNode !== parent) {
             return -1
@@ -65,7 +65,7 @@ export default class EditorAssembler extends React.Component {
         if (window.getSelection && document.createRange) {
             const selection = getSelection()
             selection.removeAllRanges()
-            const children = React.findDOMNode(this).children
+            const children = React.findDOMNode(this).getElementsByTagName('UL')[0].children
             if (line < children.length) {
                 const range = document.createRange()
                 range.setStart(children[line], 1)
@@ -77,11 +77,11 @@ export default class EditorAssembler extends React.Component {
 
     render() {
         return (
-            <ul className="assembler"
-                contentEditable="true"
-                id="editor-assembler"
-                onBlur={this.handleBlur.bind(this)}
-                onInput={this.handleInput.bind(this)}/>
+            <div className="assembler"
+                 contentEditable="true"
+                 id="editor-assembler"
+                 onBlur={this.handleBlur.bind(this)}
+                 onInput={this.handleInput.bind(this)}/>
         )
     }
 
@@ -95,8 +95,16 @@ export default class EditorAssembler extends React.Component {
 
     emitChange(force) {
         let lines = []
-        for (let child of React.findDOMNode(this).children) {
-            lines = lines.concat(child.textContent.split('\n'))
+        const parent = React.findDOMNode(this)
+        for (let child of parent.children) {
+            if (child.nodeType === 1 && child.nodeName.toUpperCase() === 'UL') {
+                for (let listItem of child.children) {
+                    lines = lines.concat(listItem.textContent.split('\n'))
+                }
+            } else {
+                console.log(child.nodeType)
+                parent.removeChild(child)
+            }
         }
 
         if (lines.length !== this.props.sourceCode.statements.length) {
