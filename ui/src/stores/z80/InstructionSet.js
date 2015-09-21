@@ -1,56 +1,55 @@
-import AddInstructions from './instructions/AddInstructions'
-import AndInstructions from './instructions/AndInstructions'
-import CoreInstructions from './instructions/CoreInstructions'
-import CompInstructions from './instructions/CompInstructions'
-import CallInstructions from './instructions/CallInstructions'
-import DecInstructions from './instructions/DecInstructions'
-import IncInstructions from './instructions/IncInstructions'
-import JumpInstructions from './instructions/JumpInstructions'
-import LoadInstructions from './instructions/LoadInstructions'
-import OutInstructions from './instructions/OutInstructions'
-import OrInstructions from './instructions/OrInstructions'
-import RotateLeftCarryInstructions from './instructions/RotateLeftCarryInstructions'
-import RotateRightCarryInstructions from './instructions/RotateRightCarryInstructions'
-import ShiftLeftInstructions from './instructions/ShiftLeftInstructions'
-import ShiftRightInstructions from './instructions/ShiftRightInstructions'
-import SubInstructions from './instructions/SubInstructions'
-import StackInstructions from './instructions/StackInstructions'
-import XorInstructions from './instructions/XorInstructions'
+import * as AddInstructions from './instructions/AddInstructions'
+import * as AndInstructions from './instructions/AndInstructions'
+import * as CoreInstructions from './instructions/CoreInstructions'
+import * as CompInstructions from './instructions/CompInstructions'
+import * as CallInstructions from './instructions/CallInstructions'
+import * as DecInstructions from './instructions/DecInstructions'
+import * as IncInstructions from './instructions/IncInstructions'
+import * as JumpInstructions from './instructions/JumpInstructions'
+import * as LoadInstructions from './instructions/LoadInstructions'
+import * as OutInstructions from './instructions/OutInstructions'
+import * as OrInstructions from './instructions/OrInstructions'
+import * as RotateLeftCarryInstructions from './instructions/RotateLeftCarryInstructions'
+import * as RotateRightCarryInstructions from './instructions/RotateRightCarryInstructions'
+import * as ShiftLeftInstructions from './instructions/ShiftLeftInstructions'
+import * as ShiftRightInstructions from './instructions/ShiftRightInstructions'
+import * as SubInstructions from './instructions/SubInstructions'
+import * as StackInstructions from './instructions/StackInstructions'
+import * as XorInstructions from './instructions/XorInstructions'
 
 import Statement from './Statement'
 
 export const INSTRUCTIONS = [].concat(
-    AddInstructions,
-    AndInstructions,
-    CoreInstructions,
-    CallInstructions,
-    CompInstructions,
-    DecInstructions,
-    IncInstructions,
-    JumpInstructions,
-    LoadInstructions,
-    OutInstructions,
-    OrInstructions,
-    RotateLeftCarryInstructions,
-    RotateRightCarryInstructions,
-    ShiftLeftInstructions,
-    ShiftRightInstructions,
-    SubInstructions,
-    StackInstructions,
-    XorInstructions
+    AddInstructions.instructions,
+    AndInstructions.instructions,
+    CoreInstructions.instructions,
+    CallInstructions.instructions,
+    CompInstructions.instructions,
+    DecInstructions.instructions,
+    IncInstructions.instructions,
+    JumpInstructions.instructions,
+    LoadInstructions.instructions,
+    OutInstructions.instructions,
+    OrInstructions.instructions,
+    RotateLeftCarryInstructions.instructions,
+    RotateRightCarryInstructions.instructions,
+    ShiftLeftInstructions.instructions,
+    ShiftRightInstructions.instructions,
+    SubInstructions.instructions,
+    StackInstructions.instructions,
+    XorInstructions.instructions
 )
 
-export const INSTRUCTIONS_BY_NAME = new Map()
-
+const instructionsByName = new Map()
 const instructionsByOpcode = []
 
 INSTRUCTIONS.forEach(instruction => {
     const name = instruction.name
-    let variants = INSTRUCTIONS_BY_NAME.get(name)
+    let variants = instructionsByName.get(name)
 
     if (!variants) {
         variants = []
-        INSTRUCTIONS_BY_NAME.set(name, variants)
+        instructionsByName.set(name, variants)
     }
     variants.push(instruction)
 
@@ -73,6 +72,8 @@ INSTRUCTIONS.forEach(instruction => {
         subOpcodes[instruction.postfix] = instruction
     }
 })
+
+export const INSTRUCTIONS_BY_NAME = instructionsByName
 
 export function process(state) {
     const pcMem = state.getMemory(state.registers.PC, 4)

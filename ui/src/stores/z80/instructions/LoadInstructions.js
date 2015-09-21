@@ -22,7 +22,7 @@ function createWord(opcode, cycles, to, from) {
     return new GenericInstruction(opcode, cycles, LOAD, [to, from], wordOperation, POINTER_DELIM)
 }
 
-export default [
+export const instructions = [
     createByte(0xf9, 6, REG_SP, REG_HL),
     createByte(0xddf9, 10, REG_SP, REG_IX),
     createByte(0xfdf9, 10, REG_SP, REG_IY),

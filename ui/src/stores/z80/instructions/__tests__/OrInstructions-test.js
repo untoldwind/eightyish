@@ -1,6 +1,6 @@
 jest.autoMockOff()
 
-const OrInstructions = require('../OrInstructions')
+const OrInstructions = require('../OrInstructions').instructions
 const byOpcode = new Map(OrInstructions.map(i => [i.opcode, i]))
 
 describe('Or Instruction', () => {

@@ -7,6 +7,6 @@ function operation(storer, first, second) {
     return new Transition().withChannelOut(first, second)
 }
 
-export default [
+export const instructions = [
     new GenericInstruction(0xd3, 11, OUT, [BYTE_VAL, REG_A], operation, POINTER_DELIM)
 ]

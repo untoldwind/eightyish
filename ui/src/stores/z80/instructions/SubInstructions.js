@@ -10,7 +10,7 @@ function operation(storer, first, second) {
     return storer(result).withFlags(result).withCarry(result < 0)
 }
 
-export default [
+export const instructions = [
     new GenericInstruction(0xd6, 7, SUB, [REG_A, BYTE_VAL], operation, POINTER_DELIM)
 ].concat(createFromWithPointers(0x90, 3, 15, (opcode, register) =>
         new GenericInstruction(opcode, 4, SUB, [REG_A, register], operation, POINTER_DELIM)))

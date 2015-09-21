@@ -1,6 +1,6 @@
 jest.autoMockOff()
 
-const CompInstructions = require('../CompInstructions')
+const CompInstructions = require('../CompInstructions').instructions
 const byOpcode = new Map(CompInstructions.map(i => [i.opcode, i]))
 
 describe('Compate Instruction', () => {

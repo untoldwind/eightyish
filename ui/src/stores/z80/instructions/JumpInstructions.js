@@ -31,7 +31,7 @@ class ConditionalJump extends Instruction {
     }
 }
 
-export default [
+export const instructions = [
     new Jump(),
     new ConditionalJump(0xda, COND_C),
     new ConditionalJump(0xfa, COND_S),

@@ -14,7 +14,7 @@ function create(opcode, cycles, target) {
     return new GenericInstruction(opcode, cycles, ROTRC, [target], operation)
 }
 
-export default [
+export const instructions = [
     create(0xcb1e, 15, POINTER_HL),
     create(0xddcb1e, 23, POINTER_IX),
     create(0xfdcb1e, 23, POINTER_IY)

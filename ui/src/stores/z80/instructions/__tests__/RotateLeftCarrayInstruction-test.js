@@ -1,6 +1,6 @@
 jest.autoMockOff()
 
-const RotateLeftCarryInstructions = require('../RotateLeftCarryInstructions')
+const RotateLeftCarryInstructions = require('../RotateLeftCarryInstructions').instructions
 const byOpcode = new Map(RotateLeftCarryInstructions.map(i => [i.opcode, i]))
 
 describe('Rotate left with carry Instruction', () => {

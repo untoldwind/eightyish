@@ -35,7 +35,7 @@ class Pop extends Instruction {
     }
 }
 
-export default [
+export const instructions = [
     new Push(0xdde5, 15, IX),
     new Push(0xfde5, 15, IY),
     new Pop(0xdde1, 14, IX),

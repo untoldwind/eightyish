@@ -1,6 +1,6 @@
 jest.autoMockOff()
 
-const XorInstructions = require('../XorInstructions')
+const XorInstructions = require('../XorInstructions').instructions
 const byOpcode = new Map(XorInstructions.map(i => [i.opcode, i]))
 
 describe('Xor Instruction', () => {

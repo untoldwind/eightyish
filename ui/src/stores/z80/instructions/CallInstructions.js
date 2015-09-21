@@ -72,7 +72,7 @@ class ConditionalReturn extends Instruction {
     }
 }
 
-export default [
+export const instructions = [
     new Call(),
     new ConditionalCall(0xc4, COND_NZ),
     new ConditionalCall(0xcc, COND_Z),

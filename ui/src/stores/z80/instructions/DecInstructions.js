@@ -24,7 +24,7 @@ function createWord(opcode, cycles, target) {
     return new GenericInstruction(opcode, cycles, DEC, [target], wordOperation)
 }
 
-export default [
+export const instructions = [
     createWord(0xdd2b, 10, REG_IX),
     createWord(0xfd2b, 10, REG_IY)
 ].

@@ -1,6 +1,6 @@
 jest.autoMockOff()
 
-const ShiftRightInstructions = require('../ShiftRightInstructions')
+const ShiftRightInstructions = require('../ShiftRightInstructions').instructions
 const byOpcode = new Map(ShiftRightInstructions.map(i => [i.opcode, i]))
 
 describe('Shift right Instruction', () => {

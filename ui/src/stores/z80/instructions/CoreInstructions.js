@@ -23,7 +23,7 @@ class Nop extends Instruction {
     }
 }
 
-export default [
+export const instructions = [
     new Nop(),
     new Halt()
 ]
