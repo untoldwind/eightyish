@@ -7,6 +7,8 @@ function operation(storer, first, second) {
     return new Transition().withChannelOut(first, second)
 }
 
+export const name = OUT
+export const description = 'Outputs source to I/O-channel: OUT channel <- source'
 export const instructions = [
     new GenericInstruction(0xd3, 11, OUT, [BYTE_VAL, REG_A], operation, POINTER_DELIM)
 ]

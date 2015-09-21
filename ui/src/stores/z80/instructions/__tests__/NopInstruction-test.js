@@ -1,11 +1,11 @@
 jest.autoMockOff()
 
-const CoreInstructions = require('../CoreInstructions').instructions
-const byOpcode = new Map(CoreInstructions.map(i => [i.opcode, i]))
+const NopInstruction = require('../NopInstruction').instructions
+const byOpcode = new Map(NopInstruction.map(i => [i.opcode, i]))
 
 describe('Core Instruction', () => {
     it('should not have duplicate opcodes', () => {
-        expect(byOpcode.size).toBe(CoreInstructions.length)
+        expect(byOpcode.size).toBe(NopInstruction.length)
     })
 
     it('should support NOP', () => {
@@ -29,25 +29,6 @@ describe('Core Instruction', () => {
         expect(assembler.type).toBe('instruction')
         expect(assembler.assembler).toBe('  NOP')
         expect(assembler.opcodes(null)).toEqual([0x0])
-        expect(assembler.size).toBe(1)
-    })
-
-    it('should support HALT', () => {
-        const nop = byOpcode.get(0x76)
-
-        expect(nop).toBeDefined()
-
-        const state = {}
-        const transition = nop.process(state, new Uint8Array([0x76]))
-
-        expect(transition).toBeNull()
-
-        const assembler = nop.createStatement([])
-
-        expect(assembler).toBeDefined()
-        expect(assembler.type).toBe('instruction')
-        expect(assembler.assembler).toBe('  HALT')
-        expect(assembler.opcodes(null)).toEqual([0x76])
         expect(assembler.size).toBe(1)
     })
 })

@@ -1,20 +1,23 @@
 import * as AddInstructions from './instructions/AddInstructions'
 import * as AndInstructions from './instructions/AndInstructions'
-import * as CoreInstructions from './instructions/CoreInstructions'
 import * as CompInstructions from './instructions/CompInstructions'
 import * as CallInstructions from './instructions/CallInstructions'
 import * as DecInstructions from './instructions/DecInstructions'
+import * as HaltInstruction from './instructions/HaltInstruction'
 import * as IncInstructions from './instructions/IncInstructions'
 import * as JumpInstructions from './instructions/JumpInstructions'
 import * as LoadInstructions from './instructions/LoadInstructions'
+import * as NopInstruction from './instructions/NopInstruction'
 import * as OutInstructions from './instructions/OutInstructions'
 import * as OrInstructions from './instructions/OrInstructions'
+import * as PopInstructions from './instructions/PopInstructions'
+import * as PushInstructions from './instructions/PushInstructions'
+import * as ReturnInstructions from './instructions/ReturnInstructions'
 import * as RotateLeftCarryInstructions from './instructions/RotateLeftCarryInstructions'
 import * as RotateRightCarryInstructions from './instructions/RotateRightCarryInstructions'
 import * as ShiftLeftInstructions from './instructions/ShiftLeftInstructions'
 import * as ShiftRightInstructions from './instructions/ShiftRightInstructions'
 import * as SubInstructions from './instructions/SubInstructions'
-import * as StackInstructions from './instructions/StackInstructions'
 import * as XorInstructions from './instructions/XorInstructions'
 
 import Statement from './Statement'
@@ -22,21 +25,24 @@ import Statement from './Statement'
 export const INSTRUCTIONS = [].concat(
     AddInstructions.instructions,
     AndInstructions.instructions,
-    CoreInstructions.instructions,
     CallInstructions.instructions,
     CompInstructions.instructions,
     DecInstructions.instructions,
+    HaltInstruction.instructions,
     IncInstructions.instructions,
     JumpInstructions.instructions,
     LoadInstructions.instructions,
+    NopInstruction.instructions,
     OutInstructions.instructions,
     OrInstructions.instructions,
+    PopInstructions.instructions,
+    PushInstructions.instructions,
+    ReturnInstructions.instructions,
     RotateLeftCarryInstructions.instructions,
     RotateRightCarryInstructions.instructions,
     ShiftLeftInstructions.instructions,
     ShiftRightInstructions.instructions,
     SubInstructions.instructions,
-    StackInstructions.instructions,
     XorInstructions.instructions
 )
 

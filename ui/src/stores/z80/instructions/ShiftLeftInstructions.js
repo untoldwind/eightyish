@@ -14,6 +14,8 @@ function create(opcode, cycles, target) {
     return new GenericInstruction(opcode, cycles, SHL, [target], operation)
 }
 
+export const name = SHL
+export const description = 'Shift target left, highest bit goes to carry: SHL target'
 export const instructions = [
     create(0xcb26, 15, POINTER_HL),
     create(0xddcb26, 23, POINTER_IX),

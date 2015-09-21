@@ -14,6 +14,8 @@ function create(opcode, cycles, to, from) {
     return new GenericInstruction(opcode, cycles, XOR, [to, from], operation, POINTER_DELIM)
 }
 
+export const name = 'XOR'
+export const description = 'Bitwise exclusive-or of source to target: AND target <- source'
 export const instructions = [
     create(0xee, 7, REG_A, BYTE_VAL)
 ].concat(createFromWithPointers(0xa8, 3, 15, (opcode, register) => create(opcode, 4, REG_A, register)))

@@ -1,17 +1,7 @@
 import Instruction from './Instruction'
 import Transition from '../Transition'
 
-import { HALT, NOP } from './constants'
-
-class Halt extends Instruction {
-    constructor() {
-        super(0x76, 4, HALT, [])
-    }
-
-    process() {
-        return null
-    }
-}
+import { NOP } from './constants'
 
 class Nop extends Instruction {
     constructor() {
@@ -23,7 +13,8 @@ class Nop extends Instruction {
     }
 }
 
+export const name = NOP
+export const description = 'No operation (i.e. do nothing): NOP'
 export const instructions = [
-    new Nop(),
-    new Halt()
+    new Nop()
 ]

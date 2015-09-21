@@ -14,7 +14,7 @@ function create(opcode, cycles, to, from) {
     return new GenericInstruction(opcode, cycles, AND, [to, from], operation, POINTER_DELIM)
 }
 
-export const name = 'AND'
+export const name = AND
 export const description = 'Bitwise and of source to target: AND target <- source'
 export const instructions = [
     create(0xe6, 7, REG_A, BYTE_VAL)

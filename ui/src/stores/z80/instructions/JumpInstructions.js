@@ -31,6 +31,8 @@ class ConditionalJump extends Instruction {
     }
 }
 
+export const name = JUMP
+export const description = 'Jump to address with optional condition: JUMP [condition ,] address'
 export const instructions = [
     new Jump(),
     new ConditionalJump(0xda, COND_C),

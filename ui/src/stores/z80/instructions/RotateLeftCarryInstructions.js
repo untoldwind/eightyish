@@ -14,6 +14,8 @@ function create(opcode, cycles, target) {
     return new GenericInstruction(opcode, cycles, ROTLC, [target], operation)
 }
 
+export const name = ROTLC
+export const description = 'Rotate target left with carry flag: ROTLC target'
 export const instructions = [
     create(0xcb16, 15, POINTER_HL),
     create(0xddcb16, 23, POINTER_IX),

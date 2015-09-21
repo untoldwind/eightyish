@@ -24,6 +24,8 @@ function createWord(opcode, cycles, target) {
     return new GenericInstruction(opcode, cycles, INC, [target], wordOperation)
 }
 
+export const name = INC
+export const description = 'Increments target by 1: INC target'
 export const instructions = [
     createWord(0xdd23, 10, REG_IX),
     createWord(0xfd23, 10, REG_IY)

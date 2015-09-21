@@ -102,7 +102,6 @@ export default class EditorAssembler extends React.Component {
                     lines = lines.concat(listItem.textContent.split('\n'))
                 }
             } else {
-                console.log(child.nodeType)
                 parent.removeChild(child)
             }
         }

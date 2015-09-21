@@ -22,6 +22,8 @@ function createWord(opcode, cycles, to, from) {
     return new GenericInstruction(opcode, cycles, LOAD, [to, from], wordOperation, POINTER_DELIM)
 }
 
+export const name = LOAD
+export const description = 'Load/transfer source to target: LOAD target <- source'
 export const instructions = [
     createByte(0xf9, 6, REG_SP, REG_HL),
     createByte(0xddf9, 10, REG_SP, REG_IX),

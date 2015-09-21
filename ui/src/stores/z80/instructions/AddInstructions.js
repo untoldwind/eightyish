@@ -25,7 +25,7 @@ function createWord(opcode, cycles, to, from) {
     return new GenericInstruction(opcode, cycles, ADD, [to, from], wordOperation, POINTER_DELIM)
 }
 
-export const name = 'ADD'
+export const name = ADD
 export const description = 'Adds source to target: ADD target <- source'
 export const instructions = [
     createByte(0xc6, 7, REG_A, BYTE_VAL)
