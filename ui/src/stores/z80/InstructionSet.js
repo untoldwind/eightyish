@@ -22,29 +22,31 @@ import * as XorInstructions from './instructions/XorInstructions'
 
 import Statement from './Statement'
 
-export const INSTRUCTIONS = [].concat(
-    AddInstructions.instructions,
-    AndInstructions.instructions,
-    CallInstructions.instructions,
-    CompInstructions.instructions,
-    DecInstructions.instructions,
-    HaltInstruction.instructions,
-    IncInstructions.instructions,
-    JumpInstructions.instructions,
-    LoadInstructions.instructions,
-    NopInstruction.instructions,
-    OutInstructions.instructions,
-    OrInstructions.instructions,
-    PopInstructions.instructions,
-    PushInstructions.instructions,
-    ReturnInstructions.instructions,
-    RotateLeftCarryInstructions.instructions,
-    RotateRightCarryInstructions.instructions,
-    ShiftLeftInstructions.instructions,
-    ShiftRightInstructions.instructions,
-    SubInstructions.instructions,
-    XorInstructions.instructions
-)
+export const INSTRUCTION_GROUPS = [
+    AddInstructions,
+    AndInstructions,
+    CallInstructions,
+    CompInstructions,
+    DecInstructions,
+    HaltInstruction,
+    IncInstructions,
+    JumpInstructions,
+    LoadInstructions,
+    NopInstruction,
+    OutInstructions,
+    OrInstructions,
+    PopInstructions,
+    PushInstructions,
+    ReturnInstructions,
+    RotateLeftCarryInstructions,
+    RotateRightCarryInstructions,
+    ShiftLeftInstructions,
+    ShiftRightInstructions,
+    SubInstructions,
+    XorInstructions
+]
+
+export const INSTRUCTIONS = [].concat(...INSTRUCTION_GROUPS.map((instructionGroup) => instructionGroup.instructions))
 
 const instructionsByName = new Map()
 const instructionsByOpcode = []
@@ -78,8 +80,6 @@ INSTRUCTIONS.forEach(instruction => {
         subOpcodes[instruction.postfix] = instruction
     }
 })
-
-export const INSTRUCTIONS_BY_NAME = instructionsByName
 
 export function process(state) {
     const pcMem = state.getMemory(state.registers.PC, 4)
@@ -171,7 +171,7 @@ export function createInstructionStatement(elements) {
     if (!elements instanceof Array || elements.length === 0) {
         return null
     }
-    const variants = INSTRUCTIONS_BY_NAME.get(elements[0].toUpperCase())
+    const variants = instructionsByName.get(elements[0].toUpperCase())
 
     if (!variants) {
         return null

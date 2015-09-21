@@ -1,11 +1,12 @@
 import React from 'react'
 
-import { INSTRUCTIONS_BY_NAME } from '../stores/z80/InstructionSet'
+import { INSTRUCTION_GROUPS } from '../stores/z80/InstructionSet'
 
 class InstructionGroup {
-    constructor(name, statements) {
-        this.name = name
-        this.size = statements.length
+    constructor(instructionGroup) {
+        this.name = instructionGroup.name
+        this.description = instructionGroup.description
+        this.size = instructionGroup.instructions.length
         if (this.size > 24) {
             this.depth = 0
             this.columns = [[], [], [], []]
@@ -16,7 +17,7 @@ class InstructionGroup {
             this.depth = 3
             this.columns = [[]]
         }
-        statements.sort((i1, i2) => i1.example.localeCompare(i2.example)).forEach((statement, index) => {
+        instructionGroup.instructions.sort((i1, i2) => i1.example.localeCompare(i2.example)).forEach((statement, index) => {
             const column = Math.floor(index * this.columns.length / this.size)
             this.columns[column].push(statement)
         })
@@ -25,7 +26,7 @@ class InstructionGroup {
     render() {
         return (
             <div className="panel panel-default" key={this.name}>
-                <div className="panel-heading">{this.name}</div>
+                <div className="panel-heading"><b>{this.name}</b> {this.description}</div>
                 <div className="panel-body">
                     {this.columns.map((column, index) =>
                             <div className={`col-md-${12 / this.columns.length}`}
@@ -113,8 +114,8 @@ class InstructionColumnNode {
 
 const instructionTree = new InstructionColumnNode()
 
-for (let name of [...INSTRUCTIONS_BY_NAME.keys()].sort()) {
-    instructionTree.addGroup(new InstructionGroup(name, INSTRUCTIONS_BY_NAME.get(name)))
+for (let instructionGroup of [...INSTRUCTION_GROUPS].sort(((g1, g2) => g1.name.localeCompare(g2.name)))) {
+    instructionTree.addGroup(new InstructionGroup(instructionGroup))
 }
 
 export default class InstructionSetView extends React.Component {
