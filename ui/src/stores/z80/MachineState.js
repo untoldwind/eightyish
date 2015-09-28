@@ -12,22 +12,26 @@ export default class MachineState extends Immutable {
     constructor(memSize, videoWidth, videoHeight) {
         super()
 
+        this.sourceCode = SourceCode.create(0)
+
+        const [sourceMemory, sourceBreakpoints] = this.sourceCode.memoryAndBreakpoints
+
         this.registers = Registers.create(memSize)
         this.memSize = memSize
-        this.memory = MemoryBlock.create(0, memSize)
+        this.memory = MemoryBlock.create(0, memSize).updateData(0, sourceMemory)
         this.videoOffset = 0x1000
         this.videoWidth = videoWidth
         this.videoHeight = videoHeight
         this.videoMemory = null
-        this.sourceCode = SourceCode.create(0)
         this.firmwareOffset = 0x8000
-        this.firmwareMemory = MemoryBlock.create(this.firmwareOffset, 0)
         this.firmwareSource = SourceCode.create(this.firmwareOffset)
-        this.breakpoints = new Set()
+        this.firmwareMemory = MemoryBlock.create(this.firmwareOffset, 0)
+        this.breakpoints = new Set(sourceBreakpoints)
         this.transitions = Stack.create()
         this.totalCycles = 0
         this.channel0 = null
         this.running = false
+
     }
 
     reset() {

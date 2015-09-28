@@ -1,10 +1,11 @@
 import React from 'react'
 
 import EditableCell from './EditableCell'
+import MemoryCell from './MemoryCell'
 
 import * as MachineActions from '../actions/MachineActions'
 
-import * as formats from './../util/formats'
+import * as formats from '../util/formats'
 
 function mapCount(count, callback) {
     const result = []
@@ -25,13 +26,13 @@ export default class MemoryRow extends React.Component {
     render() {
         return (
             <tr>
-                <td>{formats.word2hex(this.props.offset)}</td>
+                <td><b>{formats.word2hex(this.props.offset)}</b></td>
                 {mapCount(this.props.columns, i =>
-                        <EditableCell activeClassName="form-control input-xs"
-                                      className={this.mark(this.props.offset + i)}
-                                      key={i}
-                                      onChange={this.changeMemory(i).bind(this)}
-                                      value={formats.byte2hex(this.props.memoryBlock.getByte(i + this.props.offset))}/>
+                        <MemoryCell address={this.props.offset + i}
+                                    className={this.mark(this.props.offset + i)}
+                                    key={i}
+                                    onChange={this.changeMemory(i)}
+                                    value={this.props.memoryBlock.getByte(i + this.props.offset)}/>
                 )}
             </tr>
         )

@@ -10,6 +10,12 @@ export default class MenuItem extends React.Component {
         text: React.PropTypes.string.isRequired
     }
 
+    constructor(props) {
+        super(props)
+
+        this.handleClick = this.handleClick.bind(this)
+    }
+
     render() {
         let className = ''
         if (this.context.router.isActive(this.props.to)) {
@@ -17,7 +23,7 @@ export default class MenuItem extends React.Component {
         }
         return (
             <li className={className}>
-                <a href="#" onClick={this.handleClick.bind(this)}>
+                <a href="#" onClick={this.handleClick}>
                     {this.props.text}
                 </a>
             </li>

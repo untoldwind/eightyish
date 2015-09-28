@@ -8,6 +8,13 @@ export default class EditorAssembler extends React.Component {
         sourceCode: React.PropTypes.object.isRequired
     }
 
+    constructor(props) {
+        super(props)
+
+        this.handleBlur = this.handleBlur.bind(this)
+        this.handleInput = this.handleInput.bind(this)
+    }
+
     componentDidMount() {
         this.updateContent()
     }
@@ -80,8 +87,8 @@ export default class EditorAssembler extends React.Component {
             <div className="assembler"
                  contentEditable="true"
                  id="editor-assembler"
-                 onBlur={this.handleBlur.bind(this)}
-                 onInput={this.handleInput.bind(this)}/>
+                 onBlur={this.handleBlur}
+                 onInput={this.handleInput}/>
         )
     }
 

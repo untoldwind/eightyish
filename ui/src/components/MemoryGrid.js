@@ -23,9 +23,9 @@ export default class MemoryGrid extends React.Component {
             <table className="table table-condensed table-bordered" id={this.props.id}>
                 <thead>
                 <tr>
-                    <th></th>
+                    <td>Address</td>
                     {Array.from(new Array(this.props.columns).keys()).map(i =>
-                        <th key={i}>{formats.byte2hex(i)}</th>
+                            <td key={i}><b>{formats.byte2hex(i)}</b></td>
                     )}
                 </tr>
                 </thead>
