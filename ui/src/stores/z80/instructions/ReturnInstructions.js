@@ -1,8 +1,7 @@
 import Instruction from './Instruction'
 import Transition from '../Transition'
 
-import { RET, PC, SP, WORD_VAL,
-    COND_C, COND_NC, COND_P, COND_NP, COND_S, COND_NS, COND_Z, COND_NZ } from './constants'
+import { RET, PC, SP, COND_C, COND_NC, COND_P, COND_NP, COND_S, COND_NS, COND_Z, COND_NZ } from './constants'
 
 class Return extends Instruction {
     constructor() {

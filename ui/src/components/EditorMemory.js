@@ -26,7 +26,7 @@ export default class EditorMemory extends React.Component {
                     }
                     let dump = line.dump.map(formats.byte2hex)
 
-                    if(dump.length > 5) {
+                    if (dump.length > 5) {
                         dump = dump.slice(0, 4).concat('...')
                     }
                     return (

@@ -2,7 +2,6 @@ import React from 'react'
 import { Overlay } from 'react-overlays'
 
 import EditableCell from './EditableCell'
-import shallowEqual from '../util/shallowEqual'
 
 import * as formats from '../util/formats'
 
@@ -32,15 +31,15 @@ export default class MemoryCell extends EditableCell {
     }
 
     cancelTimeout() {
-        if (this._timeout) {
-            window.clearTimeout(this._timeout)
-            this._timeout = null
+        if (this.timeout) {
+            window.clearTimeout(this.timeout)
+            this.timeout = null
         }
     }
 
     handleMouseEnter() {
         this.cancelTimeout()
-        this._timeout = window.setTimeout(() => {
+        this.timeout = window.setTimeout(() => {
             this.setState({showTooltip: true})
         }, 1000)
     }
@@ -87,11 +86,11 @@ export default class MemoryCell extends EditableCell {
         if (!this.state.showTooltip) {
             return null
         }
-        const nameStyle = {textAlign: "right", paddingRight: "5px"}
-        const valueStyle = {textAlign: "left"}
+        const nameStyle = {textAlign: 'right', paddingRight: '5px'}
+        const valueStyle = {textAlign: 'left'}
         return (
             <Overlay placement="top" show={true}
-                     target={props => React.findDOMNode(this)}>
+                     target={() => React.findDOMNode(this)}>
                 <div className="tooltip top fade in">
                     <div className="tooltip-arrow"></div>
                     <div className="tooltip-inner">

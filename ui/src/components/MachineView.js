@@ -122,7 +122,7 @@ class MachineView extends React.Component {
     }
 
     renderVideoMemory() {
-        if(this.state.machineState.hasVideo) {
+        if (this.state.machineState.hasVideo) {
             return (
                 <TabPanel title="Video memory">
                     <MemoryGrid columns={16}

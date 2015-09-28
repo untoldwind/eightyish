@@ -2,6 +2,18 @@ import React from 'react'
 
 import * as MachineActions from '../actions/MachineActions'
 
+function assemblerEquals(lines, instructions) {
+    if (lines.length !== instructions.length) {
+        return false
+    }
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i] !== instructions[i].assembler) {
+            return false
+        }
+    }
+    return true
+}
+
 export default class EditorAssembler extends React.Component {
     static propTypes = {
         firmware: React.PropTypes.bool.isRequired,
@@ -12,7 +24,7 @@ export default class EditorAssembler extends React.Component {
         super(props)
 
         this.handleBlur = this.handleBlur.bind(this)
-        this.handleInput = this.handleInput.bind(this)
+        this.handleKeyUp = this.handleKeyUp.bind(this)
     }
 
     componentDidMount() {
@@ -25,8 +37,10 @@ export default class EditorAssembler extends React.Component {
 
     updateContent() {
         const selectedLine = this.getSelectedLine()
-        React.findDOMNode(this).innerHTML = '<ul class="assembler">' + this.props.sourceCode.statements.map(instruction =>
-                `<li class="${instruction.type}">${instruction.assembler}</li>`).join('') + '</ul>'
+        React.findDOMNode(this).innerHTML = '<ul class="assembler">' +
+            this.props.sourceCode.statements.map(instruction =>
+                `<li class="${instruction.type}">${instruction.assembler}</li>`).join('') +
+            '</ul>'
         this.setSelectedLine(selectedLine)
     }
 
@@ -88,19 +102,22 @@ export default class EditorAssembler extends React.Component {
                  contentEditable="true"
                  id="editor-assembler"
                  onBlur={this.handleBlur}
-                 onInput={this.handleInput}/>
+                 onKeyUp={this.handleKeyUp}/>
         )
     }
 
     handleBlur() {
-        this.emitChange(true)
+        this.emitChange()
     }
 
-    handleInput() {
-        this.emitChange(false)
+    handleKeyUp(event) {
+        const keyCode = event.keyCode
+        if (keyCode === 13 || keyCode === 38 || keyCode === 40) {
+            this.emitChange()
+        }
     }
 
-    emitChange(force) {
+    emitChange() {
         let lines = []
         const parent = React.findDOMNode(this)
         for (let child of parent.children) {
@@ -113,7 +130,7 @@ export default class EditorAssembler extends React.Component {
             }
         }
 
-        if (lines.length !== this.props.sourceCode.statements.length) {
+        if (!assemblerEquals(lines, this.props.sourceCode.statements)) {
             if (this.props.firmware) {
                 MachineActions.compileFirmware(lines)
             } else {

@@ -1,5 +1,4 @@
 import Instruction from './Instruction'
-import Transition from '../Transition'
 
 import { HALT } from './constants'
 

@@ -9,7 +9,7 @@ export default class TabPanel extends React.Component {
         ]).isRequired
     }
 
-    render () {
+    render() {
         return <div>{this.props.children}</div>
     }
 }

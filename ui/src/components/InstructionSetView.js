@@ -17,10 +17,12 @@ class InstructionGroup {
             this.depth = 3
             this.columns = [[]]
         }
-        instructionGroup.instructions.sort((i1, i2) => i1.example.localeCompare(i2.example)).forEach((statement, index) => {
-            const column = Math.floor(index * this.columns.length / this.size)
-            this.columns[column].push(statement)
-        })
+        instructionGroup.instructions.
+            sort((i1, i2) => i1.example.localeCompare(i2.example)).
+            forEach((statement, index) => {
+                const column = Math.floor(index * this.columns.length / this.size)
+                this.columns[column].push(statement)
+            })
     }
 
     render() {
@@ -32,10 +34,10 @@ class InstructionGroup {
                             <div className={`col-md-${12 / this.columns.length}`}
                                  key={index}>
                                 {column.map((statement) =>
-                                    <div key={statement.example}>
-                                        {statement.example}
-                                        {this.renderCyclesLabel(statement.cycles)}
-                                    </div>
+                                        <div key={statement.example}>
+                                            {statement.example}
+                                            {this.renderCyclesLabel(statement.cycles)}
+                                        </div>
                                 )}
                             </div>
                     )}

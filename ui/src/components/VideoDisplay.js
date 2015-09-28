@@ -63,7 +63,7 @@ export default class VideoDisplay extends React.Component {
         for (let i = 0; i < data.length; i++) {
             let byte = data[i]
             for (let j = 0; j < 8; j++) {
-                if ((byte & 0x80) != 0) {
+                if ((byte & 0x80) !== 0) {
                     ctx.rect(x * this.state.scale, y * this.state.scale, this.state.scale, this.state.scale)
                 }
                 byte <<= 1

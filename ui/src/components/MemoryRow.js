@@ -1,6 +1,5 @@
 import React from 'react'
 
-import EditableCell from './EditableCell'
 import MemoryCell from './MemoryCell'
 
 import * as MachineActions from '../actions/MachineActions'

@@ -19,7 +19,7 @@ export default class Typewriter extends Immutable {
     output(ch) {
         if (ch === 10) {
             return this.copy({
-                lines: this.lines.concat("")
+                lines: this.lines.concat('')
             })
         }
         if (ch === 13) {
@@ -31,7 +31,7 @@ export default class Typewriter extends Immutable {
             let currentLine = this.lines[this.lines.length - 1]
 
             if (currentLine.length < this.position) {
-                currentLine += repeat(' ',  this.position - currentLine.length)
+                currentLine += repeat(' ', this.position - currentLine.length)
             }
             currentLine = currentLine.substr(0, this.position) +
                 String.fromCharCode(ch) + currentLine.substr(this.position + 1)

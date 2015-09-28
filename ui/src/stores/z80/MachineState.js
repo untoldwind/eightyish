@@ -31,7 +31,6 @@ export default class MachineState extends Immutable {
         this.totalCycles = 0
         this.channel0 = null
         this.running = false
-
     }
 
     reset() {
@@ -121,7 +120,7 @@ export default class MachineState extends Immutable {
     }
 
     toggleTypewriter(typewriterEnabled) {
-        if (typewriterEnabled == this.hasTypewriter) {
+        if (typewriterEnabled === this.hasTypewriter) {
             return this
         }
         if (typewriterEnabled) {
@@ -191,7 +190,7 @@ export default class MachineState extends Immutable {
 
     compileFirmware(lines) {
         const firmwareSource = this.firmwareSource.compile(lines)
-        const [firmwareMemory, firmwareBreakpoints] = firmwareSource.memoryAndBreakpoints
+        const [firmwareMemory] = firmwareSource.memoryAndBreakpoints
         return this.copy({
             firmwareSource: firmwareSource,
             firmwareMemory: this.firmwareMemory.replaceData(firmwareMemory)

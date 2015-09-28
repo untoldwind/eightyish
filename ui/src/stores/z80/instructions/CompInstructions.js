@@ -16,7 +16,8 @@ function create(opcode, cycles, to, from) {
 }
 
 export const name = COMP
-export const description = 'Compares target with source (this is done by subtracting source from target without storing the result): COMP target, source'
+export const description = 'Compares target with source (this is done by subtracting source from target without ' +
+    'storing the result): COMP target, source'
 export const instructions = [
     create(0xfe, 7, REG_A, BYTE_VAL)
 ].concat(createFromWithPointers(0xb8, 3, 15, (opcode, register) => create(opcode, 4, REG_A, register)))

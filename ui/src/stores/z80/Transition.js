@@ -86,8 +86,8 @@ export default class Transition {
             if (channel) {
                 channels[`channel${this.outChannel}`] = channel.output(this.outChannelData)
             }
-
         }
+
         return state.copy({
             transitions: state.transitions.push(this),
             registers: state.registers.copy(this.newRegisters),
