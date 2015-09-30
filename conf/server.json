@@ -1,0 +1,5 @@
+{
+  "bindAddress": "0.0.0.0",
+  "httpPort": 8080,
+  "uiDir": "./ui/dist"
+}

@@ -18,7 +18,7 @@
     "test": "jest",
     "coverage": "jest --coverage",
     "watch:test": "nodemon -w __tests__ -w ./src -e js -x npm run coverage",
-    "watch": "webpack --watch",
+    "watch": "NODE_ENV=development webpack --watch",
     "webpack": "webpack --colors --progress",
     "nightwatch": "node specs/nightwatch.js --config specs/nightwatch.json"
   },

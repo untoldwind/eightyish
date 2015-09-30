@@ -8,3 +8,4 @@ ui/coverage
 *.iml
 ui/specs/reports/
 ui/specs/temp-runners/
+bin/
