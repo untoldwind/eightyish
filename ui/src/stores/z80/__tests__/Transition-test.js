@@ -62,11 +62,11 @@ describe('Transition', () => {
         const state = MachineState.create(10, 10, 8)
         const nextState = transition.perform(state)
 
-        expect(nextState.memory.data).toEqual([0, 0, 0, 0, 0, 13, 0, 0, 0, 0])
+        expect(nextState.memory.data).toEqual([0x76, 0, 0, 0, 0, 13, 0, 0, 0, 0])
 
         const undoedState = transition.undo(nextState)
 
-        expect(undoedState.memory.data).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        expect(undoedState.memory.data).toEqual([0x76, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     })
 
     it('should support byte video changes', () => {
@@ -98,10 +98,10 @@ describe('Transition', () => {
         const state = MachineState.create(10, 10, 8)
         const nextState = transition.perform(state)
 
-        expect(nextState.memory.data).toEqual([0, 0, 0, 0, 0, 0x12, 0x34, 0, 0, 0])
+        expect(nextState.memory.data).toEqual([0x76, 0, 0, 0, 0, 0x12, 0x34, 0, 0, 0])
 
         const undoedState = transition.undo(nextState)
 
-        expect(undoedState.memory.data).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        expect(undoedState.memory.data).toEqual([0x76, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     })
 })

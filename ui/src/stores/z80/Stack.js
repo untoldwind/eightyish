@@ -14,6 +14,10 @@ export default class Stack extends Immutable {
     }
 
     push(element) {
+        if (this.isMutable) {
+            elements.push(element)
+            return this
+        }
         return this.copy({
             elements: this.elements.concat(element)
         })

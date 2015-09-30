@@ -33,6 +33,26 @@ export default class MachineState extends Immutable {
         this.running = false
     }
 
+    mutable() {
+        return Object.assign({__proto__: Object.getPrototypeOf(this)}, this, {
+            isMutable: true,
+            registers: this.registers.mutable(),
+            memory: this.memory.mutable(),
+            video: this.videoMemory === null ? null : this.videoMemory.mutable(),
+            transition: this.transitions.mutable()
+        })
+    }
+
+    immutable() {
+        return Object.freeze(Object.assign({__proto__: Object.getPrototypeOf(this)}, this, {
+            isMutable: false,
+            registers: this.registers.immutable(),
+            memory: this.memory.immutable(),
+            video: this.videoMemory === null ? null : this.videoMemory.immutable(),
+            transition: this.transitions.immutable()
+        }))
+    }
+
     reset() {
         return this.copy({
             transitions: Stack.create(),
@@ -72,15 +92,15 @@ export default class MachineState extends Immutable {
     }
 
     fastForward(until = (pc) => this.breakpoints.has(pc)) {
-        let currentState = this
+        let currentState = this.mutable()
         let transition
         while ((transition = InstructionSet.process(currentState)) !== null) {
             currentState = transition.perform(currentState)
             if (until(currentState.registers.PC)) {
-                return currentState.store()
+                return currentState.immutable().store()
             }
         }
-        return currentState.store()
+        return currentState.immutable().store()
     }
 
     stepBackward() {

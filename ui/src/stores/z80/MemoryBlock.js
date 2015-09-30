@@ -31,6 +31,12 @@ export default class MemoryBlock extends Immutable {
     }
 
     updateData(address, changes) {
+        if (this.isMutable) {
+            this.data.set(changes, address - this.offset)
+
+            return this
+        }
+
         const newData = new Uint8Array(this.data)
 
         newData.set(changes, address - this.offset)
