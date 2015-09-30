@@ -10,7 +10,7 @@ function operation(storer, first, second) {
     return storer(result).withFlags(result).withCarry(result < 0)
 }
 
-export const name = 'SUB'
+export const name = SUB
 export const description = 'Subtract source from target: SUB target <- source'
 export const instructions = [
     new GenericInstruction(0xd6, 7, SUB, [REG_A, BYTE_VAL], operation, POINTER_DELIM)

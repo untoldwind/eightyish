@@ -19,6 +19,7 @@ export const PC = 'PC'
 export const SP = 'SP'
 
 export const ADD = 'ADD'
+export const ADDC = 'ADDC'
 export const AND = 'AND'
 export const CALL = 'CALL'
 export const COMP = 'COMP'
@@ -38,6 +39,7 @@ export const ROTLC = 'ROTLC'
 export const SHL = 'SHL'
 export const SHR = 'SHR'
 export const SUB = 'SUB'
+export const SUBC = 'SUBC'
 export const XOR = 'XOR'
 
 export const BYTE_VAL = ByteValueArgument

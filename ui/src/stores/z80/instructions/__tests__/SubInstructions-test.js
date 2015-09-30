@@ -102,7 +102,7 @@ describe('Sub Instruction', () => {
         expect(assembler.size).toBe(1)
     })
 
-    it('should support AND A, (IX+d)', () => {
+    it('should support SUB A, (IX+d)', () => {
         const andAIX = byOpcode.get(0xdd96)
 
         expect(andAIX).toBeDefined()

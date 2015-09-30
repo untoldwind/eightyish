@@ -1,4 +1,5 @@
 import * as AddInstructions from './instructions/AddInstructions'
+import * as AddCarryInstructions from './instructions/AddCarryInstructions'
 import * as AndInstructions from './instructions/AndInstructions'
 import * as CompInstructions from './instructions/CompInstructions'
 import * as CallInstructions from './instructions/CallInstructions'
@@ -18,12 +19,14 @@ import * as RotateRightCarryInstructions from './instructions/RotateRightCarryIn
 import * as ShiftLeftInstructions from './instructions/ShiftLeftInstructions'
 import * as ShiftRightInstructions from './instructions/ShiftRightInstructions'
 import * as SubInstructions from './instructions/SubInstructions'
+import * as SubCarryInstructions from './instructions/SubCarryInstructions'
 import * as XorInstructions from './instructions/XorInstructions'
 
 import Statement from './Statement'
 
 export const INSTRUCTION_GROUPS = [
     AddInstructions,
+    AddCarryInstructions,
     AndInstructions,
     CallInstructions,
     CompInstructions,
@@ -43,6 +46,7 @@ export const INSTRUCTION_GROUPS = [
     ShiftLeftInstructions,
     ShiftRightInstructions,
     SubInstructions,
+    SubCarryInstructions,
     XorInstructions
 ]
 
