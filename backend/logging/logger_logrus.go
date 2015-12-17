@@ -49,7 +49,7 @@ func NewLogrusLogger(ctx *cli.Context) Logger {
 func (l *logrusLogger) ErrorErr(err error) {
 	if l.logger.Level >= logrus.ErrorLevel {
 		richErr := errors.Wrap(err, 1)
-		l.logger.WithFields(l.fields).Errorf(richErr.ErrorStack())
+		l.logger.WithFields(l.fields).Error(richErr.ErrorStack())
 	}
 }
 

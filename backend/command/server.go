@@ -12,7 +12,7 @@ var ServerCommand cli.Command = cli.Command{
 }
 
 func serverCommand(ctx *cli.Context, runCtx *runContext) {
-	runCtx.server = server.NewServer(runCtx.config.Server, runCtx.logger)
+	runCtx.server = server.NewServer(runCtx.config.Server, runCtx.store, runCtx.logger)
 
 	if err := runCtx.server.Start(); err != nil {
 		runCtx.logger.ErrorErr(err)

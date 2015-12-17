@@ -3,6 +3,7 @@ package command
 import (
 	"github.com/codegangsta/cli"
 	"github.com/untoldwind/eightyish/backend/config"
+	"github.com/untoldwind/eightyish/backend/data"
 	"github.com/untoldwind/eightyish/backend/logging"
 	"github.com/untoldwind/eightyish/backend/server"
 	"os"
@@ -13,6 +14,7 @@ import (
 type runContext struct {
 	config *config.Config
 	server *server.Server
+	store  *data.Store
 	logger logging.Logger
 }
 
@@ -27,6 +29,7 @@ func newRunContext(ctx *cli.Context) (*runContext, error) {
 
 	return &runContext{
 		config: config,
+		store:  data.NewStore(),
 		logger: logger,
 	}, nil
 }
