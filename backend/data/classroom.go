@@ -7,10 +7,10 @@ import (
 )
 
 type Classroom struct {
-	Name     string   `json: "name"`
-	Hash     string   `json: "hash"`
-	Source   []string `json: "source"`
-	Firmware []string `json: "firmware"`
+	Name     string   `json:"name"`
+	Hash     string   `json:"hash"`
+	Source   []string `json:"source"`
+	Firmware []string `json:"firmware"`
 }
 
 func NewClassroom(name string) *Classroom {
